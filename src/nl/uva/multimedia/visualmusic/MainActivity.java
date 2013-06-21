@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.RelativeLayout;
 
-import org.metalev.multitouch.controller.R;
-
 public class MainActivity extends MultitouchActivity {
 
     private static final String TAG = "MT";
