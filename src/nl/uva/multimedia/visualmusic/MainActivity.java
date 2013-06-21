@@ -17,8 +17,8 @@ public class MainActivity extends MultitouchActivity {
         setContentView(R.layout.activity_main);
 
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
-        this.mFingerHandler = new FingerHandler<TestFingerThread, TestFingerThreadMonitor>(
-                TestFingerThread.class, TestFingerThreadMonitor.class, 10);
+        this.mFingerHandler = new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
+                VisualMusicThread.class, VisualMusicThreadMonitor.class, 10);
     }
 
     @Override
