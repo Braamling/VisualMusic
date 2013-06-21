@@ -5,6 +5,7 @@ package nl.uva.multimedia.visualmusic;
  */
 public class FingerThreadMonitor {
     protected float x, y;
+    private int width;
 
     public FingerThreadMonitor() {
         this.x = 0;
@@ -35,11 +36,19 @@ public class FingerThreadMonitor {
         this.y = y;
     }
 
+    public void setWidth(int width){
+        this.width = width;
+    }
+
     public float getX() {
         return this.x;
     }
 
     public float getY() {
         return this.y;
+    }
+
+    public int getWidth(){
+        return this.width;
     }
 }
