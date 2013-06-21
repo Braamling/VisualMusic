@@ -8,33 +8,31 @@ import java.lang.reflect.Array;
 public class FingerThread extends Thread {
     private static final String TAG = "FingerThread";
 
-    private boolean on;
+    protected FingerThreadMonitor monitor = null;
+    private boolean going, on = true;
 
-    protected void init() {
-        this.on = true;
+    protected void init() {}
 
-        // Other initialization.
-    }
+    protected void update() {}
 
-    protected void update() {
-        // Update.
+    protected void finish() {}
 
-    }
-
-    protected void finish() {
-        // Finish.
+    public void go() {
+        this.init();
+        this.going = true;
     }
 
     public void run() {
-        this.init();
-
-        while (true) {
-            if ((!this.on) || this.isInterrupted())
-                break;
+        while (this.on && (!this.isInterrupted())) {
+            if (!this.going)
+                continue;
 
             this.update();
         }
+    }
 
+    public void end() {
+        this.going = false;
         this.finish();
     }
 
@@ -44,7 +42,6 @@ public class FingerThread extends Thread {
 
     public void turnOff() {
         this.on = false;
-        this.interrupt();
     }
 
     public static <T>T createInstance(Class c) throws InstantiationException,
@@ -56,5 +53,13 @@ public class FingerThread extends Thread {
     public static <T>T[] createArray(Class c, int n) {
         T[] tArray = (T[])Array.newInstance(c, n);
         return tArray;
+    }
+
+    public void assignMonitor(FingerThreadMonitor monitor) {
+        this.monitor = monitor;
+    }
+
+    public FingerThreadMonitor getMonitor() {
+        return this.monitor;
     }
 }

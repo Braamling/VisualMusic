@@ -5,49 +5,43 @@ import android.util.Log;
 /**
  * Created by klaplong on 6/20/13.
  */
-public class FingerHandler<T extends FingerThread> {
+public class FingerHandler<T extends FingerThread, M extends FingerThreadMonitor> {
     private static final String TAG = "FingerHandler";
-
-    private Class c;
 
     private int maxFingers;
     private T[] fingerThreads;
 
-    public FingerHandler(Class c, int maxFingers) {
-        this.c = c;
+    public FingerHandler(Class c, Class m, int maxFingers) {
         this.maxFingers = maxFingers;
+
         this.fingerThreads = T.createArray(c, maxFingers);
+        for (int i = 0; i < maxFingers; i ++) {
+            M monitor;
+
+            try {
+                this.fingerThreads[i] = T.createInstance(c);
+
+                monitor = M.createInstance(m);
+                this.fingerThreads[i].assignMonitor(monitor);
+
+                this.fingerThreads[i].start();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void turnOnFinger(int i) throws ImpossibleFingerException {
+    public void goFinger(int i) throws ImpossibleFingerException {
         this.checkFinger(i);
 
-        try {
-            this.fingerThreads[i] = T.createInstance(this.c);
-            this.fingerThreads[i].start();
-        }
-        catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-        catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        this.fingerThreads[i].go();
     }
 
-    public void turnOffFinger(int i) throws ImpossibleFingerException {
+    public void endFinger(int i) throws ImpossibleFingerException {
         this.checkFinger(i);
 
-        if (!this.fingerThreads[i].isOn())
-            return;
-
-        this.fingerThreads[i].turnOff();
-
-        try {
-            this.fingerThreads[i].join(500);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        this.fingerThreads[i].end();
     }
 
     public boolean isFingerOn(int i) throws ImpossibleFingerException {
@@ -56,14 +50,16 @@ public class FingerHandler<T extends FingerThread> {
         return this.fingerThreads[i].isOn();
     }
 
-    public void moveFinger(int i, float x, float y, float width)
-            throws ImpossibleFingerException {
-        this.checkFinger(i);
-    }
-
     private void checkFinger(int i) throws ImpossibleFingerException {
         if (i >= this.maxFingers)
             throw new ImpossibleFingerException();
+    }
+
+    public M getMonitor(int i)
+            throws ImpossibleFingerException {
+        this.checkFinger(i);
+
+        return (M)this.fingerThreads[i].getMonitor();
     }
 
     public int getMaxFingers() {
