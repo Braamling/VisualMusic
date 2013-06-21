@@ -11,7 +11,7 @@ public class MainActivity extends MultitouchActivity {
     private static final String TAG = "MT";
 
     private RelativeLayout mRootLayout = null;
-    private FingerHandler<ToneFingerThread> mFingerHandler = null;
+    private FingerHandler<TestFingerThread> mFingerHandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,8 @@ public class MainActivity extends MultitouchActivity {
         setContentView(R.layout.activity_main);
 
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
-        this.mFingerHandler = new FingerHandler(ToneFingerThread.class, 10);
+        this.mFingerHandler = new FingerHandler<TestFingerThread>(
+                TestFingerThread.class, 10);
     }
 
     @Override
