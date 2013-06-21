@@ -10,13 +10,13 @@ public class VisualMusicThread extends FingerThread {
     private static final String TAG = "VisualMusicThread";
 
     private int lastX = -1;
-    private Playtone mPlayTone = null;
+    private PlayTone mPlayTone = null;
 
     protected void init() {
         super.init();
         // Init.
         Log.v(TAG, "Finger! =D");
-        mPlayTone = new Playtone();
+        mPlayTone = new PlayTone();
         mPlayTone.play();
     }
 
@@ -32,8 +32,15 @@ public class VisualMusicThread extends FingerThread {
             this.lastX = newX;
             Log.v(TAG, "Finger moved (" + newX + ")! =O");
             /* This is where the playtone's hertz is adjusted.*/
-            float hertz;
-            hertz = ToneFrequency.fromKey(getKey, 4);
+            float freq;
+            try {
+                ToneFrequency newFrequency = ToneFrequency.fromKey(getKey(), 4);
+                freq = newFrequency.get();
+                mPlayTone.setFreq((double)freq);
+            }catch (Exception e){
+
+            }
+
         }
     }
 
