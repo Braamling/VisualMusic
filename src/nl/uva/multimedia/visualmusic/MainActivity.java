@@ -9,7 +9,7 @@ public class MainActivity extends MultitouchActivity {
     private static final String TAG = "MT";
 
     private RelativeLayout mRootLayout = null;
-    private FingerHandler<TestFingerThread, TestFingerThreadMonitor> mFingerHandler = null;
+    private FingerHandler<VisualMusicThread, VisualMusicThreadMonitor> mFingerHandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class MainActivity extends MultitouchActivity {
     @Override
     public void onFingerMove(int fingerId, float x, float y) {
         try {
-            TestFingerThreadMonitor monitor =
+            VisualMusicThreadMonitor monitor =
                     this.mFingerHandler.getMonitor(fingerId);
 
             monitor.setX(x);
