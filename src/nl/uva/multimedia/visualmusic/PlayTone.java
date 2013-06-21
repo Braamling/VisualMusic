@@ -54,6 +54,8 @@ public class PlayTone {
                 samples[i] = (byte)(f * 127);
             }
 
+            if (mAudio.getState() == AudioTrack.STATE_INITIALIZED)
+                mAudio.play();
             mAudio.write(samples, 0, this.sampleCount);
             mAudio.setLoopPoints(0, this.sampleCount, -1);
         }

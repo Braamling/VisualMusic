@@ -1,5 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
+import android.util.Log;
+
 import java.lang.reflect.Array;
 
 /**

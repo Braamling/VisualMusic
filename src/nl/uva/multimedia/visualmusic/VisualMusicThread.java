@@ -17,7 +17,7 @@ public class VisualMusicThread extends FingerThread {
         // Init.
         Log.v(TAG, "Finger! =D");
         mPlayTone = new PlayTone();
-        mPlayTone.play();
+        // mPlayTone.play();
     }
 
     protected void update() {
@@ -41,6 +41,7 @@ public class VisualMusicThread extends FingerThread {
 
             }
 
+            this.mPlayTone.play();
         }
     }
 
