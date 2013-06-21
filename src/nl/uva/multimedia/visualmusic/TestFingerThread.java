@@ -37,10 +37,4 @@ public class TestFingerThread extends FingerThread {
         // Finish.
         Log.v(TAG, "No finger! =(");
     }
-
-    public void turnOff() {
-        /* To prevent the thread from terminating before custom stop methods
-         * have been called, do your own stuff before the super turnoff. */
-        super.turnOff();
-    }
 }

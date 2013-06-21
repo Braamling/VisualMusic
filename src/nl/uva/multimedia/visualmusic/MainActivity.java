@@ -43,8 +43,6 @@ public class MainActivity extends MultitouchActivity {
         try {
             TestFingerThreadMonitor monitor =
                     this.mFingerHandler.getMonitor(fingerId);
-            if (monitor == null)
-                return;
 
             monitor.setX(x);
         }

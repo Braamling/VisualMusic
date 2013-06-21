@@ -17,8 +17,6 @@ public class PlayTone {
     private AudioTrack mAudio;
     private int sampleCount = bufferSize;
 
-    private boolean playing;
-
     public PlayTone() {
         mAudio = new AudioTrack(
                 AudioManager.STREAM_MUSIC,
@@ -27,8 +25,6 @@ public class PlayTone {
                 AudioFormat.ENCODING_PCM_8BIT,
                 bufferSize,
                 AudioTrack.MODE_STATIC);
-
-        this.playing = false;
     }
 
     public void play() {
@@ -42,15 +38,6 @@ public class PlayTone {
         mAudio.flush();
         mAudio.stop();
         mAudio.release();
-    }
-
-    public void newFreq(double scale) {
-        this.setFreq(50 + (int)(scale * 100) * 5);
-
-        if (!this.playing) {
-            this.playing = true;
-            this.play();
-        }
     }
 
     public void setFreq(double freq) {
