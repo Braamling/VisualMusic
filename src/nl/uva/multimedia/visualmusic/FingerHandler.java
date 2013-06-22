@@ -1,6 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.util.Log;
+import android.view.SurfaceHolder;
 
 /**
  * Created by klaplong on 6/20/13.
@@ -12,6 +13,7 @@ public class FingerHandler<T extends FingerThread, M extends FingerThreadMonitor
     private T[] fingerThreads;
 
     public FingerHandler(Class c, Class m, int maxFingers) {
+
         this.maxFingers = maxFingers;
 
         this.fingerThreads = T.createArray(c, maxFingers);
