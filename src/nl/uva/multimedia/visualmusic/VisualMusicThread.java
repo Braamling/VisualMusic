@@ -74,6 +74,7 @@ public class VisualMusicThread extends FingerThread {
                 if (particles[i] != null){
                     if(particles[i].isDead()) {
                         particles[i] = null;
+                        continue;
                     }
 
                     particles[i].update();
