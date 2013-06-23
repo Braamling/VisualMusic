@@ -9,6 +9,8 @@ import android.view.SurfaceHolder;
 public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int fingerId;
 
+    private boolean write;
+
     private SurfaceHolder surfaceHolder;
     private Canvas canvas;
 
@@ -53,5 +55,17 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public int getFingerId() {
         return this.fingerId;
+    }
+
+    public void activateWrite(){
+        this.write = true;
+    }
+
+    public void deactivateWrite(){
+        this.write = false;
+    }
+
+    public boolean getWrite(){
+        return this.write;
     }
 }

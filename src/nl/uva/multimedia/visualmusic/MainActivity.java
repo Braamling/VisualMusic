@@ -53,7 +53,10 @@ public class MainActivity extends MultitouchActivity {
             else
                 monitor.setSurfaceHolder(this.pCanvas.getHolder());
 
+
             this.mFingerHandler.goFinger(fingerId);
+
+            pCanvas.activateFinger();
         }
         catch (ImpossibleFingerException e) {
             e.printStackTrace();
@@ -68,7 +71,7 @@ public class MainActivity extends MultitouchActivity {
 
             monitor.setX(x);
             monitor.setY(y);
-            monitor.setWidth(mRootLayout.getWidth());
+            //monitor.setWidth(mRootLayout.getWidth());
         }
         catch (ImpossibleFingerException e) {
             e.printStackTrace();
@@ -78,6 +81,7 @@ public class MainActivity extends MultitouchActivity {
     @Override
     public void onFingerUp(int fingerId) {
         try {
+            pCanvas.deactivateFinger();
             this.mFingerHandler.endFinger(fingerId);
         }
         catch (ImpossibleFingerException e) {

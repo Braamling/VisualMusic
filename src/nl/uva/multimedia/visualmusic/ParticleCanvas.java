@@ -16,13 +16,18 @@ SurfaceHolder.Callback{
 	//private ParticleThread thread;
 	//Particles[] particles = new Particles[1500];
     private MainActivity activity;
+    private VisualMusicThreadMonitor[] monitorBuffer;
+    private int monitorBufferPos = 0;
+    private int max_fingers = 10;
 
+    private int fingers;
 
 	public ParticleCanvas(Context context, MainActivity activity) {
 		super(context);
         this.activity = activity;
 		getHolder().addCallback(this);
 		setFocusable(true);
+        this.monitorBuffer = new VisualMusicThreadMonitor[max_fingers];
 	}
 
 	@Override
@@ -96,5 +101,29 @@ SurfaceHolder.Callback{
 	public void update() {
 	
 	}
+
+    public void activateFinger(){
+        this.fingers++;
+    }
+
+    public void deactivateFinger(){
+        this.fingers--;
+    }
+
+    public void addMonitorBuffer(VisualMusicThreadMonitor monitor){
+        if(this.monitorBufferPos >= max_fingers)
+            return;
+
+        this.monitorBuffer[this.monitorBufferPos++] = monitor;
+    }
+
+    private void emptyAndActivateBuffers(){
+        for(int i = 0; i < this.monitorBuffer.length; i++){
+            if(this.monitorBuffer[i] != null){
+                this.monitorBuffer[i].activateWrite();
+                this.monitorBuffer[i] = null;
+            }
+        }
+    }
 
 }
