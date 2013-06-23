@@ -13,6 +13,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     private SurfaceHolder surfaceHolder;
     private Canvas canvas;
+    private ParticleCanvas particleCanvas;
 
     public VisualMusicThreadMonitor() {
         super();
@@ -45,6 +46,10 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         this.surfaceHolder = surfaceHolder;
     }
 
+    public void setParticleCanvas(ParticleCanvas particleCanvas) {
+        this.particleCanvas = particleCanvas;
+    }
+
     public Canvas getCanvas() {
         return this.canvas;
     }
@@ -55,6 +60,10 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public int getFingerId() {
         return this.fingerId;
+    }
+
+    public ParticleCanvas getParticleCanvas() {
+        return this.particleCanvas;
     }
 
     public void activateWrite(){

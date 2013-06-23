@@ -18,9 +18,9 @@ public class VisualMusicThread extends FingerThread {
     private int i = 0;
 //    private PlayTone mPlayTone = null;
 
-
-
-    private final int PARTICLE_AMOUNT = 20;
+    public static final int N_PARTICLE_GROUPS = 20;
+    public static final int PARTICLE_GROUP_SIZE = 20;
+    private static final int PARTICLE_AMOUNT = 20;
 
     Particles[] particles = new Particles[PARTICLE_AMOUNT];
 
@@ -44,7 +44,8 @@ public class VisualMusicThread extends FingerThread {
         int newX = (int)monitor.getX();
         if (newX != this.lastX) {
              particles[this.i++ % (PARTICLE_AMOUNT-1)] =
-                     new Particles(20, this.monitor.getX(),this.monitor.getY(), 5, 5,500);
+                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
+                     this.monitor.getY(), 5, 5,500);
 
 //            this.lastX = newX;
 //            Log.v(TAG, "Finger moved (" + newX + ")! =O");
@@ -93,11 +94,10 @@ public class VisualMusicThread extends FingerThread {
         super.turnOff();
     }
 
-    public void renderFrame(VisualMusicThreadMonitor monitor){
-        Canvas canvas = null;
+    public void renderFrame(VisualMusicThreadMonitor monitor) {
 
-        try{
-            SurfaceHolder holder = monitor.getSurfaceHolder();
+        try {
+            /*SurfaceHolder holder = monitor.getSurfaceHolder();
             canvas = holder.lockCanvas();
 
 
@@ -108,28 +108,27 @@ public class VisualMusicThread extends FingerThread {
 
             synchronized (holder) {
                 canvas.drawColor(Color.BLACK);
-
-                for(int i = 0; i < particles.length; i++){
-                    if(particles[i] != null){
-                        if(particles[i].isDead()){
-                            particles[i] = null;
-                        }
-
-                        particles[i].update();
-                        particles[i].render(canvas, holder);
-                        canvas.save();
-                        canvas.restore();
-
+*/
+            for(int i = 0; i < particles.length; i++){
+                if(particles[i] != null){
+                    if(particles[i].isDead()){
+                        particles[i] = null;
                     }
+
+                    particles[i].update();
+                    particles[i].render(monitor.getParticleCanvas());
+                    //canvas.save();
+                    //canvas.restore();
+
                 }
             }
-            holder.unlockCanvasAndPost(canvas);
-        }catch (IllegalMonitorStateException e) {
+            /*}
+            holder.unlockCanvasAndPost(canvas);*/
+        }
+        catch (IllegalMonitorStateException e) {
 
-        }finally {
-            if (canvas != null) {
-
-            }
+        }
+        finally {
         }
     }
 

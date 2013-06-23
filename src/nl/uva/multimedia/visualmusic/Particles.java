@@ -50,9 +50,8 @@ public class Particles {
 		}
 	}
 	
-	public void render(Canvas canvas, SurfaceHolder holder){
+	public void render(ParticleCanvas particleCanvas){
 		for(int i = 0; i < this.particles.length; i++)
-			this.particles[i].draw(canvas, holder);
-		
+			this.particles[i].draw(particleCanvas);
 	}
 }

@@ -47,7 +47,7 @@ public class MainActivity extends MultitouchActivity {
             VisualMusicThreadMonitor monitor =
                     this.mFingerHandler.getMonitor(fingerId);
 
-            monitor.setCanvas(this.canvas);
+            monitor.setParticleCanvas(this.pCanvas);
             if(surfaceHolder != null)
                 monitor.setSurfaceHolder(surfaceHolder);
             else
@@ -71,7 +71,7 @@ public class MainActivity extends MultitouchActivity {
 
             monitor.setX(x);
             monitor.setY(y);
-            //monitor.setWidth(mRootLayout.getWidth());
+            // monitor.setWidth(mRootLayout.getWidth());
         }
         catch (ImpossibleFingerException e) {
             e.printStackTrace();

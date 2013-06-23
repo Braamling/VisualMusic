@@ -55,8 +55,8 @@ public class Particle {
 		}
 	}
 	
-	public void draw(Canvas canvas, SurfaceHolder holder){
-		canvas.drawCircle(this.x_pos, this.y_pos, this.radius, this.paint);
-
+	public void draw(ParticleCanvas particleCanvas) {
+		particleCanvas.drawCircle(this.x_pos, this.y_pos, this.radius,
+                this.paint);
 	}
 }
