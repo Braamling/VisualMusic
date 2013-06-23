@@ -5,9 +5,12 @@ import java.util.Random;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class Particle {
+    private static final String TAG = "Particle";
+
 	protected float x_pos;
 	protected float y_pos;
 	protected float x_speed;
@@ -56,6 +59,7 @@ public class Particle {
 	}
 	
 	public void draw(ParticleCanvas particleCanvas) {
+        Log.v(TAG, "draw");
 		particleCanvas.drawCircle(this.x_pos, this.y_pos, this.radius,
                 this.paint);
 	}

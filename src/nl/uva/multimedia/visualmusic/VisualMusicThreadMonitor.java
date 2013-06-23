@@ -1,15 +1,18 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
  * Created by klaplong on 6/21/13.
  */
 public class VisualMusicThreadMonitor extends FingerThreadMonitor {
+    private static final String TAG = "VisualMusicThreadMonitor";
+
     private int fingerId;
 
-    private boolean write;
+    private boolean write = true;
 
     private SurfaceHolder surfaceHolder;
     private Canvas canvas;
@@ -71,10 +74,11 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     public void deactivateWrite(){
+        Log.v(TAG, "Deactivate");
         this.write = false;
     }
 
-    public boolean getWrite(){
+    public boolean canDraw(){
         return this.write;
     }
 }

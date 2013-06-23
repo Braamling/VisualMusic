@@ -1,12 +1,6 @@
 package nl.uva.multimedia.visualmusic;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.Log;
-import android.view.SurfaceHolder;
-
-import nl.uva.multimedia.visualmusic.ToneFrequency;
 
 /**
  * Created by klaplong on 6/20/13.
@@ -72,11 +66,11 @@ public class VisualMusicThread extends FingerThread {
 
         VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
         int time = 0;
-        while(time++ < 20){
+        /*while(time++ < 20){
             renderFrame(monitor);
 
-        }
-        Log.e("finished", "finished");
+        }*/
+        Log.e(TAG, "finished");
         for(int j = 0; j < particles.length; j++){
             particles[j] = null;
         }
@@ -95,7 +89,10 @@ public class VisualMusicThread extends FingerThread {
     }
 
     public void renderFrame(VisualMusicThreadMonitor monitor) {
-
+        // Log.e(TAG, "begin render");
+        if (!monitor.canDraw())
+            return;
+        Log.e(TAG, "can draw");
         try {
             /*SurfaceHolder holder = monitor.getSurfaceHolder();
             canvas = holder.lockCanvas();
@@ -122,6 +119,10 @@ public class VisualMusicThread extends FingerThread {
 
                 }
             }
+            Log.e(TAG, "rendered");
+            monitor.deactivateWrite();
+            Log.e(TAG, "deactivated write");
+            monitor.getParticleCanvas().bufferMonitor(monitor);
             /*}
             holder.unlockCanvasAndPost(canvas);*/
         }

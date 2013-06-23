@@ -5,11 +5,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class ParticleCanvas extends SurfaceView implements
-SurfaceHolder.Callback{
+public class ParticleCanvas extends SurfaceView
+        implements SurfaceHolder.Callback{
+
+    private static final String TAG = "ParticleCanvas";
 
 	//private ParticleThread thread;
 	//Particles[] particles = new Particles[1500];
@@ -21,7 +24,7 @@ SurfaceHolder.Callback{
     private int fingers;
     private int circleBufferSize = VisualMusicThread.N_PARTICLE_GROUPS *
             VisualMusicThread.PARTICLE_GROUP_SIZE * 10;
-    private Circle[] circleBuffer = new Circle[circleBufferSize];
+    private Circle[] circleBuffer = new Circle[circleBufferSize + 1];
     private int circleBufferPointer = 0;
 
 	public ParticleCanvas(Context context, MainActivity activity) {
@@ -59,20 +62,27 @@ SurfaceHolder.Callback{
         this.fingers--;
     }
 
-    public void addMonitorBuffer(VisualMusicThreadMonitor monitor){
-        if(this.monitorBufferPos >= max_fingers)
+    public void bufferMonitor(VisualMusicThreadMonitor monitor){
+        if(this.monitorBufferPos >= this.fingers)
             return;
 
-        this.monitorBuffer[this.monitorBufferPos++] = monitor;
+        this.monitorBuffer[this.monitorBufferPos ++] = monitor;
+        Log.v(TAG, "Added monitor");
+
+        if (this.monitorBufferPos >= this.fingers)
+            this.emptyAndActivateBuffers();
     }
 
-    private void emptyAndActivateBuffers(){
-        for(int i = 0; i < this.monitorBuffer.length; i++){
-            if(this.monitorBuffer[i] != null){
-                this.monitorBuffer[i].activateWrite();
-                this.monitorBuffer[i] = null;
+    private void emptyAndActivateBuffers() {
+        Log.v(TAG, "Erasing buffer");
+        for (; this.monitorBufferPos > 0; this.monitorBufferPos --) {
+            if (this.monitorBuffer[this.monitorBufferPos - 1] != null) {
+                this.monitorBuffer[this.monitorBufferPos - 1].activateWrite();
+                this.monitorBuffer[this.monitorBufferPos - 1] = null;
             }
         }
+
+        this.flushBuffer();
     }
 
     public void drawCircle(float cx, float cy, float radius, Paint paint) {

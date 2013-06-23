@@ -26,7 +26,6 @@ public class MainActivity extends MultitouchActivity {
         pCanvas = new ParticleCanvas(this, this);
         setContentView(pCanvas);
 
-
         //canvas.drawCircle(500,500, 300, new Paint(Color.GREEN));
 
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
