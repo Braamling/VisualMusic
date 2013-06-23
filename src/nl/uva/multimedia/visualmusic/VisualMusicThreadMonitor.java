@@ -1,6 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
@@ -12,6 +13,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int fingerId;
     private boolean draw;
     private ParticleCanvas particleCanvas;
+    private boolean active = false;
+    private Particles[] particles;
 
     public VisualMusicThreadMonitor() {
         super();
@@ -53,5 +56,26 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public boolean canDraw(){
         return this.draw;
+    }
+
+    public boolean isActive(){
+        return this.active;
+    }
+
+    public void setInactive(){
+        this.active = false;
+    }
+
+    public void setActive(){
+        Log.v(TAG, "set Active");
+        this.active = true;
+    }
+
+    public void initParticlesArray(int nParticleGroups){
+        this.particles = new Particles[nParticleGroups];
+    }
+
+    public Particles getParticles(int index){
+        return this.particles[index];
     }
 }

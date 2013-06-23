@@ -2,6 +2,7 @@ package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.widget.RelativeLayout;
@@ -52,6 +53,23 @@ public class MainActivity extends MultitouchActivity {
         }
     }
 
+//    @Override
+//    public void onFingerDown(int fingerId, float x, float y) {
+//        try {
+//            VisualMusicThreadMonitor monitor =
+//                    this.mFingerHandler.getMonitor(fingerId);
+//
+//            monitor.setActive();
+//            this.mFingerHandler.interruptFinger(fingerId);
+//            this.mFingerHandler.goFinger(fingerId);
+//            Log.e(TAG, "test");
+//
+//        }
+//        catch (ImpossibleFingerException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     @Override
     public void onFingerMove(int fingerId, float x, float y) {
         try {
@@ -70,7 +88,13 @@ public class MainActivity extends MultitouchActivity {
     @Override
     public void onFingerUp(int fingerId) {
         try {
+            VisualMusicThreadMonitor monitor =
+                    this.mFingerHandler.getMonitor(fingerId);
+            monitor.setInactive();
+
             this.mFingerHandler.endFinger(fingerId);
+
+
         }
         catch (ImpossibleFingerException e) {
             e.printStackTrace();

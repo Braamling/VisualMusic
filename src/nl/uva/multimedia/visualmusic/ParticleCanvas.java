@@ -103,9 +103,11 @@ public class ParticleCanvas extends SurfaceView
 
         for (; this.circleBufferPointer > 0; this.circleBufferPointer --) {
             Circle c = this.circleBuffer[this.circleBufferPointer - 1];
-            canvas.drawCircle(c.getCx(), c.getCy(), c.getRadius(),
-                    c.getPaint());
-            this.circleBuffer[this.circleBufferPointer - 1] = null;
+            if(c != null && c.getPaint() != null){
+                canvas.drawCircle(c.getCx(), c.getCy(), c.getRadius(),
+                        c.getPaint());
+                this.circleBuffer[this.circleBufferPointer - 1] = null;
+            }
         }
 
         canvas.save();

@@ -12,9 +12,9 @@ public class VisualMusicThread extends FingerThread {
     private int i = 0;
 //    private PlayTone mPlayTone = null;
 
-    public static final int N_PARTICLE_GROUPS = 20;
+    public static final int N_PARTICLE_GROUPS = 50;
     public static final int PARTICLE_GROUP_SIZE = 20;
-    private static final int PARTICLE_AMOUNT = 20;
+    private static final int PARTICLE_AMOUNT = 50;
 
     Particles[] particles = new Particles[PARTICLE_AMOUNT];
 
@@ -32,11 +32,15 @@ public class VisualMusicThread extends FingerThread {
             return;
 
         VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
+
+        if (!monitor.canDraw())
+            return;
+
         int newX = (int)monitor.getX();
         if (newX != this.lastX) {
              particles[this.i++ % (PARTICLE_AMOUNT-1)] =
                      new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-                     this.monitor.getY(), 5, 5,500);
+                     this.monitor.getY(), 5, 5,200);
         }
 
         renderFrame(monitor);
@@ -44,15 +48,14 @@ public class VisualMusicThread extends FingerThread {
 
     protected void finish() {
         VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
+
         int time = 0;
-        while(time++ < 200){
+        while (time++ < 150) {
+            time++;
             renderFrame(monitor);
         }
-        for(int j = 0; j < particles.length; j++){
-            particles[j] = null;
-        }
 
-        ((VisualMusicThreadMonitor)this.monitor).getParticleCanvas().removeFinger();
+        monitor.getParticleCanvas().removeFinger();
         super.finish();
     }
 

@@ -57,6 +57,14 @@ public class FingerHandler<T extends FingerThread, M extends FingerThreadMonitor
             throw new ImpossibleFingerException();
     }
 
+    public void interruptFinger(int i) throws ImpossibleFingerException {
+        if (i >= this.maxFingers)
+            throw new ImpossibleFingerException();
+
+        this.fingerThreads[i].interrupt();
+        Log.v(TAG, this.fingerThreads[i].isInterrupted() + "");
+    }
+
     public M getMonitor(int i)
             throws ImpossibleFingerException {
         this.checkFinger(i);

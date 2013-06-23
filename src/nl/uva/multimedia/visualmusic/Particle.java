@@ -57,10 +57,9 @@ public class Particle {
 			return false;
 		}
 	}
-	
-	public void draw(ParticleCanvas particleCanvas) {
-        Log.v(TAG, "draw");
-		particleCanvas.drawCircle(this.x_pos, this.y_pos, this.radius,
+    public void draw(ParticleCanvas particleCanvas) {
+        //Log.v(TAG, "draw");
+        particleCanvas.drawCircle(this.x_pos, this.y_pos, this.radius,
                 this.paint);
-	}
+    }
 }
