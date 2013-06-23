@@ -35,13 +35,6 @@ SurfaceHolder.Callback{
         Paint paint = new Paint();
         paint.setColor(Color.GREEN);
         Canvas canvas =  holder.lockCanvas();
-
-        canvas.drawCircle(500,500, 300, paint);
-        Log.e("holder", holder + " " + canvas);
-        Canvas canvas1 = canvas;
-        Log.e("holder", holder + " " + canvas1);
-
-
         this.activity.setSurfaceHolder(holder);
         this.activity.setCanvas(canvas);
 
