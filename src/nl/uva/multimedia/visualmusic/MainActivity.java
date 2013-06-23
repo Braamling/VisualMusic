@@ -1,10 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.widget.RelativeLayout;
@@ -31,6 +28,8 @@ public class MainActivity extends MultitouchActivity {
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
         this.mFingerHandler = new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
                 VisualMusicThread.class, VisualMusicThreadMonitor.class, 10);
+
+        this.pCanvas.setMonitors(this.mFingerHandler);
     }
 
     @Override
@@ -46,16 +45,7 @@ public class MainActivity extends MultitouchActivity {
             VisualMusicThreadMonitor monitor =
                     this.mFingerHandler.getMonitor(fingerId);
 
-            monitor.setParticleCanvas(this.pCanvas);
-            if(surfaceHolder != null)
-                monitor.setSurfaceHolder(surfaceHolder);
-            else
-                monitor.setSurfaceHolder(this.pCanvas.getHolder());
-
-
             this.mFingerHandler.goFinger(fingerId);
-
-            pCanvas.activateFinger();
         }
         catch (ImpossibleFingerException e) {
             e.printStackTrace();
@@ -80,7 +70,6 @@ public class MainActivity extends MultitouchActivity {
     @Override
     public void onFingerUp(int fingerId) {
         try {
-            pCanvas.deactivateFinger();
             this.mFingerHandler.endFinger(fingerId);
         }
         catch (ImpossibleFingerException e) {
@@ -90,14 +79,10 @@ public class MainActivity extends MultitouchActivity {
 
     public void setSurfaceHolder(SurfaceHolder holder){
         this.surfaceHolder = holder;
-        //Log.e("setSur", "Sursetted" + surfaceHolder.lockCanvas());
-
     }
 
     public void setCanvas(Canvas canvas){
         this.canvas = canvas;
         this.surfaceHolder.unlockCanvasAndPost(canvas);
-        //Log.e("setSur", "Sursetted" + surfaceHolder.lockCanvas());
-
     }
 }

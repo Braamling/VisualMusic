@@ -1,7 +1,6 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
@@ -11,11 +10,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private static final String TAG = "VisualMusicThreadMonitor";
 
     private int fingerId;
-
-    private boolean write = true;
-
-    private SurfaceHolder surfaceHolder;
-    private Canvas canvas;
+    private boolean draw;
     private ParticleCanvas particleCanvas;
 
     public VisualMusicThreadMonitor() {
@@ -40,25 +35,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         this.fingerId = fingerId;
     }
 
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-
-    }
-
-    public void setSurfaceHolder(SurfaceHolder surfaceHolder) {
-        this.surfaceHolder = surfaceHolder;
-    }
-
     public void setParticleCanvas(ParticleCanvas particleCanvas) {
         this.particleCanvas = particleCanvas;
-    }
-
-    public Canvas getCanvas() {
-        return this.canvas;
-    }
-
-    public SurfaceHolder getSurfaceHolder() {
-        return this.surfaceHolder;
     }
 
     public int getFingerId() {
@@ -69,16 +47,11 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         return this.particleCanvas;
     }
 
-    public void activateWrite(){
-        this.write = true;
-    }
-
-    public void deactivateWrite(){
-        Log.v(TAG, "Deactivate");
-        this.write = false;
+    public void setDraw(boolean draw){
+        this.draw = draw;
     }
 
     public boolean canDraw(){
-        return this.write;
+        return this.draw;
     }
 }

@@ -19,13 +19,10 @@ public class VisualMusicThread extends FingerThread {
     Particles[] particles = new Particles[PARTICLE_AMOUNT];
 
     protected void init() {
-        Log.e("new thread", "new Thread");
         super.init();
         // Init.
-//        Log.v(TAG, "Finger! =D");
-//        mPlayTone = new PlayTone();
-        // mPlayTone.play();
 
+        ((VisualMusicThreadMonitor)this.monitor).getParticleCanvas().addFinger();
     }
 
     protected void update() {
@@ -40,46 +37,23 @@ public class VisualMusicThread extends FingerThread {
              particles[this.i++ % (PARTICLE_AMOUNT-1)] =
                      new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
                      this.monitor.getY(), 5, 5,500);
-
-//            this.lastX = newX;
-//            Log.v(TAG, "Finger moved (" + newX + ")! =O");
-//            /* This is where the playtone's hertz is adjusted.*/
-//            float freq;
-//            try {
-//                ToneFrequency newFrequency = ToneFrequency.fromKey(getKey(), 4);
-//                freq = newFrequency.get();
-//                mPlayTone.setFreq((double)freq);
-//            }catch (Exception e){
-//
-//            }
-//
-//            this.mPlayTone.play();
-
-
         }
 
         renderFrame(monitor);
     }
 
     protected void finish() {
-
-
         VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
         int time = 0;
-        /*while(time++ < 20){
+        while(time++ < 200){
             renderFrame(monitor);
-
-        }*/
-        Log.e(TAG, "finished");
+        }
         for(int j = 0; j < particles.length; j++){
             particles[j] = null;
         }
-        super.finish();
 
-//        mPlayTone.stop();
-//        mPlayTone = null;
-//        // Finish.
-//        Log.v(TAG, "No finger! =(");
+        ((VisualMusicThreadMonitor)this.monitor).getParticleCanvas().removeFinger();
+        super.finish();
     }
 
     public void turnOff() {
@@ -89,51 +63,33 @@ public class VisualMusicThread extends FingerThread {
     }
 
     public void renderFrame(VisualMusicThreadMonitor monitor) {
-        // Log.e(TAG, "begin render");
         if (!monitor.canDraw())
             return;
-        Log.e(TAG, "can draw");
+
         try {
-            /*SurfaceHolder holder = monitor.getSurfaceHolder();
-            canvas = holder.lockCanvas();
-
-
-            Paint paint = new Paint();
-            paint.setColor(Color.GREEN);
-            if(canvas == null)
-                return;
-
-            synchronized (holder) {
-                canvas.drawColor(Color.BLACK);
-*/
-            for(int i = 0; i < particles.length; i++){
-                if(particles[i] != null){
-                    if(particles[i].isDead()){
+            for (int i = 0; i < particles.length; i++) {
+                if (particles[i] != null){
+                    if(particles[i].isDead()) {
                         particles[i] = null;
                     }
 
                     particles[i].update();
-                    particles[i].render(monitor.getParticleCanvas());
-                    //canvas.save();
-                    //canvas.restore();
-
+                    try {
+                        particles[i].render(monitor.getParticleCanvas());
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-            Log.e(TAG, "rendered");
-            monitor.deactivateWrite();
-            Log.e(TAG, "deactivated write");
-            monitor.getParticleCanvas().bufferMonitor(monitor);
-            /*}
-            holder.unlockCanvasAndPost(canvas);*/
+
+            monitor.setDraw(false);
+            monitor.getParticleCanvas().fingerBuffered();
         }
         catch (IllegalMonitorStateException e) {
 
         }
-        finally {
-        }
     }
-
-
 
     private int getKey(){
         float part, key;

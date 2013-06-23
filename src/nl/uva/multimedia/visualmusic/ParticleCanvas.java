@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -14,28 +13,40 @@ public class ParticleCanvas extends SurfaceView
 
     private static final String TAG = "ParticleCanvas";
 
-	//private ParticleThread thread;
-	//Particles[] particles = new Particles[1500];
     private MainActivity activity;
-    private VisualMusicThreadMonitor[] monitorBuffer;
-    private int monitorBufferPos = 0;
     private int max_fingers = 10;
+    private SurfaceHolder holder;
 
-    private int fingers;
+    private int nFingers, cFingers;
     private int circleBufferSize = VisualMusicThread.N_PARTICLE_GROUPS *
             VisualMusicThread.PARTICLE_GROUP_SIZE * 10;
     private Circle[] circleBuffer = new Circle[circleBufferSize + 1];
     private int circleBufferPointer = 0;
+
+    private VisualMusicThreadMonitor[] monitors =
+            new VisualMusicThreadMonitor[10];
 
 	public ParticleCanvas(Context context, MainActivity activity) {
 		super(context);
         this.activity = activity;
 		getHolder().addCallback(this);
 		setFocusable(true);
-        this.monitorBuffer = new VisualMusicThreadMonitor[max_fingers];
 	}
 
-	@Override
+    public void setMonitors(FingerHandler handler) {
+        for (int i = 0; i < 10; i ++) {
+            try {
+                this.monitors[i] =
+                        (VisualMusicThreadMonitor)handler.getMonitor(i);
+                this.monitors[i].setParticleCanvas(this);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+        @Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 	}
@@ -47,42 +58,59 @@ public class ParticleCanvas extends SurfaceView
 
     @Override
 	public void surfaceCreated(SurfaceHolder holder) {
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-        Canvas canvas =  holder.lockCanvas();
-        this.activity.setSurfaceHolder(holder);
-        this.activity.setCanvas(canvas);
+        //Paint paint = new Paint();
+        //paint.setColor(Color.GREEN);
+        //Canvas canvas =  holder.lockCanvas();
+        //this.activity.setSurfaceHolder(holder);
+        //this.activity.setCanvas(canvas);
+
+        this.holder = holder;
     }
 
-    public void activateFinger(){
-        this.fingers++;
+    public void addFinger() {
+        this.nFingers ++;
+
+        if (this.nFingers == 1)
+            this.startBuffering();
     }
 
-    public void deactivateFinger(){
-        this.fingers--;
+    public void removeFinger() {
+        this.nFingers --;
     }
 
-    public void bufferMonitor(VisualMusicThreadMonitor monitor){
-        if(this.monitorBufferPos >= this.fingers)
+    public void fingerBuffered() {
+        this.cFingers --;
+
+        if (this.cFingers == 0) {
+            this.drawBuffer();
+            this.startBuffering();
+        }
+    }
+
+    private void startBuffering() {
+        if (this.nFingers == 0)
             return;
 
-        this.monitorBuffer[this.monitorBufferPos ++] = monitor;
-        Log.v(TAG, "Added monitor");
-
-        if (this.monitorBufferPos >= this.fingers)
-            this.emptyAndActivateBuffers();
+        this.cFingers = this.nFingers;
+        for (int i = 0; i < 10; i ++) {
+            this.monitors[i].setDraw(true);
+        }
     }
 
-    private void emptyAndActivateBuffers() {
-        Log.v(TAG, "Erasing buffer");
-        for (; this.monitorBufferPos > 0; this.monitorBufferPos --) {
-            if (this.monitorBuffer[this.monitorBufferPos - 1] != null) {
-                this.monitorBuffer[this.monitorBufferPos - 1].activateWrite();
-                this.monitorBuffer[this.monitorBufferPos - 1] = null;
-            }
+    private void drawBuffer() {
+        Canvas canvas = this.holder.lockCanvas();
+        canvas.drawColor(Color.BLACK);
+
+        for (; this.circleBufferPointer > 0; this.circleBufferPointer --) {
+            Circle c = this.circleBuffer[this.circleBufferPointer - 1];
+            canvas.drawCircle(c.getCx(), c.getCy(), c.getRadius(),
+                    c.getPaint());
+            this.circleBuffer[this.circleBufferPointer - 1] = null;
         }
 
-        this.flushBuffer();
+        canvas.save();
+        canvas.restore();
+        this.holder.unlockCanvasAndPost(canvas);
     }
 
     public void drawCircle(float cx, float cy, float radius, Paint paint) {
@@ -94,7 +122,6 @@ public class ParticleCanvas extends SurfaceView
         for (; this.circleBufferPointer > 0; this.circleBufferPointer --)
             this.circleBuffer[this.circleBufferPointer - 1] = null;
     }
-
 }
 
 class Circle {
