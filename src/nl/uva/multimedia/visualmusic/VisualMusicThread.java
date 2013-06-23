@@ -15,29 +15,27 @@ public class VisualMusicThread extends FingerThread {
     private static final String TAG = "VisualMusicThread";
 
     private int lastX = -1;
+    private int i = 0;
 //    private PlayTone mPlayTone = null;
 
 
 
-    private final int PARTICLE_AMOUNT = 300;
+    private final int PARTICLE_AMOUNT = 20;
 
     Particles[] particles = new Particles[PARTICLE_AMOUNT];
 
     protected void init() {
+        Log.e("new thread", "new Thread");
         super.init();
         // Init.
 //        Log.v(TAG, "Finger! =D");
 //        mPlayTone = new PlayTone();
         // mPlayTone.play();
 
-        for(int i = 0; i < particles.length; i++)
-            particles[i] = new Particles(10, 10*i,500, 5, 5,500);
     }
 
     protected void update() {
         super.update();
-
-        Canvas canvas;
 
         if (this.monitor == null)
             return;
@@ -45,6 +43,9 @@ public class VisualMusicThread extends FingerThread {
         VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
         int newX = (int)monitor.getX();
         if (newX != this.lastX) {
+             particles[this.i++ % (PARTICLE_AMOUNT-1)] =
+                     new Particles(20, this.monitor.getX(),this.monitor.getY(), 5, 5,500);
+
 //            this.lastX = newX;
 //            Log.v(TAG, "Finger moved (" + newX + ")! =O");
 //            /* This is where the playtone's hertz is adjusted.*/
@@ -62,43 +63,24 @@ public class VisualMusicThread extends FingerThread {
 
         }
 
-            // levert null op :( WAAROM!? :(
-        //canvas = monitor.getSurfaceHolder().lockCanvas();
-
-        SurfaceHolder surface = monitor.getSurfaceHolder();
-        canvas = monitor.getCanvas();
-
-
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-
-        canvas.drawCircle((float)300.0,(float)300.0,(float)30.0,paint);
-
-        synchronized (surface) {
-            if(canvas == null)
-                return;
-
-            canvas.drawColor(Color.BLACK);
-
-
-            //werkt niet :( WAAROM?! :(
-            canvas.drawCircle((float)300.0,(float)300.0,(float)30.0,paint);
-
-            for(int i = 0; i < particles.length; i++){
-                if(particles[i] != null){
-                    if(particles[i].isDead()){
-                        particles[i] = null;
-                    }
-
-                    particles[i].update();
-                    particles[i].render(canvas);
-                }
-            }
-        }
+        renderFrame(monitor);
     }
 
     protected void finish() {
+
+
+        VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
+        int time = 0;
+        while(time++ < 20){
+            renderFrame(monitor);
+
+        }
+        Log.e("finished", "finished");
+        for(int j = 0; j < particles.length; j++){
+            particles[j] = null;
+        }
         super.finish();
+
 //        mPlayTone.stop();
 //        mPlayTone = null;
 //        // Finish.
@@ -109,6 +91,46 @@ public class VisualMusicThread extends FingerThread {
         /* To prevent the thread from terminating before custom stop methods
          * have been called, do your own stuff before the super turnoff. */
         super.turnOff();
+    }
+
+    public void renderFrame(VisualMusicThreadMonitor monitor){
+        Canvas canvas = null;
+
+        try{
+            SurfaceHolder holder = monitor.getSurfaceHolder();
+            canvas = holder.lockCanvas();
+
+
+            Paint paint = new Paint();
+            paint.setColor(Color.GREEN);
+            if(canvas == null)
+                return;
+
+            synchronized (holder) {
+                canvas.drawColor(Color.BLACK);
+
+                for(int i = 0; i < particles.length; i++){
+                    if(particles[i] != null){
+                        if(particles[i].isDead()){
+                            particles[i] = null;
+                        }
+
+                        particles[i].update();
+                        particles[i].render(canvas, holder);
+                        canvas.save();
+                        canvas.restore();
+
+                    }
+                }
+            }
+            holder.unlockCanvasAndPost(canvas);
+        }catch (IllegalMonitorStateException e) {
+
+        }finally {
+            if (canvas != null) {
+
+            }
+        }
     }
 
 

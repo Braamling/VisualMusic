@@ -67,6 +67,7 @@ public class MainActivity extends MultitouchActivity {
                     this.mFingerHandler.getMonitor(fingerId);
 
             monitor.setX(x);
+            monitor.setY(y);
             monitor.setWidth(mRootLayout.getWidth());
         }
         catch (ImpossibleFingerException e) {
@@ -92,6 +93,7 @@ public class MainActivity extends MultitouchActivity {
 
     public void setCanvas(Canvas canvas){
         this.canvas = canvas;
+        this.surfaceHolder.unlockCanvasAndPost(canvas);
         //Log.e("setSur", "Sursetted" + surfaceHolder.lockCanvas());
 
     }

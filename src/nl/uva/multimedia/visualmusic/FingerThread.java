@@ -1,6 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.util.Log;
+import android.view.SurfaceHolder;
 
 import java.lang.reflect.Array;
 

@@ -1,14 +1,15 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Canvas;
+import android.view.SurfaceHolder;
 
 public class Particles {
 	protected Particle[] particles;
 	
-	protected double x_pos;
-	protected double y_pos;
+	protected float x_pos;
+	protected float y_pos;
 	protected int max_radius;
-	protected double max_speed;
+	protected float max_speed;
 	protected int max_life_time;
 	protected int age;
 	
@@ -16,7 +17,7 @@ public class Particles {
 		
 	}
 	
-	public Particles(int particles_amount, double x_pos, double y_pos, int max_radius, double max_speed, int max_life_time){
+	public Particles(int particles_amount, float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time){
 		this.particles 		= new Particle[particles_amount];
 		this.x_pos 			= x_pos;
 		this.y_pos 			= y_pos;
@@ -49,9 +50,9 @@ public class Particles {
 		}
 	}
 	
-	public void render(Canvas canvas){
+	public void render(Canvas canvas, SurfaceHolder holder){
 		for(int i = 0; i < this.particles.length; i++)
-			this.particles[i].draw(canvas);
+			this.particles[i].draw(canvas, holder);
 		
 	}
 }
