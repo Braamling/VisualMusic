@@ -11,6 +11,8 @@ public class MainActivity extends MultitouchActivity {
 
     private static final String TAG = "MT";
 
+    public static final int N_FINGER_THREADS = 10;
+
     private RelativeLayout mRootLayout = null;
     private FingerHandler<VisualMusicThread, VisualMusicThreadMonitor> mFingerHandler = null;
     private ParticleCanvas pCanvas;
@@ -24,11 +26,10 @@ public class MainActivity extends MultitouchActivity {
         pCanvas = new ParticleCanvas(this, this);
         setContentView(pCanvas);
 
-        //canvas.drawCircle(500,500, 300, new Paint(Color.GREEN));
-
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
         this.mFingerHandler = new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
-                VisualMusicThread.class, VisualMusicThreadMonitor.class, 10);
+                VisualMusicThread.class, VisualMusicThreadMonitor.class,
+                N_FINGER_THREADS);
 
         this.pCanvas.setMonitors(this.mFingerHandler);
     }
