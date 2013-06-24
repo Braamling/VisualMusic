@@ -26,6 +26,8 @@ public class Particle {
 	protected int 	  rot_dir;
 	protected Paint   paint;
 	protected boolean dead;
+    private int begin_color;
+    private int end_color;
 	
 	public Particle(float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time) {
 		Random r = new Random();
@@ -45,7 +47,19 @@ public class Particle {
 		this.rot_y_offset = 0;
 		
 		this.paint = new Paint();
-		this.paint.setColor(Color.argb(255,255,128,0));
+        if(x_pos < 333){
+            this.paint.setARGB(255, 255, 0, 0);
+            this.end_color = Color.rgb(255, 0, 0);
+            this.begin_color = Color.rgb(0, 255, 0);
+        }else if(x_pos < 666){
+            this.paint.setARGB(255,0,255, 0);
+            this.end_color = Color.rgb(0, 255, 0);
+            this.begin_color = Color.rgb(0, 0, 255);
+        }else{
+            this.paint.setARGB(255, 0, 0, 255);
+            this.end_color = Color.rgb(0, 0, 255);
+            this.begin_color = Color.rgb(255,0 , 0);
+        }
 	}
 	
 	public void update() {
@@ -80,13 +94,21 @@ public class Particle {
 
 			/* Change the radius and color */
 			this.radius = this.radius_start - (int)(this.radius_start * ratio);
-			this.paint.setARGB(255, 255, (255 - (int)(255 * ratio)) / 2, 0);
+            //nextColor(ratio);
+			this.paint.setColor(nextColor(ratio));
 		} else {
 			this.paint.setColor(Color.alpha(0));
 		}
 		
 		this.age++;
 	}
+
+    public int nextColor(float ratio){
+        int red = (int) (Color.red(this.begin_color) * ratio + Color.red(this.end_color) * (1 - ratio));
+        int green = (int) (Color.green(this.begin_color) * ratio + (Color.green(this.end_color) * (1 - ratio)));
+        int blue = (int) (Color.blue(this.begin_color) * ratio + (Color.blue(this.end_color)  * (1 - ratio)));
+        return Color.argb(255, red, green, blue);
+    }
 	
 	public boolean isDead() {
 		if (age >= life_time)
