@@ -47,6 +47,9 @@ public class MainActivity extends MultitouchActivity {
             VisualMusicThreadMonitor monitor =
                     this.mFingerHandler.getMonitor(fingerId);
 
+            monitor.setX(x);
+            monitor.setY(y);
+
             if (monitor.isFinishing())
                 monitor.setReboot(true);
             else

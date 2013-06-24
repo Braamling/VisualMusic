@@ -29,9 +29,9 @@ public class PlayTone {
     }
 
     public void play() {
-        mAudio.reloadStaticData();
-        mAudio.setLoopPoints(0, this.sampleCount, -1);
-        mAudio.play();
+//        mAudio.reloadStaticData();
+//        mAudio.setLoopPoints(0, this.sampleCount, -1);
+//        mAudio.play();
     }
 
     public void stop() {
