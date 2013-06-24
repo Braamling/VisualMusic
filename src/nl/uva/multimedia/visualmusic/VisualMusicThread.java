@@ -9,11 +9,15 @@ public class VisualMusicThread extends FingerThread {
     private static final String TAG = "VisualMusicThread";
 
     private int lastX = -1;
+    private int lastY = -1;
     private int i = 0;
     private PlayTone mPlayTone = new PlayTone();
 
+    // this line below is temporary, it shouldn't be static, I'll fix that later
+    public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
+
     public static final int N_PARTICLE_GROUPS = 50; /* Total number of particle-groups */
-    public static final int PARTICLE_GROUP_SIZE = 10; /* Number of unique particles in a single group */
+    public static final int PARTICLE_GROUP_SIZE = 8; /* Number of unique particles in a single group */
     private static final int PARTICLE_AMOUNT = 50; /* Same as N_PARTICLE_GROUPS ? */
 
     Particles[] particles = new Particles[PARTICLE_AMOUNT];
@@ -40,6 +44,7 @@ public class VisualMusicThread extends FingerThread {
         }
 
         int newX = (int)monitor.getX();
+        int newY = (int)monitor.getY();
 
         /* The 0 in this if statement can be changed to a higher setting if
          * it is decided that an unmoving finger should not generate particles,
@@ -47,9 +52,12 @@ public class VisualMusicThread extends FingerThread {
         if (Math.abs(newX - this.lastX) >= 0) {
             particles[this.i++ % PARTICLE_AMOUNT] =
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-                    this.monitor.getY(), 10, 3, 120);
+                    this.monitor.getY(), 13, 3, 120);
             this.lastX = newX;
         }
+
+        /* Which way is the finger going? Upwards or downwards? */
+        fingerDirection = (newY > this.lastY) ? 0 : 1;
 
         try {
             int key = this.getKey(), scale = 3;
