@@ -27,7 +27,7 @@ public class VisualMusicThread extends FingerThread {
 
     protected void update() {
         super.update();
-        float freq;
+        float freq, y_scale;
 
         if (this.monitor == null) {
             return;
@@ -51,14 +51,22 @@ public class VisualMusicThread extends FingerThread {
             this.lastX = newX;
         }
 
-        // try {
-        //     ToneFrequency newFrequency = ToneFrequency.fromKey(this.getKey(), 4);
-        //      freq = newFrequency.get();
-        //      mPlayTone.setFreq((double)freq);
-        //  }catch (Exception e){
-        //     e.printStackTrace();
-        //  }
-        // mPlayTone.play();
+        try {
+            int key = this.getKey(), scale = 3;
+            if (key >= 12) {
+                key -= 12;
+                scale ++;
+            }
+            ToneFrequency newFrequency = ToneFrequency.fromKey(key, scale);
+            freq = newFrequency.get();
+            y_scale = monitor.getY() / (float)monitor.getHeight();
+
+            mPlayTone.setFreq(freq, y_scale);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        mPlayTone.play();
 
         renderFrame(monitor);
     }
@@ -81,6 +89,8 @@ public class VisualMusicThread extends FingerThread {
                 return;
             }
 
+            Log.v(TAG, "drw " + monitor.canDraw());
+
             stillAlive = false;
             for (int i = 0; i < this.particles.length; i ++) {
                 if (this.particles[i] == null)
@@ -95,6 +105,7 @@ public class VisualMusicThread extends FingerThread {
 
             renderFrame(monitor);
         }
+        Log.v(TAG, "done");
 
         monitor.setFinishing(false);
         monitor.getParticleCanvas().removeFinger();
@@ -122,7 +133,7 @@ public class VisualMusicThread extends FingerThread {
 
         try {
             for (int i = 0; i < particles.length; i ++) {
-                if (particles[i] != null){
+                if (particles[i] != null) {
                     if (particles[i].isDead()) {
                         particles[i] = null;
                         continue;
@@ -147,11 +158,11 @@ public class VisualMusicThread extends FingerThread {
     }
 
     private int getKey(){
-        float part, key;
+        float part;
+        int key;
 
-        part = monitor.getWidth() / ToneFrequency.N_KEYS;
-        key = lastX / part;
-        Log.v(TAG, monitor.getWidth() + "," + key + "," + lastX);
+        part = monitor.getWidth() / (int)(1.5 * ToneFrequency.N_KEYS);
+        key = (int)(lastX / part);
 
         return (int) key;
     }
