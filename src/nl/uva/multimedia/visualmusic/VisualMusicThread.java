@@ -12,9 +12,9 @@ public class VisualMusicThread extends FingerThread {
     private int i = 0;
     private PlayTone mPlayTone = new PlayTone();
 
-    public static final int N_PARTICLE_GROUPS = 50;
-    public static final int PARTICLE_GROUP_SIZE = 20;
-    private static final int PARTICLE_AMOUNT = 50;
+    public static final int N_PARTICLE_GROUPS = 50; /* Total number of particle-groups */
+    public static final int PARTICLE_GROUP_SIZE = 20; /* Number of unique particles in a single group */
+    private static final int PARTICLE_AMOUNT = 50; /* Same as N_PARTICLE_GROUPS ? */
 
     Particles[] particles = new Particles[PARTICLE_AMOUNT];
 
@@ -40,12 +40,16 @@ public class VisualMusicThread extends FingerThread {
         }
 
         int newX = (int)monitor.getX();
-        if (newX != this.lastX) {
-            this.lastX = newX;
+
+        /* The 1 in this if statement can be changed to a higher setting if
+         * it is decided that verticle movement is not allowed. */
+        if (Math.abs(newX - this.lastX) >= 1) {
             particles[this.i++ % PARTICLE_AMOUNT] =
-            new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-            this.monitor.getY(), 5, 5,200);
+                    new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
+                    this.monitor.getY(), 5, 5, 200);
+            this.lastX = newX;
         }
+
         try {
             int key = this.getKey(), scale = 3;
             if (key >= 12) {
