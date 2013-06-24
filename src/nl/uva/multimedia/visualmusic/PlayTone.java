@@ -43,7 +43,9 @@ public class PlayTone {
         mAudio.write(new byte[this.bufferSize], 0, this.bufferSize);
     }
 
-    public void setFreq(double freq) {
+    public void setFreq(float freq, float scale) {
+        scale *= 0.6;
+
         try {
             int x = (int)((double)bufferSize * freq / sampleRate);
             this.sampleCount = (int)((double)x * sampleRate / freq);
@@ -51,8 +53,21 @@ public class PlayTone {
             byte[] samples = new byte[this.sampleCount];
 
             for( int i = 0; i != this.sampleCount; i ++) {
-                double t = (double)i * (1.0 / sampleRate);
-                double f = Math.sin(t * 2 * Math.PI * freq);
+                double a, t, adt, f;
+
+                a = 1.0 / freq;
+                t = (double)i * (1.0 / sampleRate);
+                adt = t / a;
+
+                /* The waves. */
+                f = scale * Math.sin(t * 2 * Math.PI * freq);
+                f += (0.6 - scale) * 2 * (adt - (int)((1.0 / 2.0) + adt));
+
+                /* Boventonen. */
+                f += 0.1 * Math.sin(t * 2 * Math.PI * 2 * freq);
+                f += 0.1 * Math.sin(t * 2 * Math.PI * 3 * freq);
+                f += 0.1 * Math.sin(t * 2 * Math.PI * 4 * freq);
+                f += 0.1 * Math.sin(t * 2 * Math.PI * 5 * freq);
 
                 samples[i] = (byte)(f * 127);
             }

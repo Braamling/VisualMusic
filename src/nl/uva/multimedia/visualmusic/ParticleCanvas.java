@@ -108,6 +108,17 @@ public class ParticleCanvas extends SurfaceView
         Canvas canvas = this.holder.lockCanvas();
         canvas.drawColor(Color.BLACK);
 
+        /* Draw keys. */
+        float keyWidth;
+        keyWidth = this.getWidth() / 18;
+        Paint white;
+        white = new Paint();
+        white.setColor(Color.WHITE);
+        for (int i = 1; i < 18; i ++) {
+            canvas.drawLine(i * keyWidth, 0, i * keyWidth, this.getHeight(),
+                    white);
+        }
+
         for (; this.circleBufferPointer > 0; this.circleBufferPointer --) {
             Circle c = this.circleBuffer[this.circleBufferPointer - 1];
 
