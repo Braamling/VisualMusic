@@ -10,7 +10,7 @@ public class VisualMusicThread extends FingerThread {
 
     private int lastX = -1;
     private int i = 0;
-//    private PlayTone mPlayTone = null;
+    private PlayTone mPlayTone = new PlayTone();
 
     public static final int N_PARTICLE_GROUPS = 50; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 20; /* Number of unique particles in a single group */
@@ -27,14 +27,17 @@ public class VisualMusicThread extends FingerThread {
 
     protected void update() {
         super.update();
+        float freq;
 
-        if (this.monitor == null)
+        if (this.monitor == null) {
             return;
+        }
 
         VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
 
-        if (!monitor.canDraw())
+        if (!monitor.canDraw()) {
             return;
+        }
 
         int newX = (int)monitor.getX();
 
@@ -47,23 +50,47 @@ public class VisualMusicThread extends FingerThread {
             this.lastX = newX;
         }
 
+        try {
+            ToneFrequency newFrequency = ToneFrequency.fromKey(this.getKey(), 4);
+             freq = newFrequency.get();
+             mPlayTone.setFreq((double)freq);
+         }catch (Exception e){
+            e.printStackTrace();
+         }
+        mPlayTone.play();
+
         renderFrame(monitor);
     }
 
     protected void finish() {
-
         VisualMusicThreadMonitor monitor =
                 (VisualMusicThreadMonitor)this.monitor;
+        boolean stillAlive;
+
         monitor.setFinishing(true);
 
+        mPlayTone.stop();
+
         int time = 0;
-        while (time ++ < 150) {
+        while (true) {
             if (monitor.needsReboot()) {
                 monitor.setFinishing(false);
                 monitor.setReboot(false);
                 this.going = true;
                 return;
             }
+
+            stillAlive = false;
+            for (int i = 0; i < this.particles.length; i ++) {
+                if (this.particles[i] == null)
+                    continue;
+                if (!this.particles[i].isDead()) {
+                    stillAlive = true;
+                    break;
+                }
+            }
+            if (!stillAlive)
+                break;
 
             renderFrame(monitor);
         }
@@ -123,6 +150,7 @@ public class VisualMusicThread extends FingerThread {
 
         part = monitor.getWidth() / ToneFrequency.N_KEYS;
         key = lastX / part;
+        Log.v(TAG, monitor.getWidth() + "," + key + "," + lastX);
 
         return (int) key;
     }

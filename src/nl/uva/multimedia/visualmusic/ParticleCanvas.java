@@ -70,6 +70,8 @@ public class ParticleCanvas extends SurfaceView
 
     public void addFinger() {
         this.nFingers ++;
+        if (this.nFingers > this.max_fingers)
+            this.nFingers = this.max_fingers;
 
         if (this.nFingers == 1)
             this.startBuffering();
@@ -77,6 +79,10 @@ public class ParticleCanvas extends SurfaceView
 
     public void removeFinger() {
         this.nFingers --;
+
+        // StackTraceElement el =
+        //         Thread.currentThread().getStackTrace()[3];
+        // Log.v(TAG, el.getFileName() + ": " + el.getLineNumber());
     }
 
     public void fingerBuffered() {

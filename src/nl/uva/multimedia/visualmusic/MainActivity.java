@@ -65,7 +65,7 @@ public class MainActivity extends MultitouchActivity {
 
             monitor.setX(x);
             monitor.setY(y);
-            // monitor.setWidth(mRootLayout.getWidth());
+            monitor.setWidth(this.pCanvas.getWidth());
         }
         catch (ImpossibleFingerException e) {
             e.printStackTrace();
