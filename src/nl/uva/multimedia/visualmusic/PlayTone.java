@@ -24,7 +24,7 @@ public class PlayTone {
                 AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_8BIT,
                 bufferSize,
-                AudioTrack.MODE_STREAM
+                AudioTrack.MODE_STATIC
         );
     }
 
@@ -35,16 +35,18 @@ public class PlayTone {
     }
 
     public void stop() {
-        if(mAudio.getState() == AudioTrack.STATE_UNINITIALIZED){
+        if (mAudio.getState() == AudioTrack.STATE_UNINITIALIZED) {
             return;
         }
-        mAudio.stop();
+
+        /* Write an empty buffer. */
+        mAudio.write(new byte[this.bufferSize], 0, this.bufferSize);
     }
 
     public void setFreq(double freq) {
         try {
             int x = (int)((double)bufferSize * freq / sampleRate);
-            this.sampleCount = 4 * (int)((double)x * sampleRate / freq);
+            this.sampleCount = (int)((double)x * sampleRate / freq);
 
             byte[] samples = new byte[this.sampleCount];
 
@@ -57,7 +59,7 @@ public class PlayTone {
 
             if (mAudio.getState() == AudioTrack.STATE_INITIALIZED)
                 mAudio.play();
-            mAudio.write(samples, 0, this.sampleCount);
+            mAudio.write(samples, 0, samples.length);
             mAudio.setLoopPoints(0, this.sampleCount, -1);
         }
         catch (IllegalStateException e) {
