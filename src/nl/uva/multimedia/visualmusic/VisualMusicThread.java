@@ -47,19 +47,32 @@ public class VisualMusicThread extends FingerThread {
     }
 
     protected void finish() {
-
         VisualMusicThreadMonitor monitor =
                 (VisualMusicThreadMonitor)this.monitor;
+        boolean stillAlive;
+
         monitor.setFinishing(true);
 
         int time = 0;
-        while (time ++ < 150) {
+        while (true) {
             if (monitor.needsReboot()) {
                 monitor.setFinishing(false);
                 monitor.setReboot(false);
                 this.going = true;
                 return;
             }
+
+            stillAlive = false;
+            for (int i = 0; i < this.particles.length; i ++) {
+                if (this.particles[i] == null)
+                    continue;
+                if (!this.particles[i].isDead()) {
+                    stillAlive = true;
+                    break;
+                }
+            }
+            if (!stillAlive)
+                break;
 
             renderFrame(monitor);
         }

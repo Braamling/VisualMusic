@@ -49,6 +49,12 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     public void setDraw(boolean draw){
+        // if (draw == false) {
+        //     StackTraceElement el =
+        //             Thread.currentThread().getStackTrace()[3];
+        //     Log.v(TAG, el.getFileName() + ": " + el.getLineNumber());
+        // }
+
         this.draw = draw;
     }
 
@@ -65,7 +71,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     public void setReboot(boolean reboot) {
-        Log.v(TAG, "Reboot set to " + reboot);
         this.reboot = reboot;
     }
 
