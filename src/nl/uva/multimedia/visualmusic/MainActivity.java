@@ -24,8 +24,6 @@ public class MainActivity extends MultitouchActivity {
         pCanvas = new ParticleCanvas(this, this);
         setContentView(pCanvas);
 
-        //canvas.drawCircle(500,500, 300, new Paint(Color.GREEN));
-
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
         this.mFingerHandler = new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
                 VisualMusicThread.class, VisualMusicThreadMonitor.class, 10);
@@ -46,29 +44,15 @@ public class MainActivity extends MultitouchActivity {
             VisualMusicThreadMonitor monitor =
                     this.mFingerHandler.getMonitor(fingerId);
 
-            this.mFingerHandler.goFinger(fingerId);
+            if (monitor.isFinishing())
+                monitor.setReboot(true);
+            else
+                this.mFingerHandler.goFinger(fingerId);
         }
         catch (ImpossibleFingerException e) {
             e.printStackTrace();
         }
     }
-
-//    @Override
-//    public void onFingerDown(int fingerId, float x, float y) {
-//        try {
-//            VisualMusicThreadMonitor monitor =
-//                    this.mFingerHandler.getMonitor(fingerId);
-//
-//            monitor.setActive();
-//            this.mFingerHandler.interruptFinger(fingerId);
-//            this.mFingerHandler.goFinger(fingerId);
-//            Log.e(TAG, "test");
-//
-//        }
-//        catch (ImpossibleFingerException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public void onFingerMove(int fingerId, float x, float y) {
@@ -90,11 +74,8 @@ public class MainActivity extends MultitouchActivity {
         try {
             VisualMusicThreadMonitor monitor =
                     this.mFingerHandler.getMonitor(fingerId);
-            monitor.setInactive();
 
             this.mFingerHandler.endFinger(fingerId);
-
-
         }
         catch (ImpossibleFingerException e) {
             e.printStackTrace();

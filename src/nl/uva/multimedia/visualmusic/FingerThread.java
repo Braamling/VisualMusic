@@ -12,7 +12,8 @@ public class FingerThread extends Thread {
     private static final String TAG = "FingerThread";
 
     protected FingerThreadMonitor monitor = null;
-    private boolean going, on = true;
+    private boolean on = true;
+    protected boolean going, finished = true;
 
     protected void init() {}
 
@@ -27,8 +28,13 @@ public class FingerThread extends Thread {
 
     public void run() {
         while (this.on && (!this.isInterrupted())) {
-            if (!this.going)
+            if (!this.going) {
+                if (!this.finished) {
+                    this.finish();
+                    this.finished = true;
+                }
                 continue;
+            }
 
             this.update();
         }
@@ -36,11 +42,15 @@ public class FingerThread extends Thread {
 
     public void end() {
         this.going = false;
-        this.finish();
+        this.finished = false;
     }
 
     public boolean isOn() {
         return this.on;
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
     }
 
     public void turnOff() {

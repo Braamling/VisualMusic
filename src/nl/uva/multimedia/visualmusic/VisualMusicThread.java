@@ -47,14 +47,24 @@ public class VisualMusicThread extends FingerThread {
     }
 
     protected void finish() {
-        VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
+
+        VisualMusicThreadMonitor monitor =
+                (VisualMusicThreadMonitor)this.monitor;
+        monitor.setFinishing(true);
 
         int time = 0;
-        while (time++ < 150) {
-            time++;
+        while (time ++ < 150) {
+            if (monitor.needsReboot()) {
+                monitor.setFinishing(false);
+                monitor.setReboot(false);
+                this.going = true;
+                return;
+            }
+
             renderFrame(monitor);
         }
 
+        monitor.setFinishing(false);
         monitor.getParticleCanvas().removeFinger();
         super.finish();
     }
@@ -65,14 +75,23 @@ public class VisualMusicThread extends FingerThread {
         super.turnOff();
     }
 
+    private void reboot() {
+        VisualMusicThreadMonitor monitor =
+                (VisualMusicThreadMonitor)this.monitor;
+
+        monitor.setFinishing(false);
+        this.run();
+    }
+
     public void renderFrame(VisualMusicThreadMonitor monitor) {
-        if (!monitor.canDraw())
+        if (!monitor.canDraw()) {
             return;
+        }
 
         try {
-            for (int i = 0; i < particles.length; i++) {
+            for (int i = 0; i < particles.length; i ++) {
                 if (particles[i] != null){
-                    if(particles[i].isDead()) {
+                    if (particles[i].isDead()) {
                         particles[i] = null;
                         continue;
                     }
