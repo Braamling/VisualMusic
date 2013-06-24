@@ -38,7 +38,7 @@ public class VisualMusicThread extends FingerThread {
 
         int newX = (int)monitor.getX();
         if (newX != this.lastX) {
-             particles[this.i++ % (PARTICLE_AMOUNT-1)] =
+             particles[this.i++ % PARTICLE_AMOUNT] =
                      new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
                      this.monitor.getY(), 5, 5,200);
         }

@@ -15,17 +15,17 @@ public class ParticleCanvas extends SurfaceView
     private static final String TAG = "ParticleCanvas";
 
     private MainActivity activity;
-    private int max_fingers = 10;
+    private int max_fingers = MainActivity.N_FINGER_THREADS;
     private SurfaceHolder holder;
 
     private int nFingers, cFingers;
     private int circleBufferSize = VisualMusicThread.N_PARTICLE_GROUPS *
-            VisualMusicThread.PARTICLE_GROUP_SIZE * 10;
+            VisualMusicThread.PARTICLE_GROUP_SIZE * max_fingers;
     private Circle[] circleBuffer = new Circle[circleBufferSize + 1];
     private int circleBufferPointer = 0;
 
     private VisualMusicThreadMonitor[] monitors =
-            new VisualMusicThreadMonitor[10];
+            new VisualMusicThreadMonitor[max_fingers];
 
 	public ParticleCanvas(Context context, MainActivity activity) {
 		super(context);
@@ -35,7 +35,7 @@ public class ParticleCanvas extends SurfaceView
 	}
 
     public void setMonitors(FingerHandler handler) {
-        for (int i = 0; i < 10; i ++) {
+        for (int i = 0; i < max_fingers; i ++) {
             try {
                 this.monitors[i] =
                         (VisualMusicThreadMonitor)handler.getMonitor(i);
@@ -93,7 +93,7 @@ public class ParticleCanvas extends SurfaceView
             return;
 
         this.cFingers = this.nFingers;
-        for (int i = 0; i < 10; i ++) {
+        for (int i = 0; i < max_fingers; i ++) {
             this.monitors[i].setDraw(true);
         }
     }
@@ -104,6 +104,7 @@ public class ParticleCanvas extends SurfaceView
 
         for (; this.circleBufferPointer > 0; this.circleBufferPointer --) {
             Circle c = this.circleBuffer[this.circleBufferPointer - 1];
+
             if(c != null && c.getPaint() != null){
                 canvas.drawCircle(c.getCx(), c.getCy(), c.getRadius(),
                         c.getPaint());
@@ -117,8 +118,8 @@ public class ParticleCanvas extends SurfaceView
     }
 
     public void drawCircle(float cx, float cy, float radius, Paint paint) {
-        this.circleBuffer[this.circleBufferPointer ++] = new Circle(cx, cy,
-                radius, paint);
+        this.circleBuffer[(this.circleBufferPointer ++) %
+                circleBufferSize] = new Circle(cx, cy, radius, paint);
     }
 
     public void flushBuffer() {
