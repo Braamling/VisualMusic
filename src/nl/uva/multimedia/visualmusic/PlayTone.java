@@ -24,7 +24,8 @@ public class PlayTone {
                 AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_8BIT,
                 bufferSize,
-                AudioTrack.MODE_STATIC);
+                AudioTrack.MODE_STREAM
+        );
     }
 
     public void play() {
@@ -34,16 +35,16 @@ public class PlayTone {
     }
 
     public void stop() {
-        mAudio.pause();
-        mAudio.flush();
+        if(mAudio.getState() == AudioTrack.STATE_UNINITIALIZED){
+            return;
+        }
         mAudio.stop();
-        mAudio.release();
     }
 
     public void setFreq(double freq) {
         try {
             int x = (int)((double)bufferSize * freq / sampleRate);
-            this.sampleCount = (int)((double)x * sampleRate / freq);
+            this.sampleCount = 4 * (int)((double)x * sampleRate / freq);
 
             byte[] samples = new byte[this.sampleCount];
 
