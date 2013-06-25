@@ -33,10 +33,16 @@ public class Particle {
                     int begin_color, int end_color) {
 		Random r = new Random();
 
+        // TODO Fix this, max_radius sometimes is negative, also max_life_time.
+
+        if (max_radius <= 1)
+            max_radius = 2;
+        if (max_life_time <= 1)
+            max_life_time = 2;
 
 		this.x_pos        = x_pos;
 		this.y_pos        = y_pos;
-		this.radius_start = r.nextInt(max_radius-1) + 1;
+		this.radius_start = r.nextInt(max_radius - 1) + 1;
 		this.radius       = this.radius_start;
 		this.life_time    = r.nextInt(max_life_time-1) + 1;
 		this.x_speed      = max_speed * (float)r.nextDouble();
