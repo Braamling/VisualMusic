@@ -25,6 +25,7 @@ public class FingerHandler<T extends FingerThread, M extends FingerThreadMonitor
 
                 monitor = M.createInstance(m);
                 this.fingerThreads[i].assignMonitor(monitor);
+                monitor.setFingerId(i);
 
                 this.fingerThreads[i].start();
             }

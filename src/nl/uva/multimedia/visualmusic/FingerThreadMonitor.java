@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 public class FingerThreadMonitor {
     protected float x, y;
     private int width, height;
+    protected int fingerId;
 
     public FingerThreadMonitor() {
         this.x = 0;
@@ -24,6 +25,15 @@ public class FingerThreadMonitor {
         T t = (T)c.newInstance();
         return t;
     }
+
+    public void setFingerId(int fingerId) {
+        this.fingerId = fingerId;
+    }
+
+    public int getFingerId() {
+        return this.fingerId;
+    }
+
 
     public void move(float x, float y) {
         this.x = x;

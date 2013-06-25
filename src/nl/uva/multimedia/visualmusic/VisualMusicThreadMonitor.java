@@ -1,5 +1,6 @@
 package nl.uva.multimedia.visualmusic;
 
+import android.graphics.Color;
 import android.util.Log;
 
 /**
@@ -8,7 +9,7 @@ import android.util.Log;
 public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private static final String TAG = "VisualMusicThreadMonitor";
 
-    private int fingerId;
+//    private int fingerId;
     private boolean draw;
     private ParticleCanvas particleCanvas;
     private boolean finishing = false, reboot = false;
@@ -32,17 +33,17 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         this.fingerId = fingerId;
     }
 
-    public void setFingerId(int fingerId) {
-        this.fingerId = fingerId;
-    }
+//    public void setFingerId(int fingerId) {
+//        this.fingerId = fingerId;
+//    }
 
     public void setParticleCanvas(ParticleCanvas particleCanvas) {
         this.particleCanvas = particleCanvas;
     }
 
-    public int getFingerId() {
-        return this.fingerId;
-    }
+//    public int getFingerId() {
+//        return this.fingerId;
+//    }
 
     public ParticleCanvas getParticleCanvas() {
         return this.particleCanvas;
@@ -84,5 +85,59 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public Particles getParticles(int index){
         return this.particles[index];
+    }
+
+    public int getEndColor(){
+        switch(this.fingerId){
+            case 0:
+                return Color.argb(255, 255, 0, 0);
+            case 1:
+                return Color.argb(255, 0, 255, 0);
+            case 2:
+                return Color.argb(255, 0, 0, 255);
+            case 3:
+                return Color.argb(255, 255, 255, 0);
+            case 4:
+                return Color.argb(255, 0, 255, 255);
+            case 5:
+                return Color.argb(255, 255, 0, 255);
+            case 6:
+                return Color.argb(255, 255, 0, 0);
+            case 7:
+                return Color.argb(255, 0, 255, 0);
+            case 8:
+                return Color.argb(255, 0, 0, 255);
+            case 9:
+                return Color.argb(255, 255, 255, 0);
+            default:
+                return Color.argb(255, 255, 0, 0);
+        }
+    }
+
+    public int getBeginColor(){
+        switch(this.fingerId){
+            case 0:
+                return Color.argb(255, 0, 255, 0);
+            case 1:
+                return Color.argb(255, 0, 0, 255);
+            case 2:
+                return Color.argb(255, 255, 255, 0);
+            case 3:
+                return Color.argb(255, 0, 255, 255);
+            case 4:
+                return Color.argb(255, 255, 0, 255);
+            case 5:
+                return Color.argb(255, 255, 0, 0);
+            case 6:
+                return Color.argb(255, 0, 255, 0);
+            case 7:
+                return Color.argb(255, 0, 0, 255);
+            case 8:
+                return Color.argb(255, 255, 255, 0);
+            case 9:
+                return Color.argb(255, 255, 0, 0);
+            default:
+                return Color.argb(255, 0, 255, 0);
+        }
     }
 }

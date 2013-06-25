@@ -27,12 +27,12 @@ public class ParticleCanvas extends SurfaceView
     private VisualMusicThreadMonitor[] monitors =
             new VisualMusicThreadMonitor[max_fingers];
 
-	public ParticleCanvas(Context context, MainActivity activity) {
-		super(context);
+    public ParticleCanvas(Context context, MainActivity activity) {
+        super(context);
         this.activity = activity;
-		getHolder().addCallback(this);
-		setFocusable(true);
-	}
+        getHolder().addCallback(this);
+        setFocusable(true);
+    }
 
     public void setMonitors(FingerHandler handler) {
         for (int i = 0; i < max_fingers; i ++) {
@@ -47,10 +47,10 @@ public class ParticleCanvas extends SurfaceView
         }
     }
 
-        @Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-	}
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width,
+                               int height) {
+    }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
@@ -58,7 +58,7 @@ public class ParticleCanvas extends SurfaceView
     }
 
     @Override
-	public void surfaceCreated(SurfaceHolder holder) {
+    public void surfaceCreated(SurfaceHolder holder) {
         //Paint paint = new Paint();
         //paint.setColor(Color.GREEN);
         //Canvas canvas =  holder.lockCanvas();

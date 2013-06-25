@@ -12,12 +12,15 @@ public class Particles {
 	protected float max_speed;
 	protected int max_life_time;
 	protected int age;
+    private int begin_color;
+    private int end_color;
 	
 	public Particles() {
 		
 	}
 	
-	public Particles(int particles_amount, float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time) {
+	public Particles(int particles_amount, float x_pos, float y_pos, int max_radius, float max_speed,
+                     int max_life_time, int begin_color, int end_color) {
 		this.particles 		= new Particle[particles_amount];
 		this.x_pos 			= x_pos;
 		this.y_pos 			= y_pos;
@@ -25,13 +28,16 @@ public class Particles {
 		this.max_speed 		= max_speed;
 		this.max_life_time 	= max_life_time;
 		this.age 			= 0;
+        this.begin_color    = begin_color;
+        this.end_color      = end_color;
 		
 		this.init();
 	}
 	
 	public void init() {
 		for(int i = 0; i < this.particles.length; i++)
-			this.particles[i] = new Particle(x_pos, y_pos, max_radius, max_speed, max_life_time);
+			this.particles[i] = new Particle(x_pos, y_pos, max_radius, max_speed, max_life_time,
+                    begin_color, end_color);
 		
 	}
 	

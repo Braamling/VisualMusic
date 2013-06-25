@@ -29,7 +29,8 @@ public class Particle {
     private int begin_color;
     private int end_color;
 	
-	public Particle(float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time) {
+	public Particle(float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time,
+                    int begin_color, int end_color) {
 		Random r = new Random();
 
 
@@ -45,21 +46,12 @@ public class Particle {
 		this.rot_dir      = r.nextDouble() < 0.5 ? -1 : 1;
 		this.rot_x_offset = 0;
 		this.rot_y_offset = 0;
+        this.begin_color  = begin_color;
+        this.end_color    = end_color;
 		
 		this.paint = new Paint();
-        if(x_pos < 333){
-            this.paint.setARGB(255, 255, 0, 0);
-            this.end_color = Color.rgb(255, 0, 0);
-            this.begin_color = Color.rgb(0, 255, 0);
-        }else if(x_pos < 666){
-            this.paint.setARGB(255,0,255, 0);
-            this.end_color = Color.rgb(0, 255, 0);
-            this.begin_color = Color.rgb(0, 0, 255);
-        }else{
-            this.paint.setARGB(255, 0, 0, 255);
-            this.end_color = Color.rgb(0, 0, 255);
-            this.begin_color = Color.rgb(255,0 , 0);
-        }
+        this.paint.setColor(begin_color);
+
 	}
 	
 	public void update() {

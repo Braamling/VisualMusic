@@ -18,9 +18,12 @@ public class VisualMusicThread extends FingerThread {
 
     public static final int N_PARTICLE_GROUPS = 50; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 8; /* Number of unique particles in a single group */
-    private static final int PARTICLE_AMOUNT = 50; /* Same as N_PARTICLE_GROUPS ? */
+//    private static final int PARTICLE_AMOUNT = 50; /* Same as N_PARTICLE_GROUPS ? */
+    private static final int PARTICLE_LIFE_TIME = 50; /* Maximum life time of a single particle */
+    private static final int PARTICLE_MAX_SPEED = 3; /* Maximum speed of a single particle */
+    private static final int PARTICLE_RADIUS = 13; /* Maximum radius of a single particle */
 
-    Particles[] particles = new Particles[PARTICLE_AMOUNT];
+    Particles[] particles = new Particles[N_PARTICLE_GROUPS];
 
     protected void init() {
         super.init();
@@ -46,13 +49,17 @@ public class VisualMusicThread extends FingerThread {
         int newX = (int)monitor.getX();
         int newY = (int)monitor.getY();
 
+        int begin_color = monitor.getBeginColor();
+        int end_color = monitor.getEndColor();
+
         /* The 0 in this if statement can be changed to a higher setting if
          * it is decided that an unmoving finger should not generate particles,
          * or that verticle movement is not allowed. */
         if (Math.abs(newX - this.lastX) >= 0) {
-            particles[this.i++ % PARTICLE_AMOUNT] =
+            particles[this.i++ % N_PARTICLE_GROUPS] =
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-                    this.monitor.getY(), 13, 3, 120);
+                    this.monitor.getY(), PARTICLE_RADIUS, PARTICLE_MAX_SPEED, PARTICLE_LIFE_TIME,
+                            begin_color, end_color);
             this.lastX = newX;
         }
 
@@ -97,7 +104,7 @@ public class VisualMusicThread extends FingerThread {
                 return;
             }
 
-            Log.v(TAG, "drw " + monitor.canDraw());
+//            Log.v(TAG, "drw " + monitor.canDraw());
 
             stillAlive = false;
             for (int i = 0; i < this.particles.length; i ++) {
@@ -113,7 +120,7 @@ public class VisualMusicThread extends FingerThread {
 
             renderFrame(monitor);
         }
-        Log.v(TAG, "done");
+//        Log.v(TAG, "done");
 
         monitor.setFinishing(false);
         monitor.getParticleCanvas().removeFinger();
