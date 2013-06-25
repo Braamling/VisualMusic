@@ -1,7 +1,5 @@
 package nl.uva.multimedia.visualmusic;
 
-import android.util.Log;
-
 /**
  * Created by klaplong on 6/20/13.
  */
@@ -13,16 +11,17 @@ public class VisualMusicThread extends FingerThread {
     private int i = 0;
     private PlayTone mPlayTone = new PlayTone();
 
-    // this line below is temporary, it shouldn't be static, I'll fix that later
+    // TODO this line below is temporary, it shouldn't be static, I'll fix that later
     public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
 
     public static final int N_PARTICLE_GROUPS   = 50; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 6;  /* Number of unique particles in a single group */
-//  private static final int PARTICLE_AMOUNT    = 50; /* Same as N_PARTICLE_GROUPS ? */
     private static int particleLifetime         = 30; /* Maximum life time of a single particle */
     private static int particleMaxSpeed         = 4;  /* Maximum speed of a single particle */
     private static int particleRadiusBase       = 0; /* Value should be set after screen dimensions are known */
     private static int particleRadius           = 0; /* Value of the radius based on the frequency */
+    public static final int N_KEYS = 48;
+    private static final int LOW_OCTAVE = 2;
 
     Particles[] particles = new Particles[N_PARTICLE_GROUPS];
 
@@ -41,7 +40,8 @@ public class VisualMusicThread extends FingerThread {
             return;
         }
 
-        VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
+        VisualMusicThreadMonitor monitor =
+                (VisualMusicThreadMonitor)this.monitor;
 
         /* Determine particle max radius. This cannot be done in the init() method
          * because the canvas size is not yet known at that time. */
@@ -73,8 +73,8 @@ public class VisualMusicThread extends FingerThread {
         fingerDirection = (newY > this.lastY) ? 0 : 1;
 
         try {
-            int key = this.getKey(), scale = 2;
-            if (key >= 12) {
+            int key = this.getKey(), scale = LOW_OCTAVE;
+            while (key >= 12) {
                 key -= 12;
                 scale ++;
             }
@@ -117,7 +117,6 @@ public class VisualMusicThread extends FingerThread {
 
         mPlayTone.stop();
 
-        int time = 0;
         while (true) {
             if (monitor.needsReboot()) {
                 monitor.setFinishing(false);
@@ -166,7 +165,7 @@ public class VisualMusicThread extends FingerThread {
             }
         }
         catch (IllegalMonitorStateException e) {
-
+            e.printStackTrace();
         }
 
         monitor.setParticles(this.particles);
@@ -176,7 +175,7 @@ public class VisualMusicThread extends FingerThread {
         float part;
         int key;
 
-        part = monitor.getWidth() / (int)(2 * ToneFrequency.N_KEYS);
+        part = monitor.getWidth() / N_KEYS;
         key = (int)(lastX / part);
 
         return key;
