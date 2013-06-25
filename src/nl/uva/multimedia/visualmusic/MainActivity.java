@@ -11,7 +11,7 @@ public class MainActivity extends MultitouchActivity {
 
     private static final String TAG = "MT";
 
-    public static final int N_FINGER_THREADS = 10;
+    public static final int N_FINGER_THREADS = 1;
 
     private RelativeLayout mRootLayout = null;
     private FingerHandler<VisualMusicThread, VisualMusicThreadMonitor> mFingerHandler = null;
