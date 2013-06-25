@@ -7,7 +7,7 @@ import android.view.SurfaceHolder;
  */
 public class FingerThreadMonitor {
     protected float x, y;
-    private int width, height;
+    protected int width, height;
     protected int fingerId;
 
     public FingerThreadMonitor() {

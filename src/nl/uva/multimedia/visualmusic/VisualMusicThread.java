@@ -16,12 +16,13 @@ public class VisualMusicThread extends FingerThread {
     // this line below is temporary, it shouldn't be static, I'll fix that later
     public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
 
-    public static final int N_PARTICLE_GROUPS = 50; /* Total number of particle-groups */
-    public static final int PARTICLE_GROUP_SIZE = 8; /* Number of unique particles in a single group */
-//    private static final int PARTICLE_AMOUNT = 50; /* Same as N_PARTICLE_GROUPS ? */
-    private static final int PARTICLE_LIFE_TIME = 50; /* Maximum life time of a single particle */
-    private static final int PARTICLE_MAX_SPEED = 3; /* Maximum speed of a single particle */
-    private static final int PARTICLE_RADIUS = 13; /* Maximum radius of a single particle */
+    public static final int N_PARTICLE_GROUPS   = 50; /* Total number of particle-groups */
+    public static final int PARTICLE_GROUP_SIZE = 6;  /* Number of unique particles in a single group */
+//  private static final int PARTICLE_AMOUNT    = 50; /* Same as N_PARTICLE_GROUPS ? */
+    private static final int PARTICLE_LIFE_TIME = 30; /* Maximum life time of a single particle */
+    private static final int PARTICLE_MAX_SPEED = 4;  /* Maximum speed of a single particle */
+//  private static final int PARTICLE_RADIUS    = 40; /* Maximum radius of a single particle */
+    private static int particleRadius = 0; /* Value should be set after screen dimensions are known */
 
     Particles[] particles = new Particles[N_PARTICLE_GROUPS];
 
@@ -46,6 +47,12 @@ public class VisualMusicThread extends FingerThread {
             return;
         }
 
+        /* Determine particle max radius. This cannot be done in the init() method
+         * because the canvas size is not yet known at that time. */
+        if (VisualMusicThread.particleRadius == 0)
+            VisualMusicThread.particleRadius = (monitor.getParticleCanvas().getHeight() > 0) ?
+                    (monitor.getParticleCanvas().getHeight() / 55) : 25;
+
         int newX = (int)monitor.getX();
         int newY = (int)monitor.getY();
 
@@ -58,8 +65,9 @@ public class VisualMusicThread extends FingerThread {
         if (Math.abs(newX - this.lastX) >= 0) {
             particles[this.i++ % N_PARTICLE_GROUPS] =
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-                    this.monitor.getY(), PARTICLE_RADIUS, PARTICLE_MAX_SPEED, PARTICLE_LIFE_TIME,
-                            begin_color, end_color);
+                    this.monitor.getY(), VisualMusicThread.particleRadius,
+                            PARTICLE_MAX_SPEED, PARTICLE_LIFE_TIME, begin_color,
+                            end_color);
             this.lastX = newX;
         }
 
