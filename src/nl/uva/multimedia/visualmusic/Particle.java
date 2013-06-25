@@ -109,7 +109,6 @@ public class Particle {
 	}
 
     public void draw(ParticleCanvas particleCanvas) {
-        //Log.v(TAG, "draw");
         particleCanvas.drawCircle(this.x_pos, this.y_pos, this.radius,
                 this.paint);
     }

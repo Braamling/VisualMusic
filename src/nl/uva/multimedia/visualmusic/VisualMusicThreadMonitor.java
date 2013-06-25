@@ -9,11 +9,9 @@ import android.util.Log;
 public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private static final String TAG = "VisualMusicThreadMonitor";
 
-//    private int fingerId;
-    private boolean draw;
     private ParticleCanvas particleCanvas;
-    private boolean finishing = false, reboot = false;
-    private Particles[] particles;
+    private boolean active = false, finishing = false, reboot = false;
+    private Particles[] particles = null;
 
     public VisualMusicThreadMonitor() {
         super();
@@ -33,34 +31,12 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         this.fingerId = fingerId;
     }
 
-//    public void setFingerId(int fingerId) {
-//        this.fingerId = fingerId;
-//    }
-
     public void setParticleCanvas(ParticleCanvas particleCanvas) {
         this.particleCanvas = particleCanvas;
     }
 
-//    public int getFingerId() {
-//        return this.fingerId;
-//    }
-
     public ParticleCanvas getParticleCanvas() {
         return this.particleCanvas;
-    }
-
-    public void setDraw(boolean draw){
-        // if (draw == false) {
-        //     StackTraceElement el =
-        //             Thread.currentThread().getStackTrace()[3];
-        //     Log.v(TAG, el.getFileName() + ": " + el.getLineNumber());
-        // }
-
-        this.draw = draw;
-    }
-
-    public boolean canDraw(){
-        return this.draw;
     }
 
     public void setFinishing(boolean finishing) {
@@ -79,16 +55,24 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         return this.reboot;
     }
 
-    public void initParticlesArray(int nParticleGroups){
-        this.particles = new Particles[nParticleGroups];
+    public void setParticles(Particles[] particles) {
+        this.particles = particles;
     }
 
-    public Particles getParticles(int index){
-        return this.particles[index];
+    public Particles[] getParticles() {
+        return this.particles;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return this.active;
     }
 
     public int getEndColor(){
-        switch(this.fingerId){
+        switch(this.fingerId) {
             case 0:
                 return Color.argb(255, 255, 0, 0);
             case 1:

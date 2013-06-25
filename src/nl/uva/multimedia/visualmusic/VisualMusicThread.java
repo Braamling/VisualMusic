@@ -30,7 +30,7 @@ public class VisualMusicThread extends FingerThread {
         super.init();
         // Init.
 
-        ((VisualMusicThreadMonitor)this.monitor).getParticleCanvas().addFinger();
+        ((VisualMusicThreadMonitor)this.monitor).setActive(true);
     }
 
     protected void update() {
@@ -42,10 +42,6 @@ public class VisualMusicThread extends FingerThread {
         }
 
         VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
-
-        if (!monitor.canDraw()) {
-            return;
-        }
 
         /* Determine particle max radius. This cannot be done in the init() method
          * because the canvas size is not yet known at that time. */
@@ -61,7 +57,7 @@ public class VisualMusicThread extends FingerThread {
 
         /* The 0 in this if statement can be changed to a higher setting if
          * it is decided that an unmoving finger should not generate particles,
-         * or that verticle movement is not allowed. */
+         * or that vertical movement is not allowed. */
         if (Math.abs(newX - this.lastX) >= 0) {
             particles[this.i++ % N_PARTICLE_GROUPS] =
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
@@ -75,13 +71,14 @@ public class VisualMusicThread extends FingerThread {
         fingerDirection = (newY > this.lastY) ? 0 : 1;
 
         try {
-            int key = this.getKey(), scale = 3;
+            int key = this.getKey(), scale = 2;
             if (key >= 12) {
                 key -= 12;
                 scale ++;
             }
             ToneFrequency newFrequency = ToneFrequency.fromKey(key, scale);
             freq = newFrequency.get();
+
             y_scale = monitor.getY() / (float)monitor.getHeight();
 
             mPlayTone.setFreq(freq, y_scale);
@@ -112,8 +109,6 @@ public class VisualMusicThread extends FingerThread {
                 return;
             }
 
-//            Log.v(TAG, "drw " + monitor.canDraw());
-
             stillAlive = false;
             for (int i = 0; i < this.particles.length; i ++) {
                 if (this.particles[i] == null)
@@ -128,10 +123,9 @@ public class VisualMusicThread extends FingerThread {
 
             renderFrame(monitor);
         }
-//        Log.v(TAG, "done");
 
         monitor.setFinishing(false);
-        monitor.getParticleCanvas().removeFinger();
+        monitor.setActive(false);
         super.finish();
     }
 
@@ -141,19 +135,7 @@ public class VisualMusicThread extends FingerThread {
         super.turnOff();
     }
 
-    private void reboot() {
-        VisualMusicThreadMonitor monitor =
-                (VisualMusicThreadMonitor)this.monitor;
-
-        monitor.setFinishing(false);
-        this.run();
-    }
-
     public void renderFrame(VisualMusicThreadMonitor monitor) {
-        if (!monitor.canDraw()) {
-            return;
-        }
-
         try {
             for (int i = 0; i < particles.length; i ++) {
                 if (particles[i] != null) {
@@ -163,30 +145,23 @@ public class VisualMusicThread extends FingerThread {
                     }
 
                     particles[i].update();
-                    try {
-                        particles[i].render(monitor.getParticleCanvas());
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 }
             }
-
-            monitor.setDraw(false);
-            monitor.getParticleCanvas().fingerBuffered();
         }
         catch (IllegalMonitorStateException e) {
 
         }
+
+        monitor.setParticles(this.particles);
     }
 
     private int getKey(){
         float part;
         int key;
 
-        part = monitor.getWidth() / (int)(1.5 * ToneFrequency.N_KEYS);
+        part = monitor.getWidth() / (int)(2 * ToneFrequency.N_KEYS);
         key = (int)(lastX / part);
 
-        return (int) key;
+        return key;
     }
 }
