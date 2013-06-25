@@ -27,9 +27,10 @@ public class MainActivity extends MultitouchActivity {
         setContentView(pCanvas);
 
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
-        this.mFingerHandler = new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
-                VisualMusicThread.class, VisualMusicThreadMonitor.class,
-                N_FINGER_THREADS);
+        this.mFingerHandler =
+                new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
+                        VisualMusicThread.class, VisualMusicThreadMonitor.class,
+                        N_FINGER_THREADS);
 
         this.pCanvas.setMonitors(this.mFingerHandler);
     }

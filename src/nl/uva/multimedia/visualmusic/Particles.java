@@ -1,9 +1,12 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class Particles {
+    private static final String TAG = "Particles";
+
 	protected Particle[] particles;
 	
 	protected float x_pos;

@@ -23,11 +23,20 @@ public class ParticleCanvas extends SurfaceView
     private Circle[] circleBuffer = new Circle[circleBufferSize + 1];
     private int circleBufferPointer = 0;
 
+    private Paint whitePaint = new Paint();
+    private Paint textPaint = new Paint();
+
     private VisualMusicThreadMonitor[] monitors =
             new VisualMusicThreadMonitor[max_fingers];
 
     public ParticleCanvas(Context context, MainActivity activity) {
         super(context);
+
+        this.whitePaint.setColor(Color.WHITE);
+        this.textPaint.setColor(Color.WHITE);
+        this.textPaint.setTextSize(10.0f);
+        this.textPaint.setTextAlign(Paint.Align.CENTER);
+
         this.activity = activity;
         getHolder().addCallback(this);
         setFocusable(true);
@@ -102,15 +111,19 @@ public class ParticleCanvas extends SurfaceView
     }
 
     private void drawKeys(Canvas canvas) {
+        int keys;
         float keyWidth;
 
-        keyWidth = this.getWidth() / 24;
-        Paint white;
-        white = new Paint();
-        white.setColor(Color.WHITE);
-        for (int i = 1; i < 24; i ++) {
-            canvas.drawLine(i * keyWidth, 0, i * keyWidth, this.getHeight(),
-                    white);
+        keys = VisualMusicThread.N_KEYS;
+        keyWidth = this.getWidth() / keys;
+
+        for (int i = 0; i <= keys; i ++) {
+            canvas.drawText(ToneFrequency.getToneName(i),
+                    i * keyWidth + 0.5f * keyWidth, 10.0f, this.textPaint);
+
+            if (i > 0)
+                canvas.drawLine(i * keyWidth, 0, i * keyWidth, this.getHeight(),
+                        this.whitePaint);
         }
     }
 

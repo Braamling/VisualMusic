@@ -63,7 +63,7 @@ public class PlayTone {
                 f = scale * Math.sin(t * 2 * Math.PI * freq);
                 f += (0.6 - scale) * 2 * (adt - (int)((1.0 / 2.0) + adt));
 
-                /* Boventonen. */
+                /* Overtones. */
                 f += 0.1 * Math.sin(t * 2 * Math.PI * 2 * freq);
                 f += 0.1 * Math.sin(t * 2 * Math.PI * 3 * freq);
                 f += 0.1 * Math.sin(t * 2 * Math.PI * 4 * freq);
