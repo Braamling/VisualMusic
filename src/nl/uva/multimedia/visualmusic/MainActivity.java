@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends MultitouchActivity {
 
-    private static final String TAG = "MT";
+    private static final String TAG = "MainActivity";
 
     public static final int N_FINGER_THREADS = 1;
 
@@ -87,14 +87,5 @@ public class MainActivity extends MultitouchActivity {
         catch (ImpossibleFingerException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setSurfaceHolder(SurfaceHolder holder){
-        this.surfaceHolder = holder;
-    }
-
-    public void setCanvas(Canvas canvas){
-        this.canvas = canvas;
-        this.surfaceHolder.unlockCanvasAndPost(canvas);
     }
 }

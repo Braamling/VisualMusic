@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -59,66 +58,64 @@ public class ParticleCanvas extends SurfaceView
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        //Paint paint = new Paint();
-        //paint.setColor(Color.GREEN);
-        //Canvas canvas =  holder.lockCanvas();
-        //this.activity.setSurfaceHolder(holder);
-        //this.activity.setCanvas(canvas);
-
         this.holder = holder;
+
+        new Thread(new Runnable() {
+            public void run() {
+                render();
+            }
+        }).start();
     }
 
-    public void addFinger() {
-        this.nFingers ++;
-        if (this.nFingers > this.max_fingers)
-            this.nFingers = this.max_fingers;
-
-        if (this.nFingers == 1)
-            this.startBuffering();
-    }
-
-    public void removeFinger() {
-        this.nFingers --;
-
-        // StackTraceElement el =
-        //         Thread.currentThread().getStackTrace()[3];
-        // Log.v(TAG, el.getFileName() + ": " + el.getLineNumber());
-    }
-
-    public void fingerBuffered() {
-        this.cFingers --;
-
-        if (this.cFingers == 0) {
-            this.drawBuffer();
-            this.startBuffering();
-        }
-    }
-
-    private void startBuffering() {
-        if (this.nFingers == 0)
+    public void render() {
+        if (this.holder == null)
             return;
 
-        this.cFingers = this.nFingers;
-        for (int i = 0; i < max_fingers; i ++) {
-            this.monitors[i].setDraw(true);
+        while (true) {
+            Canvas canvas;
+
+            this.gatherParticles();
+
+            canvas = this.holder.lockCanvas();
+            canvas.drawColor(Color.BLACK);
+
+            this.drawKeys(canvas);
+            this.drawParticles(canvas);
         }
     }
 
-    private void drawBuffer() {
-        Canvas canvas = this.holder.lockCanvas();
-        canvas.drawColor(Color.BLACK);
+    private void gatherParticles() {
+        for (int i = 0; i < this.max_fingers; i ++) {
+            VisualMusicThreadMonitor monitor;
 
-        /* Draw keys. */
+            monitor = this.monitors[i];
+
+            if ((!monitor.isActive()) ||
+                    (monitor.getParticles() == null))
+                continue;
+
+            for (Particles particles : monitor.getParticles()) {
+                if (particles != null)
+                    particles.render(this);
+            }
+        }
+    }
+
+    private void drawKeys(Canvas canvas) {
         float keyWidth;
-        keyWidth = this.getWidth() / 18;
+
+        keyWidth = this.getWidth() / 24;
         Paint white;
         white = new Paint();
         white.setColor(Color.WHITE);
-        for (int i = 1; i < 18; i ++) {
+        for (int i = 1; i < 24; i ++) {
             canvas.drawLine(i * keyWidth, 0, i * keyWidth, this.getHeight(),
                     white);
         }
+    }
 
+    private void drawParticles(Canvas canvas) {
+        /* Draw particles. */
         for (; this.circleBufferPointer > 0; this.circleBufferPointer --) {
             Circle c = this.circleBuffer[this.circleBufferPointer - 1];
 
@@ -137,11 +134,6 @@ public class ParticleCanvas extends SurfaceView
     public void drawCircle(float cx, float cy, float radius, Paint paint) {
         this.circleBuffer[(this.circleBufferPointer ++) %
                 circleBufferSize] = new Circle(cx, cy, radius, paint);
-    }
-
-    public void flushBuffer() {
-        for (; this.circleBufferPointer > 0; this.circleBufferPointer --)
-            this.circleBuffer[this.circleBufferPointer - 1] = null;
     }
 }
 
