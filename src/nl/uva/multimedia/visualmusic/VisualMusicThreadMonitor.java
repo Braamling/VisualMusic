@@ -105,7 +105,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
             case 8:
                 return Color.argb(255, 150, 89, 0);
             case 9:
-                return Color.argb(255, 255, 255, 0);
+                return Color.argb(255, 255, 0, 0);
             default:
                 return Color.argb(255, 0, 0, 0);
         }
@@ -132,7 +132,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
             case 8:
                 return Color.argb(255, 232, 217, 0); /* Kind of yellow */
             case 9:
-                return Color.argb(255, 255, 0, 0);
+                return Color.argb(255,40, 40, 40);
             default:
                 return Color.argb(255, 0, 255, 0);
         }
