@@ -1,5 +1,6 @@
 package nl.uva.multimedia.visualmusic;
 
+import android.app.ActivityManager;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -18,13 +19,17 @@ public class VisualMusicThread extends FingerThread {
     public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
 
     public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
-    public static final int N_PARTICLE_GROUPS   = 200; /* Total number of particle-groups */
-    public static final int PARTICLE_GROUP_SIZE = 6;  /* Number of unique particles in a single group */
+    public static final int N_PARTICLE_GROUPS   = 400; /* Total number of particle-groups */
+    public static final int PARTICLE_GROUP_SIZE = 3;  /* Number of unique particles in a single group */
 
     private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
     private static int particleLifetime         = 300; /* Maximum life time of a single particle */
     private static int particleRadiusBase       = 0; /* Value should be set after screen dimensions are known */
     private static int particleRadius           = 0; /* Value of the radius based on the frequency */
+
+    private boolean new_touch = true;
+
+
 
     public static final int N_KEYS = 48;
 
@@ -39,6 +44,9 @@ public class VisualMusicThread extends FingerThread {
         // Init.
         this.last_render_time = SystemClock.currentThreadTimeMillis();
         ((VisualMusicThreadMonitor)this.monitor).setActive(true);
+
+        ((VisualMusicThreadMonitor)this.monitor).pick_color_scheme();
+
     }
 
     protected void update() {
@@ -51,6 +59,12 @@ public class VisualMusicThread extends FingerThread {
 
         VisualMusicThreadMonitor monitor =
                 (VisualMusicThreadMonitor)this.monitor;
+
+        /* Check whether this is a touchdown to change the color scheme */
+        if(new_touch){
+            monitor.pick_color_scheme();
+            new_touch = false;
+        }
 
         /* Determine particle max radius. This cannot be done in the init() method
          * because the canvas size is not yet known at that time. */
@@ -66,8 +80,6 @@ public class VisualMusicThread extends FingerThread {
         /* Update the look of the upcoming particles based on the frequency */
         setParticleParameters(monitor.getWidth(), monitor.getX());
 
-        int begin_color = monitor.getBeginColor();
-        int end_color = monitor.getEndColor();
 
         /* The 0 in this if statement can be changed to a higher setting if
          * it is decided that an unmoving finger should not generate particles,
@@ -76,8 +88,8 @@ public class VisualMusicThread extends FingerThread {
             particles[this.i++ % N_PARTICLE_GROUPS] =
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
                     this.monitor.getY(), VisualMusicThread.particleRadius,
-                            particleMaxSpeed, particleLifetime, begin_color,
-                            end_color);
+                            particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
+                            monitor.getEndColor());
             this.lastX = newX;
         }
 
@@ -119,6 +131,9 @@ public class VisualMusicThread extends FingerThread {
 
 
     protected void finish() {
+
+        new_touch = true;
+
         VisualMusicThreadMonitor monitor =
                 (VisualMusicThreadMonitor)this.monitor;
         boolean stillAlive;
@@ -193,4 +208,5 @@ public class VisualMusicThread extends FingerThread {
 
         return key;
     }
+
 }
