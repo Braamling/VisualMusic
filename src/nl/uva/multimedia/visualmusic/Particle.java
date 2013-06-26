@@ -84,10 +84,12 @@ public class Particle {
 			this.y_pos = (float)(this.rot_y_offset + 
 					(this.rot_dir * this.rot_radius * Math.sin(Math.toRadians(degrees))));
 
-			/* Change the radius and color */
-			this.radius = this.radius_start - (int)(this.radius_start * ratio);
+
+            /* Change the radius and color */
+            this.radius = this.radius_start - (int)(this.radius_start * ratio);
             //nextColor(ratio);
-			this.paint.setColor(nextColor(ratio));
+            this.paint.setColor(nextColor(ratio));
+
 		} else {
 			this.paint.setColor(Color.alpha(0));
 		}
@@ -96,6 +98,11 @@ public class Particle {
 	}
 
     public int nextColor(float ratio){
+        if(ratio < 0.5F){
+            ratio = (ratio * 2);
+        }else{
+            ratio = 1.0F;
+        }
         int red = (int) (Color.red(this.begin_color) * ratio + Color.red(this.end_color) * (1 - ratio));
         int green = (int) (Color.green(this.begin_color) * ratio + (Color.green(this.end_color) * (1 - ratio)));
         int blue = (int) (Color.blue(this.begin_color) * ratio + (Color.blue(this.end_color)  * (1 - ratio)));
