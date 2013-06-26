@@ -77,7 +77,7 @@ public class VisualMusicThread extends FingerThread {
         int newX = (int)monitor.getX();
         int newY = (int)monitor.getY();
 
-        /* Update the look of the upcoming particles based on the frequency */
+        /* Update the look of the upcoming particles based on the x position */
         setParticleParameters(monitor.getWidth(), monitor.getX());
 
 
@@ -119,9 +119,8 @@ public class VisualMusicThread extends FingerThread {
     }
 
     protected void setParticleParameters (int width, float x) {
-
         float div = 1 - (x / width); /* Between 0 and 1, indicator of how far
-                                * on the screen the finger is (on x-axis) */
+                                      * on the screen the finger is (on x-axis) */
         float ftr = (float) (div + 0.75); /* Between 0.75 and 1.75 */
 
         VisualMusicThread.particleMaxSpeed = (float)(1 + (9 * div)); /* High frequency = high speed */
