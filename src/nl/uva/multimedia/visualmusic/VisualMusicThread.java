@@ -77,7 +77,7 @@ public class VisualMusicThread extends FingerThread {
          * because the canvas size is not yet known at that time. */
         if (VisualMusicThread.particleRadiusBase == 0) {
             VisualMusicThread.particleRadiusBase = (monitor.getParticleCanvas().getHeight() > 0) ?
-                    (monitor.getParticleCanvas().getHeight() / 50) : 27;
+                    (monitor.getParticleCanvas().getHeight() / 100) : 27;
             VisualMusicThread.particleRadius = VisualMusicThread.particleRadiusBase;        
         }
 
@@ -182,6 +182,9 @@ public class VisualMusicThread extends FingerThread {
         super.turnOff();
     }
 
+    /* Render a single frame, only continues if enough time has elapsed. This time can be found
+     * in FRAME_REFRESH_TIME.
+     */
     public void renderFrame(VisualMusicThreadMonitor monitor) {
         if(SystemClock.currentThreadTimeMillis() - last_render_time > this.FRAME_REFRESH_TIME){
             last_render_time = SystemClock.currentThreadTimeMillis();
