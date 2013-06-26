@@ -120,9 +120,7 @@ public class VisualMusicThread extends FingerThread {
             e.printStackTrace();
         }
 
-
         renderFrame(monitor);
-
     }
 
     protected void setParticleParameters (int width, float x) {
@@ -146,7 +144,8 @@ public class VisualMusicThread extends FingerThread {
 
         monitor.setFinishing(true);
 
-        mPlayTone.stop();
+        this.startTime = SystemClock.currentThreadTimeMillis();
+        mPlayTone.startRelease();
 
         while (true) {
             if (monitor.needsReboot()) {
@@ -156,21 +155,33 @@ public class VisualMusicThread extends FingerThread {
                 return;
             }
 
+
             stillAlive = false;
             for (int i = 0; i < this.particles.length; i ++) {
-                if (this.particles[i] == null)
+                if (this.particles[i] == null) {
                     continue;
+                }
                 if (!this.particles[i].isDead()) {
                     stillAlive = true;
                     break;
                 }
             }
-            if (!stillAlive)
+
+            if (this.mPlayTone.isReleasing()) {
+                this.mPlayTone.setTime(SystemClock.currentThreadTimeMillis() -
+                        this.startTime);
+                this.mPlayTone.sample();
+                stillAlive = true;
+            }
+
+            if (!stillAlive) {
                 break;
+            }
 
             renderFrame(monitor);
         }
 
+        this.mPlayTone.stop();
         monitor.setFinishing(false);
         monitor.setActive(false);
         super.finish();

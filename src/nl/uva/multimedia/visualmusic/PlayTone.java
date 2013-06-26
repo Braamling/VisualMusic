@@ -17,15 +17,19 @@ public class PlayTone {
     private final int sampleRate = 44100;
     private final int bufferSize = sampleRate / 50;
 
-    private final int attack = 1000;
-    private final int decay = 1000;
-    private final float sustain = 0.7f;
-    private final int release = 200;
+    private final int attack = 100;
+    private final int decay = 200;
+    private final float sustain = 0.4f;
+    private final int release = 20;
+
+    private final int overtones = 8;
 
     private AudioTrack mAudio;
     private int sampleCount = bufferSize;
     private PresetReverb effect = null;
+    private float freq;
     private long time;
+    private boolean releasing;
 
     public PlayTone() {
         mAudio = new AudioTrack(
@@ -59,13 +63,24 @@ public class PlayTone {
         mAudio.write(new byte[this.bufferSize], 0, this.bufferSize);
     }
 
+    public void sample() {
+        this.setFreq(this.freq, 0);
+    }
+
     public void setFreq(float freq, float scale) {
-        // scale *= 0.6;
-        float amplitude;
+        float amplitude = 0.0f;
 
-        Log.v(TAG, "tim " + this.time);
+        this.freq = freq;
 
-        if (this.time < this.attack) {
+        if (this.releasing) {
+            if (this.time >= this.release) {
+                this.stop();
+                this.releasing = false;
+            }
+            else
+                amplitude = this.sustain - (this.sustain / this.release) * this.time;
+        }
+        else if (this.time < this.attack) {
             amplitude = (1.0f / this.attack) * this.time;
         }
         else if (this.time < (this.attack + this.decay)) {
@@ -85,21 +100,21 @@ public class PlayTone {
             for( int i = 0; i < this.sampleCount; i ++) {
                 double a, t, adt, f;
 
-                // a = 1.0 / freq;
+                a = 1.0 / freq;
                 t = (double)i * (1.0 / sampleRate);
-                // adt = t / a;
+                adt = t / a;
 
                 /* The waves. */
-                // f = scale * Math.sin(t * 2 * Math.PI * freq);
-//                f += (0.6 - scale) * 2 * (adt - (int)((1.0 / 2.0) + adt));
-                f = 0.6 * Math.sin(t * 2 * Math.PI * freq);
+                double fPart = 1.0 - 0.1 * this.overtones;
+                f = 0.5 * fPart * Math.sin(t * 2 * Math.PI * freq);
+                f += fPart * (adt - (int)(0.5 + adt));
 
                 /* Overtones. */
-                f += 0.1 * Math.sin(t * 2 * Math.PI * 2 * freq);
-                f += 0.1 * Math.sin(t * 2 * Math.PI * 3 * freq);
-                f += 0.1 * Math.sin(t * 2 * Math.PI * 4 * freq);
-                f += 0.1 * Math.sin(t * 2 * Math.PI * 5 * freq);
-
+                for (int j = 0; j < this.overtones; j ++) {
+                    adt = t / (1.0 / (freq * (j + 2)));
+                    f += 0.05 * Math.sin(t * 2 * Math.PI * (j + 2) * freq);
+                    f += 0.1 * (adt - (int)(0.5 + adt));
+                }
 
                 samples[i] = (byte)(f * 127 * amplitude);
             }
@@ -116,5 +131,13 @@ public class PlayTone {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public void startRelease() {
+        this.releasing = true;
+    }
+
+    public boolean isReleasing() {
+        return this.releasing;
     }
 }
