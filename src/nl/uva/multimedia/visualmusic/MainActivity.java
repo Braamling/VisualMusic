@@ -1,9 +1,16 @@
 package nl.uva.multimedia.visualmusic;
 
-import android.graphics.Canvas;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.graphics.Canvas;
+import android.database.Cursor;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.provider.MediaStore;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.widget.RelativeLayout;
 
@@ -18,6 +25,7 @@ public class MainActivity extends MultitouchActivity {
     private ParticleCanvas pCanvas;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
+    private String path = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +45,71 @@ public class MainActivity extends MultitouchActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        MenuInflater inflater;
+        MenuItem     select_sample;
+        
+        inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        select_sample = menu.findItem(R.id.select_sample);  
+
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.select_sample:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("audio/x-wav");
+                Intent chooser = Intent.createChooser(intent, "Select soundfile");
+                startActivityForResult(chooser,1);
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    protected void onActivityResult(int request_code, int result_code, Intent data) {
+        super.onActivityResult(request_code, result_code, data);
+        switch(request_code){
+            case 1: //this is a constant, in your case I think it should be '1'
+                Uri uri = data.getData();
+                String path;
+                if ("content".equalsIgnoreCase(uri.getScheme())) {
+                    /*
+                     * Source:
+                     * http://www.androidsnippets.com/get-file-path-of-gallery-image
+                     */
+                    String[] proj = { MediaStore.Images.Media.DATA };
+                    Cursor cursor = managedQuery(uri, proj, // Which columns to
+                                                            // return
+                            null, // WHERE clause; which rows to return (all rows)
+                            null, // WHERE clause selection arguments (none)
+                            null); // Order-by clause (ascending by name)
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cursor.moveToFirst();
+
+                    path = cursor.getString(column_index);
+                } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                    path = uri.getPath();
+                } else {
+                    Log.e("MainActivity", "Something went wrong..");
+                    this.path = null;
+                    return;
+                }
+
+                /* Check that the file is a WAVE-file and not an mp3-file */
+                if (!WaveFile.isWaveFile(path)) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this)
+                            .create();
+                    alertDialog.setTitle("Invalid file-type");
+                    alertDialog.setMessage("The selected file is not a valid wave file.");
+                    alertDialog.show();
+                    this.path = null;
+                } else {
+                    this.path = path;
+                }
+            return;
+        }
     }
 
     @Override
