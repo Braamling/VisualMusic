@@ -26,7 +26,7 @@ public class VisualMusicThread extends FingerThread {
     private static int particleRadiusBase       = 0; /* Value should be set after screen dimensions are known */
     private static int particleRadius           = 0; /* Value of the radius based on the frequency */
 
-    public static final int N_KEYS = 48;
+    public static final int N_KEYS = 36;
 
     private static final int LOW_OCTAVE = 2;
 

@@ -3,6 +3,9 @@ package nl.uva.multimedia.visualmusic;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.media.audiofx.AudioEffect;
+import android.media.audiofx.EnvironmentalReverb;
+import android.media.audiofx.PresetReverb;
 import android.util.Log;
 
 /**
@@ -16,6 +19,7 @@ public class PlayTone {
 
     private AudioTrack mAudio;
     private int sampleCount = bufferSize;
+    private PresetReverb effect = null;
 
     public PlayTone() {
         mAudio = new AudioTrack(
@@ -26,6 +30,12 @@ public class PlayTone {
                 bufferSize,
                 AudioTrack.MODE_STATIC
         );
+        this.stop();
+//        effect = new PresetReverb(0, mAudio.getAudioSessionId());
+//        effect.setPreset(PresetReverb.PRESET_LARGEHALL);
+//        effect.setEnabled(true);
+//        mAudio.attachAuxEffect(effect.getId());
+//        mAudio.setAuxEffectSendLevel(1.0f);
     }
 
     public void play() {
