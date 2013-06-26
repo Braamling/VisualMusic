@@ -18,7 +18,7 @@ public class PlayTone {
     private final int bufferSize = sampleRate / 50;
 
     private final int attack = 100;
-    private final int decay = 200;
+    private final int decay = 50;
     private final float sustain = 0.4f;
     private final int release = 20;
 
@@ -106,14 +106,14 @@ public class PlayTone {
 
                 /* The waves. */
                 double fPart = 1.0 - 0.1 * this.overtones;
-                f = 0.5 * fPart * Math.sin(t * 2 * Math.PI * freq);
-                f += fPart * (adt - (int)(0.5 + adt));
+                f = 0.8 * fPart * Math.sin(t * 2 * Math.PI * freq);
+                f += 0.2 * fPart * (adt - (int)(0.5 + adt));
 
                 /* Overtones. */
                 for (int j = 0; j < this.overtones; j ++) {
                     adt = t / (1.0 / (freq * (j + 2)));
-                    f += 0.05 * Math.sin(t * 2 * Math.PI * (j + 2) * freq);
-                    f += 0.1 * (adt - (int)(0.5 + adt));
+                    f += 0.08 * Math.sin(t * 2 * Math.PI * (j + 2) * freq);
+                    f += 0.04 * (adt - (int)(0.5 + adt));
                 }
 
                 samples[i] = (byte)(f * 127 * amplitude);

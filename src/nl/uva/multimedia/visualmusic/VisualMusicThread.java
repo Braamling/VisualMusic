@@ -30,8 +30,8 @@ public class VisualMusicThread extends FingerThread {
     public static final int N_PARTICLE_GROUPS   = 300; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
     public static final int N_KEYS = 24;
-
     private static final int LOW_OCTAVE = 2;
+
     private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
     private static int particleLifetime         = 300; /* Maximum life time of a single particle */
     private static int particleRadiusBase       = 0; /* Value should be set after screen dimensions are known */
@@ -87,12 +87,11 @@ public class VisualMusicThread extends FingerThread {
         /* Update the look of the upcoming particles based on the x position */
         setParticleParameters(monitor.getWidth(), monitor.getX());
 
-
         /* The 0 in this if statement can be changed to a higher setting if
          * it is decided that an unmoving finger should not generate particles,
          * or that vertical movement is not allowed. */
         if (Math.abs(newX - this.lastX) >= 0) {
-            particles[this.i++ % N_PARTICLE_GROUPS] =
+            particles[this.i ++ % N_PARTICLE_GROUPS] =
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
                     this.monitor.getY(), VisualMusicThread.particleRadius,
                             particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
@@ -109,7 +108,7 @@ public class VisualMusicThread extends FingerThread {
                 key -= 12;
                 scale ++;
             }
-            if(monitor.getY() > monitor.getHeight() / 2){
+            if (monitor.getY() < (monitor.getHeight() / 2)) {
                 scale += (N_KEYS / 12);
             }
             ToneFrequency newFrequency = ToneFrequency.fromKey(key, scale);
@@ -131,7 +130,7 @@ public class VisualMusicThread extends FingerThread {
                                       * on the screen the finger is (on x-axis) */
         float ftr = (float) (div + 0.75); /* Between 0.75 and 1.75 */
 
-        VisualMusicThread.particleMaxSpeed = (float)(1 + (9 * div)); /* High frequency = high speed */
+        VisualMusicThread.particleMaxSpeed = (1 + (9 * div)); /* High frequency = high speed */
         VisualMusicThread.particleLifetime = Math.round(50 + (50 * div)); /* High frequency = long lifetime */
         VisualMusicThread.particleRadius   = Math.round(VisualMusicThread.particleRadiusBase * ftr);
     }
