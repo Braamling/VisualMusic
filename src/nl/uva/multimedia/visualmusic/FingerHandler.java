@@ -12,7 +12,12 @@ public class FingerHandler<T extends FingerThread, M extends FingerThreadMonitor
     private int maxFingers;
     private T[] fingerThreads;
 
+    private Class c, m;
+
     public FingerHandler(Class c, Class m, int maxFingers) {
+
+        this.c = c;
+        this.m = m;
 
         this.maxFingers = maxFingers;
 
@@ -26,12 +31,33 @@ public class FingerHandler<T extends FingerThread, M extends FingerThreadMonitor
                 monitor = M.createInstance(m);
                 this.fingerThreads[i].assignMonitor(monitor);
                 monitor.setFingerId(i);
-
-                this.fingerThreads[i].start();
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void init() {
+        for (int i = 0; i < maxFingers; i ++) {
+            M monitor;
+
+            try {
+                this.fingerThreads[i] = T.createInstance(this.c);
+
+                monitor = M.createInstance(this.m);
+                this.fingerThreads[i].assignMonitor(monitor);
+                monitor.setFingerId(i);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void start() {
+        for (int i = 0; i < this.maxFingers; i ++) {
+            this.fingerThreads[i].start();
         }
     }
 
@@ -75,5 +101,20 @@ public class FingerHandler<T extends FingerThread, M extends FingerThreadMonitor
 
     public int getMaxFingers() {
         return this.maxFingers;
+    }
+
+    public void kill() {
+        for (int i = 0; i < this.maxFingers; i ++) {
+            this.fingerThreads[i].turnOff();
+
+            try {
+                this.fingerThreads[i].join();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            this.fingerThreads[i] = null;
+        }
     }
 }

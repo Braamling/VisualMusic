@@ -39,8 +39,6 @@ public class MainActivity extends MultitouchActivity {
                 new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
                         VisualMusicThread.class, VisualMusicThreadMonitor.class,
                         N_FINGER_THREADS);
-
-        this.pCanvas.setMonitors(this.mFingerHandler);
     }
 
     @Override
@@ -160,5 +158,23 @@ public class MainActivity extends MultitouchActivity {
         catch (ImpossibleFingerException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        this.mFingerHandler.init();
+        this.pCanvas.setMonitors(this.mFingerHandler);
+        this.mFingerHandler.start();
+
+        this.pCanvas.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        this.mFingerHandler.kill();
     }
 }
