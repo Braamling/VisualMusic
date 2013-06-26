@@ -14,28 +14,29 @@ public class VisualMusicThread extends FingerThread {
     private int lastY = -1;
     private int i = 0;
     private PlayTone mPlayTone = new PlayTone();
+    private long last_render_time;
+    private boolean new_touch = true;
+
+    private long startTime;
 
     // TODO this line below is temporary, it shouldn't be static, I'll fix that later
     public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
 
     public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
-
     /* Depending on the amount of touch move events handled in a x amount of time there should be
      * more particles per group and less groups. When the refresh rate is really high the particles
      * group size can even be 1.
      */
     public static final int N_PARTICLE_GROUPS   = 300; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
+    public static final int N_KEYS = 48;
 
+    private static final int LOW_OCTAVE = 2;
     private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
     private static int particleLifetime         = 300; /* Maximum life time of a single particle */
     private static int particleRadiusBase       = 0; /* Value should be set after screen dimensions are known */
-    private static int particleRadius           = 0; /* Value of the radius based on the frequency */
 
-    private boolean new_touch = true;
-    public static final int N_KEYS = 36;
-    private static final int LOW_OCTAVE = 2;
-    private long last_render_time;
+    private static int particleRadius           = 0; /* Value of the radius based on the frequency */
 
     Particles[] particles = new Particles[N_PARTICLE_GROUPS];
 
@@ -43,6 +44,9 @@ public class VisualMusicThread extends FingerThread {
         super.init();
         // Init.
         this.last_render_time = SystemClock.currentThreadTimeMillis();
+        this.startTime = this.last_render_time;
+        this.mPlayTone.setTime(0);
+
         ((VisualMusicThreadMonitor)this.monitor).setActive(true);
 
         ((VisualMusicThreadMonitor)this.monitor).pick_color_scheme();
@@ -59,6 +63,9 @@ public class VisualMusicThread extends FingerThread {
 
         VisualMusicThreadMonitor monitor =
                 (VisualMusicThreadMonitor)this.monitor;
+
+        this.mPlayTone.setTime(SystemClock.currentThreadTimeMillis() -
+                this.startTime);
 
         /* Check whether this is a touchdown to change the color scheme */
         if(new_touch){
