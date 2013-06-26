@@ -18,7 +18,7 @@ public class MainActivity extends MultitouchActivity {
 
     private static final String TAG = "MainActivity";
 
-    public static final int N_FINGER_THREADS = 2;
+    public static final int N_FINGER_THREADS = 3;
 
     private RelativeLayout mRootLayout = null;
     private FingerHandler<VisualMusicThread, VisualMusicThreadMonitor> mFingerHandler = null;
@@ -98,16 +98,16 @@ public class MainActivity extends MultitouchActivity {
                 }
 
                 /* Check that the file is a WAVE-file and not an mp3-file */
-                if (!WaveFile.isWaveFile(path)) {
+                //if (!WaveFile.isWaveFile(path)) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this)
                             .create();
                     alertDialog.setTitle("Invalid file-type");
                     alertDialog.setMessage("The selected file is not a valid wave file.");
                     alertDialog.show();
                     this.path = null;
-                } else {
-                    this.path = path;
-                }
+                //} else {
+                //    this.path = path;
+                //}
             return;
         }
     }

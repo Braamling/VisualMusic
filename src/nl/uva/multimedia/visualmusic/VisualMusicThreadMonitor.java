@@ -74,13 +74,13 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     public int getEndColor(){
         switch(this.fingerId) {
             case 0:
-                return Color.argb(255, 255, 0, 0);
+                return Color.argb(255, 255, 52, 0); /* Dark orange */
             case 1:
-                return Color.argb(255, 0, 255, 0);
+                return Color.argb(255, 0, 94, 255); /* Medium blue */
             case 2:
-                return Color.argb(255, 0, 0, 255);
+                return Color.argb(255, 100, 227, 18); /* Green with blue tint */
             case 3:
-                return Color.argb(255, 255, 255, 0);
+                return Color.argb(255, 232, 232, 232); /* Almost white */
             case 4:
                 return Color.argb(255, 0, 255, 255);
             case 5:
@@ -94,20 +94,20 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
             case 9:
                 return Color.argb(255, 255, 255, 0);
             default:
-                return Color.argb(255, 255, 0, 0);
+                return Color.argb(255, 0, 0, 0);
         }
     }
 
     public int getBeginColor(){
         switch(this.fingerId){
             case 0:
-                return Color.argb(255, 0, 255, 0);
+                return Color.argb(255, 255, 255, 0); /* Yellow */
             case 1:
-                return Color.argb(255, 0, 0, 255);
+                return Color.argb(255, 0, 185, 235); /* Nearing aqua */
             case 2:
-                return Color.argb(255, 255, 255, 0);
+                return Color.argb(255, 183, 255, 0); /* Pretty bright green */
             case 3:
-                return Color.argb(255, 0, 255, 255);
+                return Color.argb(255, 142, 145, 148); /* Gray (with slight blue) */
             case 4:
                 return Color.argb(255, 255, 0, 255);
             case 5:
