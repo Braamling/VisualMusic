@@ -18,14 +18,14 @@ public class MainActivity extends MultitouchActivity {
 
     private static final String TAG = "MainActivity";
 
-    public static final int N_FINGER_THREADS = 10;
+    public static final int N_FINGER_THREADS = 2;
 
     private RelativeLayout mRootLayout = null;
     private FingerHandler<VisualMusicThread, VisualMusicThreadMonitor> mFingerHandler = null;
     private ParticleCanvas pCanvas;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
-    private String path = null;
+    private WaveFile sample = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +91,6 @@ public class MainActivity extends MultitouchActivity {
                     path = uri.getPath();
                 } else {
                     Log.e("MainActivity", "Something went wrong..");
-                    this.path = null;
                     return;
                 }
 
@@ -102,9 +101,8 @@ public class MainActivity extends MultitouchActivity {
                     alertDialog.setTitle("Invalid file-type");
                     alertDialog.setMessage("The selected file is not a valid wave file.");
                     alertDialog.show();
-                    this.path = null;
                 } else {
-                    this.path = path;
+                    sample = new WaveFile(path);
                 }
             return;
         }
