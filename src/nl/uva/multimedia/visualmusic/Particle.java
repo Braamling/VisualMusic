@@ -83,12 +83,11 @@ public class Particle {
 					(this.rot_dir * this.rot_radius * Math.cos(Math.toRadians(degrees))));
 			this.y_pos = (float)(this.rot_y_offset + 
 					(this.rot_dir * this.rot_radius * Math.sin(Math.toRadians(degrees))));
-		}
 
-		/* Change the radius and color */
-		this.radius = this.radius_start - (int)(this.radius_start * ratio);
-        //nextColor(ratio);
-		this.paint.setColor(nextColor(ratio));
+			/* Change the radius and color */
+			this.radius = this.radius_start - (int)(this.radius_start * ratio);
+            //nextColor(ratio);
+			this.paint.setColor(nextColor(ratio));
 		} else {
 			this.paint.setColor(Color.alpha(0));
 		}
