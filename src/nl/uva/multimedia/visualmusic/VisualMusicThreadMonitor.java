@@ -78,7 +78,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public void pick_color_scheme(){
         Random r = new Random();
-        int id = (r.nextInt(4) +0);
+        int id = (r.nextInt(9) +0);
 
         this.begin_color    = createBeginColor(id);
         this.end_color      = createEndColor(id);
@@ -118,7 +118,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
             case 1:
                 return Color.argb(255, 0, 201, 255); /* Nearing aqua */
             case 2:
-                return Color.argb(255, 0, 204, 41); /* Light green-ish */
+                return Color.argb(255, 193, 222, 31); /* Light yellow */
             case 3:
                 return Color.argb(255, 142, 145, 148); /* Gray (with slight blue) */
             case 4:
