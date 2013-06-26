@@ -19,8 +19,13 @@ public class VisualMusicThread extends FingerThread {
     public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
 
     public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
-    public static final int N_PARTICLE_GROUPS   = 400; /* Total number of particle-groups */
-    public static final int PARTICLE_GROUP_SIZE = 3;  /* Number of unique particles in a single group */
+
+    /* Depending on the amount of touch move events handled in a x amount of time there should be
+     * more particles per group and less groups. When the refresh rate is really high the particles
+     * group size can even be 1.
+     */
+    public static final int N_PARTICLE_GROUPS   = 300; /* Total number of particle-groups */
+    public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
 
     private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
     private static int particleLifetime         = 300; /* Maximum life time of a single particle */
