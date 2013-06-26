@@ -78,7 +78,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public void pick_color_scheme(){
         Random r = new Random();
-        int id = (r.nextInt(4) +0);
+        int id = (r.nextInt(9) +0);
 
         this.begin_color    = createBeginColor(id);
         this.end_color      = createEndColor(id);
