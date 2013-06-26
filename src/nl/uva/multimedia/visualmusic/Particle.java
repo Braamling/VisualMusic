@@ -98,9 +98,9 @@ public class Particle {
 
     public int nextColor(float ratio){
         if(ratio < 0.5F){
-            ratio = (ratio / 2);
+            ratio = (ratio * 2);
         }else{
-            ratio = 0.5F;
+            ratio = 1.0F;
         }
         int red = (int) (Color.red(this.begin_color) * ratio + Color.red(this.end_color) * (1 - ratio));
         int green = (int) (Color.green(this.begin_color) * ratio + (Color.green(this.end_color) * (1 - ratio)));
