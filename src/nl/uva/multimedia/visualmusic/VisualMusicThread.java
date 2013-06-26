@@ -176,6 +176,9 @@ public class VisualMusicThread extends FingerThread {
         super.turnOff();
     }
 
+    /* Render a single frame, only continues if enough time has elapsed. This time can be found
+     * in FRAME_REFRESH_TIME.
+     */
     public void renderFrame(VisualMusicThreadMonitor monitor) {
         if(SystemClock.currentThreadTimeMillis() - last_render_time > this.FRAME_REFRESH_TIME){
             last_render_time = SystemClock.currentThreadTimeMillis();
