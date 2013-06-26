@@ -70,7 +70,7 @@ public class VisualMusicThread extends FingerThread {
          * because the canvas size is not yet known at that time. */
         if (VisualMusicThread.particleRadiusBase == 0) {
             VisualMusicThread.particleRadiusBase = (monitor.getParticleCanvas().getHeight() > 0) ?
-                    (monitor.getParticleCanvas().getHeight() / 50) : 27;
+                    (monitor.getParticleCanvas().getHeight() / 100) : 27;
             VisualMusicThread.particleRadius = VisualMusicThread.particleRadiusBase;        
         }
 
