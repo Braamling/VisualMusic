@@ -118,7 +118,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
             case 1:
                 return Color.argb(255, 0, 201, 255); /* Nearing aqua */
             case 2:
-                return Color.argb(255, 0, 204, 41); /* Light green-ish */
+                return Color.argb(255, 193, 222, 31); /* Light yellow */
             case 3:
                 return Color.argb(255, 142, 145, 148); /* Gray (with slight blue) */
             case 4:
