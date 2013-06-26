@@ -1,5 +1,6 @@
 package nl.uva.multimedia.visualmusic;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 /**
@@ -16,21 +17,28 @@ public class VisualMusicThread extends FingerThread {
     // TODO this line below is temporary, it shouldn't be static, I'll fix that later
     public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
 
-    public static final int N_PARTICLE_GROUPS   = 50; /* Total number of particle-groups */
+    public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
+    public static final int N_PARTICLE_GROUPS   = 200; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 6;  /* Number of unique particles in a single group */
-    private static int particleLifetime         = 30; /* Maximum life time of a single particle */
-    private static int particleMaxSpeed         = 4;  /* Maximum speed of a single particle */
+
+    private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
+
+    private static int particleLifetime         = 300; /* Maximum life time of a single particle */
     private static int particleRadiusBase       = 0; /* Value should be set after screen dimensions are known */
     private static int particleRadius           = 0; /* Value of the radius based on the frequency */
+
     public static final int N_KEYS = 48;
+
     private static final int LOW_OCTAVE = 2;
+
+    private long last_render_time;
 
     Particles[] particles = new Particles[N_PARTICLE_GROUPS];
 
     protected void init() {
         super.init();
         // Init.
-
+        this.last_render_time = SystemClock.currentThreadTimeMillis();
         ((VisualMusicThreadMonitor)this.monitor).setActive(true);
     }
 
@@ -94,7 +102,9 @@ public class VisualMusicThread extends FingerThread {
             e.printStackTrace();
         }
 
+
         renderFrame(monitor);
+
     }
 
     protected void setParticleParameters (float frequency) {
@@ -153,23 +163,26 @@ public class VisualMusicThread extends FingerThread {
     }
 
     public void renderFrame(VisualMusicThreadMonitor monitor) {
-        try {
-            for (int i = 0; i < particles.length; i ++) {
-                if (particles[i] != null) {
-                    if (particles[i].isDead()) {
-                        particles[i] = null;
-                        continue;
-                    }
+        if(SystemClock.currentThreadTimeMillis() - last_render_time > this.FRAME_REFRESH_TIME){
+            last_render_time = SystemClock.currentThreadTimeMillis();
+            try {
+                for (int i = 0; i < particles.length; i ++) {
+                    if (particles[i] != null) {
+                        if (particles[i].isDead()) {
+                            particles[i] = null;
+                            continue;
+                        }
 
-                    particles[i].update();
+                        particles[i].update();
+                    }
                 }
             }
-        }
-        catch (IllegalMonitorStateException e) {
-            e.printStackTrace();
-        }
+            catch (IllegalMonitorStateException e) {
+                e.printStackTrace();
+            }
 
-        monitor.setParticles(this.particles);
+            monitor.setParticles(this.particles);
+        }
     }
 
     private int getKey(){
