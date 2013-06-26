@@ -124,10 +124,15 @@ public class ParticleCanvas extends SurfaceView
             canvas.drawText(ToneFrequency.getToneName(i),
                     i * keyWidth + 0.5f * keyWidth, 10.0f, this.textPaint);
 
+            canvas.drawText(ToneFrequency.getToneName(i),
+                    i * keyWidth + 0.5f * keyWidth, this.getHeight()/2 + 10.0f, this.textPaint);
+
             if (i > 0)
                 canvas.drawLine(i * keyWidth, 0, i * keyWidth, this.getHeight(),
                         this.whitePaint);
         }
+        canvas.drawLine(0, this.getHeight()/2, this.getWidth(), this.getHeight()/ 2,
+                this.whitePaint);
     }
 
     public void drawParticles(Canvas canvas) {

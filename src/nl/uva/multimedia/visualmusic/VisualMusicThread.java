@@ -29,7 +29,7 @@ public class VisualMusicThread extends FingerThread {
      */
     public static final int N_PARTICLE_GROUPS   = 300; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
-    public static final int N_KEYS = 36;
+    public static final int N_KEYS = 24;
 
     private static final int LOW_OCTAVE = 2;
     private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
@@ -108,6 +108,9 @@ public class VisualMusicThread extends FingerThread {
             while (key >= 12) {
                 key -= 12;
                 scale ++;
+            }
+            if(monitor.getY() > monitor.getHeight() / 2){
+                scale += (N_KEYS / 12);
             }
             ToneFrequency newFrequency = ToneFrequency.fromKey(key, scale);
             freq = newFrequency.get();
