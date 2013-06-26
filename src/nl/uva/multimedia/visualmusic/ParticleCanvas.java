@@ -15,7 +15,7 @@ public class ParticleCanvas extends SurfaceView
 
     private MainActivity activity;
     private int max_fingers = MainActivity.N_FINGER_THREADS;
-    private SurfaceHolder holder;
+    public SurfaceHolder holder;
 
     private int nFingers, cFingers;
     private int circleBufferSize = VisualMusicThread.N_PARTICLE_GROUPS *
@@ -28,6 +28,8 @@ public class ParticleCanvas extends SurfaceView
 
     private VisualMusicThreadMonitor[] monitors =
             new VisualMusicThreadMonitor[max_fingers];
+
+    private ParticleCanvasThread mThread = null;
 
     public ParticleCanvas(Context context, MainActivity activity) {
         super(context);
@@ -69,11 +71,9 @@ public class ParticleCanvas extends SurfaceView
     public void surfaceCreated(SurfaceHolder holder) {
         this.holder = holder;
 
-        new Thread(new Runnable() {
-            public void run() {
-                render();
-            }
-        }).start();
+        this.mThread = new ParticleCanvasThread();
+        this.mThread.setParticleCanvas(this);
+        this.mThread.start();
     }
 
     public void render() {
@@ -86,6 +86,9 @@ public class ParticleCanvas extends SurfaceView
             this.gatherParticles();
 
             canvas = this.holder.lockCanvas();
+            if (canvas == null)
+                return;
+
             canvas.drawColor(Color.BLACK);
 
             this.drawKeys(canvas);
@@ -93,7 +96,7 @@ public class ParticleCanvas extends SurfaceView
         }
     }
 
-    private void gatherParticles() {
+    public void gatherParticles() {
         for (int i = 0; i < this.max_fingers; i ++) {
             VisualMusicThreadMonitor monitor;
 
@@ -110,7 +113,7 @@ public class ParticleCanvas extends SurfaceView
         }
     }
 
-    private void drawKeys(Canvas canvas) {
+    public void drawKeys(Canvas canvas) {
         int keys;
         float keyWidth;
 
@@ -127,7 +130,7 @@ public class ParticleCanvas extends SurfaceView
         }
     }
 
-    private void drawParticles(Canvas canvas) {
+    public void drawParticles(Canvas canvas) {
         /* Draw particles. */
         for (; this.circleBufferPointer > 0; this.circleBufferPointer --) {
             Circle c = this.circleBuffer[this.circleBufferPointer - 1];
@@ -147,6 +150,21 @@ public class ParticleCanvas extends SurfaceView
     public void drawCircle(float cx, float cy, float radius, Paint paint) {
         this.circleBuffer[(this.circleBufferPointer ++) %
                 circleBufferSize] = new Circle(cx, cy, radius, paint);
+    }
+
+    public void kill() {
+        this.mThread.setRunning(false);
+
+        try {
+            this.mThread.join();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start() {
+        // this.mThread.start();
     }
 }
 

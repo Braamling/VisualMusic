@@ -25,7 +25,7 @@ public class MainActivity extends MultitouchActivity {
     private ParticleCanvas pCanvas;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
-    private String path = null;
+    private WaveFile sample = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,6 @@ public class MainActivity extends MultitouchActivity {
                 new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
                         VisualMusicThread.class, VisualMusicThreadMonitor.class,
                         N_FINGER_THREADS);
-
-        this.pCanvas.setMonitors(this.mFingerHandler);
     }
 
     @Override
@@ -93,7 +91,6 @@ public class MainActivity extends MultitouchActivity {
                     path = uri.getPath();
                 } else {
                     Log.e("MainActivity", "Something went wrong..");
-                    this.path = null;
                     return;
                 }
 
@@ -104,9 +101,8 @@ public class MainActivity extends MultitouchActivity {
                     alertDialog.setTitle("Invalid file-type");
                     alertDialog.setMessage("The selected file is not a valid wave file.");
                     alertDialog.show();
-                    this.path = null;
                 } else {
-                    this.path = path;
+                    sample = new WaveFile(path);
                 }
             return;
         }
@@ -160,5 +156,23 @@ public class MainActivity extends MultitouchActivity {
         catch (ImpossibleFingerException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        this.mFingerHandler.init();
+        this.pCanvas.setMonitors(this.mFingerHandler);
+        this.mFingerHandler.start();
+
+        this.pCanvas.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        this.mFingerHandler.kill();
     }
 }
