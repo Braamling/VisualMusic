@@ -29,7 +29,7 @@ public class VisualMusicThread extends FingerThread {
      */
     public static final int N_PARTICLE_GROUPS   = 300; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
-    public static final int N_KEYS = 48;
+    public static final int N_KEYS = 36;
 
     private static final int LOW_OCTAVE = 2;
     private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
@@ -44,8 +44,6 @@ public class VisualMusicThread extends FingerThread {
         super.init();
         // Init.
         this.last_render_time = SystemClock.currentThreadTimeMillis();
-        this.startTime = this.last_render_time;
-        this.mPlayTone.setTime(0);
 
         ((VisualMusicThreadMonitor)this.monitor).setActive(true);
 
@@ -68,7 +66,9 @@ public class VisualMusicThread extends FingerThread {
                 this.startTime);
 
         /* Check whether this is a touchdown to change the color scheme */
-        if(new_touch){
+        if (new_touch) {
+            this.startTime = SystemClock.currentThreadTimeMillis();
+
             monitor.pick_color_scheme();
             new_touch = false;
         }

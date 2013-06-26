@@ -17,8 +17,8 @@ public class PlayTone {
     private final int sampleRate = 44100;
     private final int bufferSize = sampleRate / 50;
 
-    private final int attack = 250;
-    private final int decay = 200;
+    private final int attack = 1000;
+    private final int decay = 1000;
     private final float sustain = 0.7f;
     private final int release = 200;
 
@@ -63,6 +63,8 @@ public class PlayTone {
         // scale *= 0.6;
         float amplitude;
 
+        Log.v(TAG, "tim " + this.time);
+
         if (this.time < this.attack) {
             amplitude = (1.0f / this.attack) * this.time;
         }
@@ -90,16 +92,16 @@ public class PlayTone {
                 /* The waves. */
                 // f = scale * Math.sin(t * 2 * Math.PI * freq);
 //                f += (0.6 - scale) * 2 * (adt - (int)((1.0 / 2.0) + adt));
+                f = 0.6 * Math.sin(t * 2 * Math.PI * freq);
 
                 /* Overtones. */
-//                f += 0.1 * Math.sin(t * 2 * Math.PI * 2 * freq);
-//                f += 0.1 * Math.sin(t * 2 * Math.PI * 3 * freq);
-//                f += 0.1 * Math.sin(t * 2 * Math.PI * 4 * freq);
-//                f += 0.1 * Math.sin(t * 2 * Math.PI * 5 * freq);
+                f += 0.1 * Math.sin(t * 2 * Math.PI * 2 * freq);
+                f += 0.1 * Math.sin(t * 2 * Math.PI * 3 * freq);
+                f += 0.1 * Math.sin(t * 2 * Math.PI * 4 * freq);
+                f += 0.1 * Math.sin(t * 2 * Math.PI * 5 * freq);
 
-                f = amplitude * Math.sin(t * 2 * Math.PI * freq);
 
-                samples[i] = (byte)(f * 127);
+                samples[i] = (byte)(f * 127 * amplitude);
             }
 
             if (mAudio.getState() == AudioTrack.STATE_INITIALIZED)
