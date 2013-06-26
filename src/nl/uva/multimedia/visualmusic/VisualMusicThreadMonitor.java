@@ -3,6 +3,8 @@ package nl.uva.multimedia.visualmusic;
 import android.graphics.Color;
 import android.util.Log;
 
+import java.util.Random;
+
 /**
  * Created by klaplong on 6/21/13.
  */
@@ -12,6 +14,9 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private ParticleCanvas particleCanvas;
     private boolean active = false, finishing = false, reboot = false;
     private Particles[] particles = null;
+
+    private int begin_color;
+    private int end_color;
 
     public VisualMusicThreadMonitor() {
         super();
@@ -71,8 +76,16 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         return this.active;
     }
 
-    public int getEndColor(){
-        switch(this.fingerId) {
+    public void pick_color_scheme(){
+        Random r = new Random();
+        int id = (r.nextInt(9) +0);
+
+        this.begin_color    = createBeginColor(id);
+        this.end_color      = createEndColor(id);
+    }
+
+    public int createEndColor(int id){
+        switch(id) {
             case 0:
                 return Color.argb(255, 255, 52, 0); /* Dark orange */
             case 1:
@@ -98,8 +111,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         }
     }
 
-    public int getBeginColor(){
-        switch(this.fingerId){
+    public int createBeginColor(int id){
+        switch(id){
             case 0:
                 return Color.argb(255, 255, 255, 0); /* Yellow */
             case 1:
@@ -124,4 +137,13 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
                 return Color.argb(255, 0, 255, 0);
         }
     }
+
+    public int getEndColor(){
+        return this.end_color;
+    }
+
+    public int getBeginColor(){
+        return this.begin_color;
+    }
+
 }
