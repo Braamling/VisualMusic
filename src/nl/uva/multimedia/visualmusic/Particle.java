@@ -65,30 +65,24 @@ public class Particle {
 		float degrees;
 
 		if (!isDead()) {
-			if (ratio < 0.2) {
-				/* The path of the particles is linear */
-				this.x_pos += this.x_speed;
-				this.y_pos += this.y_speed;
-			} else {
-				/* Start curling the particles */
-				if (this.rot_radius == 0) {
-					this.rot_radius   = 3 * this.radius_start;
-					this.rot_x_offset = this.x_pos;
-					this.rot_y_offset = this.y_pos;
-				}
-
-				//degrees = (float) (270 + (337 * (ratio - 0.2))); // should be this
-				degrees = (float) (270 + (450 * (ratio - 0.5))); // somehow looks better
-				/* If the fingerdirection is upwards (1), make the particles circle
-				 * the other way */
-				if (VisualMusicThread.fingerDirection == 1)
-					degrees += 180;
-
-				this.x_pos = (float)(this.rot_x_offset + 
-						(this.rot_dir * this.rot_radius * Math.cos(Math.toRadians(degrees))));
-				this.y_pos = (float)(this.rot_y_offset + 
-						(this.rot_dir * this.rot_radius * Math.sin(Math.toRadians(degrees))));
+			/* Start curling the particles */
+			if (this.rot_radius == 0) {
+				this.rot_radius   = 3 * this.radius_start;
+				this.rot_x_offset = this.x_pos;
+				this.rot_y_offset = this.y_pos;
 			}
+
+			//degrees = (float) (270 + (337 * (ratio - 0.2))); // should be this
+			degrees = (float) (270 + (450 * (ratio - 0.5))); // somehow looks better
+			/* If the fingerdirection is upwards (1), make the particles circle
+			 * the other way */
+			if (VisualMusicThread.fingerDirection == 1)
+				degrees += 180;
+
+			this.x_pos = (float)(this.rot_x_offset + 
+					(this.rot_dir * this.rot_radius * Math.cos(Math.toRadians(degrees))));
+			this.y_pos = (float)(this.rot_y_offset + 
+					(this.rot_dir * this.rot_radius * Math.sin(Math.toRadians(degrees))));
 
 			/* Change the radius and color */
 			this.radius = this.radius_start - (int)(this.radius_start * ratio);
