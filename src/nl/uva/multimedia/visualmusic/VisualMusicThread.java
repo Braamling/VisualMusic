@@ -27,7 +27,7 @@ public class VisualMusicThread extends FingerThread {
      * more particles per group and less groups. When the refresh rate is really high the particles
      * group size can even be 1.
      */
-    public static final int N_PARTICLE_GROUPS   = 300; /* Total number of particle-groups */
+    public static final int N_PARTICLE_GROUPS   = 600; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
     public static final int N_KEYS = 48;
 
