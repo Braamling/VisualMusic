@@ -33,13 +33,8 @@ public class VisualMusicThread extends FingerThread {
     private static int particleRadius           = 0; /* Value of the radius based on the frequency */
 
     private boolean new_touch = true;
-
-
-
-    public static final int N_KEYS = 48;
-
+    public static final int N_KEYS = 36;
     private static final int LOW_OCTAVE = 2;
-
     private long last_render_time;
 
     Particles[] particles = new Particles[N_PARTICLE_GROUPS];
