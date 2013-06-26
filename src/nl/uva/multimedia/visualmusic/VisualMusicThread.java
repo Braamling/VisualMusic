@@ -1,5 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
+import android.util.Log;
+
 /**
  * Created by klaplong on 6/20/13.
  */
@@ -91,7 +93,6 @@ public class VisualMusicThread extends FingerThread {
         catch (Exception e) {
             e.printStackTrace();
         }
-        mPlayTone.play();
 
         renderFrame(monitor);
     }
