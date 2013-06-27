@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:id="@+id/particleRoot">
 
     <EditText
             android:layout_width="wrap_content"
@@ -18,7 +19,8 @@
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="2dp"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:id="@+id/particleRadio">
 
         <RadioButton
                 android:layout_width="wrap_content"
@@ -32,9 +34,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ButtonElements"
-                android:id="@+id/radioButton3"
+                android:id="@+id/1"
                 android:layout_gravity="left|center_vertical"
-                android:checked="false"/>
+                android:checked="false"
+                android:focusable="true"/>
 
         <RadioButton
                 android:layout_width="wrap_content"
