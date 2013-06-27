@@ -2,6 +2,7 @@ package nl.uva.multimedia.visualmusic;
 
 import android.app.Activity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 
 /**
@@ -31,11 +32,23 @@ public class MultitouchActivity extends Activity {
      * @return Whether the event has been handled.
      */
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         try {
             MultiTouch multiTouch;
-            int action, pointer;
+            int action, pointer, actionBarHeight;
             int[] pointers, indices;
+            TypedValue tv;
+
+            /* Compensate for the action bar. */
+            tv = new TypedValue();
+            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
+                    true)) {
+                actionBarHeight =
+                        TypedValue.complexToDimensionPixelSize(tv.data,
+                                getResources().getDisplayMetrics());
+            }
+            else
+                actionBarHeight = 0;
 
             /* A MultiTouch object initializes with an event, detecting multi-
              * touches and simplifying the input for further processing. */
@@ -50,7 +63,7 @@ public class MultitouchActivity extends Activity {
                 for (int i = 0; i < pointers.length; i ++) {
                     pointer = pointers[i];
                     this.onFingerMove(pointer, event.getX(indices[pointer]),
-                            event.getY(indices[pointer]));
+                            event.getY(indices[pointer]) - actionBarHeight);
                 }
             }
 
@@ -58,14 +71,14 @@ public class MultitouchActivity extends Activity {
             else if (action == MotionEvent.ACTION_DOWN) {
                 pointer = pointers[event.getActionIndex()];
                 this.onFingerDown(pointer, event.getX(indices[pointer]),
-                        event.getY(indices[pointer]));
+                        event.getY(indices[pointer]) - actionBarHeight);
             }
 
             /* A finger has been removed from the screen, fire the event. */
             else if (action == MotionEvent.ACTION_UP) {
                 pointer = pointers[event.getActionIndex()];
                 this.onFingerUp(pointer, event.getX(indices[pointer]),
-                        event.getY(indices[pointer]));
+                        event.getY(indices[pointer]) - actionBarHeight);
             }
         }
         catch (Exception e) {
