@@ -244,3 +244,5 @@ public class ParticleCanvas extends SurfaceView
         // this.mThread.start();
     }
 }
+
+
