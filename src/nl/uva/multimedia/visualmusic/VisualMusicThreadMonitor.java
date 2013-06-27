@@ -1,7 +1,6 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Color;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -16,7 +15,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     private ParticleCanvas particleCanvas;
     private boolean active = false, finishing = false, reboot = false;
-    private Particles[] particles = null;
+    private ParticleBurst[] particles = null;
 
     private int begin_color;
     private int end_color;
@@ -141,7 +140,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      *
      * @param particles The particle burst array to use in visual music thread
      */
-    public void setParticles(Particles[] particles) {
+    public void setParticles(ParticleBurst[] particles) {
         this.particles = particles;
     }
 
@@ -153,7 +152,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      *
      * @return The particle burst array to use in visual music thread.
      */
-    public Particles[] getParticles() {
+    public ParticleBurst[] getParticles() {
         return this.particles;
     }
 

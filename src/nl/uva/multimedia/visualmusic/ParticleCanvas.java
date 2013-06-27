@@ -143,9 +143,9 @@ public class ParticleCanvas extends SurfaceView
                     (monitor.getParticles() == null))
                 continue;
 
-            for (Particles particles : monitor.getParticles()) {
-                if (particles != null)
-                    particles.render(this);
+            for (ParticleBurst particleBursts : monitor.getParticles()) {
+                if (particleBursts != null)
+                    particleBursts.render(this);
             }
         }
     }
