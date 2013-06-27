@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 public class MainActivity extends MultitouchActivity {
 
@@ -78,18 +79,19 @@ public class MainActivity extends MultitouchActivity {
     }
 
     private void initSynthSettings() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("ik moet schijten").setTitle("Argh");
-//        this.synthSettings = builder.create();
-
         LayoutInflater inflater =
                 (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.popup,
                 (ViewGroup)findViewById(R.id.popupRoot));
 
+<<<<<<< HEAD
 
         final AttackSlider attackSlider =
                 (AttackSlider)layout.findViewById(R.id.attackSlider);
+=======
+        final SeekBar attackSlider =
+                (SeekBar)layout.findViewById(R.id.attackSlider);
+>>>>>>> 96435b38c79e6aa2e4bbf418c43045106bf52726
         attackSlider.setProgress(250);
         this.synthSettings = new AlertDialog.Builder(this)
                 .setView(layout)
