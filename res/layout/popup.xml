@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/attackSlider"
             android:layout_gravity="left|center_vertical"
-            android:max="1500"
+            android:max="200"
             />
 
     <TextView
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/decaySlider"
             android:layout_gravity="left|center_vertical"
-            android:max="1500"/>
+            android:max="200"/>
 
     <TextView
             android:layout_width="wrap_content"
