@@ -22,9 +22,6 @@ public class VisualMusicThread extends FingerThread {
 
     private long startTime;
 
-    // TODO this line below is temporary, it shouldn't be static, I'll fix that later
-    public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
-
     public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
 
     /* Depending on the amount of touch move events handled in a x amount of time there should be
@@ -114,12 +111,9 @@ public class VisualMusicThread extends FingerThread {
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
                     this.monitor.getY(), this.particleRadius,
                             particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
-                            monitor.getEndColor());
+                            monitor.getEndColor(), monitor.getRotation());
             this.lastX = newX;
         }
-
-        /* Which way is the finger going? Upwards or downwards? */
-        fingerDirection = (newY > this.lastY) ? 0 : 1;
 
         try {
             int key = this.getKey(), scale = LOW_OCTAVE;

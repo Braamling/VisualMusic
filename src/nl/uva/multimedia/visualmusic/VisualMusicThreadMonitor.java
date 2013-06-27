@@ -20,6 +20,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     private int begin_color;
     private int end_color;
+    private int rotation; /* Should range from 90 to 720 */
 
     /**
      * Initialize the visual music thread without any values.
@@ -103,6 +104,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
         this.begin_color    = createBeginColor(id);
         this.end_color      = createEndColor(id);
+
+        this.rotation = pickRotation(id);
     }
 
     public int createEndColor(int id){
@@ -159,12 +162,43 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         }
     }
 
+    private int pickRotation (int id) {
+        switch(id) {
+            case 0:
+                return 90;
+            case 1:
+                return 90;
+            case 2:
+                return 180;
+            case 3:
+                return 180;
+            case 4:
+                return 270;
+            case 5:
+                return 270;
+            case 6:
+                return 360;
+            case 7:
+                return 450;
+            case 8:
+                return 540;
+            case 9:
+                return 630;
+            default:
+                return 360;
+        }
+    }
+
     public int getEndColor(){
         return this.end_color;
     }
 
     public int getBeginColor(){
         return this.begin_color;
+    }
+
+    public int getRotation() {
+        return this.rotation;
     }
 
 }
