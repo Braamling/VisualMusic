@@ -110,9 +110,9 @@ public class MainActivity extends MultitouchActivity {
          */
         final SeekBar attackSlider =
                 (SeekBar)layout.findViewById(R.id.attackSlider);
-        attackSlider.setProgress(250);
+        attackSlider.setProgress(200);
         final TextView attackText = (TextView)layout.findViewById(R.id.textView);
-        attackText.setText("Attack: " + 250 + "ms");
+        attackText.setText("Attack: " + 200 + "ms");
 
         attackSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -134,10 +134,10 @@ public class MainActivity extends MultitouchActivity {
          */
         final SeekBar decaySlider =
                 (SeekBar)layout.findViewById(R.id.decaySlider);
-        decaySlider.setProgress(250);
+        decaySlider.setProgress(200);
 
         final TextView decayText = (TextView)layout.findViewById(R.id.textView2);
-        decayText.setText("Decay: " + 250 + "ms");
+        decayText.setText("Decay: " + 200 + "ms");
 
         decaySlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
