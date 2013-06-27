@@ -6,7 +6,10 @@ import android.util.Log;
 import java.util.Random;
 
 /**
- * Created by klaplong on 6/21/13.
+ * A monitor to store and manage all the values of the VisualMusicThread.
+ *
+ * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+ * @version 1.0
  */
 public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private static final String TAG = "VisualMusicThreadMonitor";
@@ -17,74 +20,193 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     private int begin_color;
     private int end_color;
+    private int rotation; /* Should range from 90 to 720 */
+    private int rotSpacing; /* Increments with every thread update, indicates
+                             * the spacing for the particle rotations */
 
+    /**
+     * Initialize the visual music thread without any values.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public VisualMusicThreadMonitor() {
         super();
 
         this.fingerId = -1;
     }
 
+    /**
+     * Initialize the visual music thread with just a fingerId.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public VisualMusicThreadMonitor(int fingerId) {
         super();
 
         this.fingerId = fingerId;
     }
 
+    /**
+     * Initialize the visual music thread with both a finger id and x and y position.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public VisualMusicThreadMonitor(float x, float y, int fingerId) {
         super(x, y);
 
         this.fingerId = fingerId;
     }
 
+    /**
+     * Set the particle canvas object.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param particleCanvas The particle canvas to draw the particles on.
+     */
     public void setParticleCanvas(ParticleCanvas particleCanvas) {
         this.particleCanvas = particleCanvas;
     }
 
+
+    /**
+     * Get the particle canvas object.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return The particle canvas to draw the particles on.
+     */
     public ParticleCanvas getParticleCanvas() {
         return this.particleCanvas;
     }
 
+    /**
+     * Set a boolean to determent whether the thread is finishing or not.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param finishing True when the thread is finishing and false when the thread is not finishing.
+     */
     public void setFinishing(boolean finishing) {
         this.finishing = finishing;
     }
 
+    /**
+     * Determent if a thread is finishing.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return True when the thread is finishing and false when the thread is not finishing.
+     */
     public boolean isFinishing() {
         return this.finishing;
     }
 
+    /**
+     * Set if a thread needs rebooting
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param reboot True when the threads has to reboot and false when should no reboot.
+     */
     public void setReboot(boolean reboot) {
         this.reboot = reboot;
     }
 
+    /**
+     * Determent if a thread needs rebooting
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return True when the threads has to reboot and false when should no reboot.
+     */
     public boolean needsReboot() {
         return this.reboot;
     }
 
+    /**
+     * Set the particle burst array to use in visual music thread.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param particles The particle burst array to use in visual music thread
+     */
     public void setParticles(Particles[] particles) {
         this.particles = particles;
     }
 
+    /**
+     * Get the particle burst array to use in visual music thread.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return The particle burst array to use in visual music thread.
+     */
     public Particles[] getParticles() {
         return this.particles;
     }
 
+    /**
+     * Activate the visual music thread.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param active True when active, false when inactive.
+     */
     public void setActive(boolean active) {
         this.active = active;
     }
 
+    /**
+     * Determent whether a visual music thread is active.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return True when active, false when inactive.
+     */
     public boolean isActive() {
         return this.active;
     }
 
+    /**
+     * Pick a color scheme (begin and end color) for the individual particles in a particle burst.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public void pick_color_scheme(){
         Random r = new Random();
         int id = (r.nextInt(9) +0);
 
         this.begin_color    = createBeginColor(id);
         this.end_color      = createEndColor(id);
+
+        this.rotation = pickRotation(id);
     }
 
-    public int createEndColor(int id){
+    /**
+     * Create an end color based on the given id value.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param id An id between 0 and 9. All other values will black.
+     * @return An integer representing and argb color.
+     */
+    private int createEndColor(int id){
         switch(id) {
             case 0:
                 return Color.argb(255, 255, 52, 0); /* Dark orange */
@@ -111,7 +233,16 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         }
     }
 
-    public int createBeginColor(int id){
+    /**
+     * Create a begin color based on the given id value.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param id An id between 0 and 9. All other values will green.
+     * @return An integer representing and argb color.
+     */
+    private int createBeginColor(int id){
         switch(id){
             case 0:
                 return Color.argb(255, 255, 255, 0); /* Yellow */
@@ -132,18 +263,90 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
             case 8:
                 return Color.argb(255, 232, 217, 0); /* Kind of yellow */
             case 9:
-                return Color.argb(255,40, 40, 40);
+                return Color.argb(255, 40, 40, 40);
             default:
                 return Color.argb(255, 0, 255, 0);
         }
     }
 
+    /**
+     * Create a ration based on the given id value.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param id An integer between 0 and 9. All other values will return 360.
+     * @return An integer representing and the ration.
+     */
+    private int pickRotation (int id) {
+        switch(id) {
+            case 0:
+                return 180;
+            case 1:
+                return 180;
+            case 2:
+                return 360;
+            case 3:
+                return 360;
+            case 4:
+                return 360;
+            case 5:
+                return 540;
+            case 6:
+                return 540;
+            case 7:
+                return 720;
+            case 8:
+                return 720;
+            case 9:
+                return 1080;
+            default:
+                return 360;
+        }
+    }
+
+    /**
+     * Get the generated end color.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return An integer representing an argb end color.
+     */
     public int getEndColor(){
         return this.end_color;
     }
 
+    /**
+     * Get the generated begin color.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return An integer representing the rotation.
+     */
     public int getBeginColor(){
         return this.begin_color;
+    }
+
+    /**
+     * Get the generated rotation.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return An integer representing the rotation.
+     */
+    public int getRotation() {
+        return this.rotation;
+    }
+
+    public int getRotSpacing() {
+        return this.rotSpacing;
+    }
+
+    public void setRotSpacing(int r) {
+        this.rotSpacing = r;
     }
 
 }

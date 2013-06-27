@@ -9,28 +9,53 @@ import android.graphics.Paint;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+/**
+ * Particle controls a single particles movement, size and color.
+ *
+ * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+ * @version 1.0
+ */
 public class Particle {
     private static final String TAG = "Particle";
 
-	protected float   x_pos;
-	protected float   y_pos;
-	protected float   x_speed;
-	protected float   y_speed;
-	protected float   rot_x_offset;
-	protected float   rot_y_offset;
-	protected int     age;
-	protected int     life_time;
-	protected int     radius;
-	protected int     radius_start;
-	protected int     rot_radius;
-	protected int 	  rot_dir;
-	protected Paint   paint;
-	protected boolean dead;
-    private int begin_color;
-    private int end_color;
-	
+    private float   x_pos;
+    private float   y_pos;
+    private float   x_speed;
+    private float   y_speed;
+    private float   rot_x_offset;
+    private float   rot_y_offset;
+    private int     age;
+    private int     life_time;
+    private int     radius;
+    private int     radius_start;
+    private int     rot_radius;
+    private int 	rot_dir;
+    private int     rotation;
+    private int     rotSpacing;
+    private Paint   paint;
+    private boolean dead;
+    private int     begin_color;
+    private int     end_color;
+
+    /**
+     * Initialization of a Particle object.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param x_pos The particle's x-position to start.
+     * @param y_pos The particle's y-position to start.
+     * @param max_radius The Particle's maximum radius.
+     * @param max_speed The maximum speed of a single particle
+     * @param max_life_time The maximum life time of a single particle
+     * @param begin_color The begin color the particle
+     * @param end_color The end color the particle
+     * @param rotation indicates the amount of degrees a particle should rotate
+     * @param rotSpacing should be used to determine the radius at with particles rotate
+     */
+
 	public Particle(float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time,
-                    int begin_color, int end_color) {
+                    int begin_color, int end_color, int rotation, int rotSpacing) {
 		Random r = new Random();
 
         // TODO Fix this, max_radius sometimes is negative, also max_life_time.
@@ -54,12 +79,19 @@ public class Particle {
 		this.rot_y_offset = 0;
         this.begin_color  = begin_color;
         this.end_color    = end_color;
+        this.rotation     = rotation;
+        this.rotSpacing   = rotSpacing;
 		
 		this.paint = new Paint();
         this.paint.setColor(begin_color);
-
 	}
-	
+
+    /**
+     * Update the position, color and size of a particle
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
 	public void update() {
 		float ratio = (float) age / life_time;
 		float degrees;
@@ -67,27 +99,20 @@ public class Particle {
 		if (!isDead()) {
 			/* Start curling the particles */
 			if (this.rot_radius == 0) {
-				this.rot_radius   = 3 * this.radius_start;
+				this.rot_radius   = (3 + (rotSpacing / 10)) * this.radius_start;
 				this.rot_x_offset = this.x_pos;
 				this.rot_y_offset = this.y_pos;
 			}
 
-			//degrees = (float) (270 + (337 * (ratio - 0.2))); // should be this
-			degrees = (float) (270 + (450 * (ratio - 0.5))); // somehow looks better
-			/* If the fingerdirection is upwards (1), make the particles circle
-			 * the other way */
-			if (VisualMusicThread.fingerDirection == 1)
-				degrees += 180;
+            degrees = (float) (this.rotation * ratio);
 
 			this.x_pos = (float)(this.rot_x_offset + 
 					(this.rot_dir * this.rot_radius * Math.cos(Math.toRadians(degrees))));
 			this.y_pos = (float)(this.rot_y_offset + 
 					(this.rot_dir * this.rot_radius * Math.sin(Math.toRadians(degrees))));
 
-
             /* Change the radius and color */
             this.radius = this.radius_start - (int)(this.radius_start * ratio);
-            //nextColor(ratio);
             this.paint.setColor(nextColor(ratio));
 
 		} else {
@@ -97,6 +122,12 @@ public class Particle {
 		this.age++;
 	}
 
+    /**
+     * Get the next color of the ratio between the begin and end color.
+     *
+     * @param ratio A value between 0 and 1. 0 being the begin color and 1 being the end color.
+     * @return the updated argb color value.
+     */
     public int nextColor(float ratio){
         if(ratio < 0.5F){
             ratio = (ratio * 2);
@@ -108,13 +139,23 @@ public class Particle {
         int blue = (int) (Color.blue(this.begin_color) * ratio + (Color.blue(this.end_color)  * (1 - ratio)));
         return Color.argb(255, red, green, blue);
     }
-	
+
+    /**
+     * Return Whether a particle has exceeded his lifetime.
+     *
+     * @return True when the particle is dead. False when the particle is still alive.
+     */
 	public boolean isDead() {
 		if (age >= life_time)
 			return (dead = true); /* Setting it, not comparing it. */
 		return false;
 	}
 
+    /**
+     * Draw the particle to the canvas by calling drawCircle on the particle canvas.
+     *
+     * @param particleCanvas The particle canvas containing the canvas.
+     */
     public void draw(ParticleCanvas particleCanvas) {
         particleCanvas.drawCircle(this.x_pos, this.y_pos, this.radius,
                 this.paint);

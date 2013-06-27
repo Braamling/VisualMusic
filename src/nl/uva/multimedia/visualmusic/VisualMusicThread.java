@@ -5,7 +5,10 @@ import android.os.SystemClock;
 import android.util.Log;
 
 /**
- * Created by klaplong on 6/20/13.
+ * A thread for the sound and particles for a single finger.
+ *
+ * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+ * @version 1.0
  */
 public class VisualMusicThread extends FingerThread {
     private static final String TAG = "VisualMusicThread";
@@ -16,41 +19,56 @@ public class VisualMusicThread extends FingerThread {
     private PlayTone mPlayTone = new PlayTone();
     private long last_render_time;
     private boolean new_touch = true;
+    private boolean spacingUp = true; /* If rotSpacing should increment, set to true.
+                                         If it should decrement, set to false. */
 
     private long startTime;
 
-    // TODO this line below is temporary, it shouldn't be static, I'll fix that later
-    public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
-
     public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
+
     /* Depending on the amount of touch move events handled in a x amount of time there should be
      * more particles per group and less groups. When the refresh rate is really high the particles
-     * group size can even be 1.
+     * group size can even be 1 for the best results.
      */
-    public static final int N_PARTICLE_GROUPS   = 300; /* Total number of particle-groups */
+    public static final int N_PARTICLE_GROUPS   = 600; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
     public static final int N_KEYS = 24;
+
     private static final int LOW_OCTAVE = 2;
 
-    private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
-    private static int particleLifetime         = 300; /* Maximum life time of a single particle */
-    private static int particleRadiusBase       = 0; /* Value should be set after screen dimensions are known */
-
-    private static int particleRadius           = 0; /* Value of the radius based on the frequency */
+    private float particleMaxSpeed;  /* Maximum speed of a single particle */
+    private int particleLifetime; /* Maximum life time of a single particle */
+    private int particleRadiusBase; /* Value should be set after screen dimensions are known */
+    private int particleRadius; /* Value of the radius based on the frequency */
 
     Particles[] particles = new Particles[N_PARTICLE_GROUPS];
 
+    /**
+     * Initialize all the parameters for the thread to run.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     protected void init() {
         super.init();
-        // Init.
+
+        /* Get the start time for the particle render delay */
         this.last_render_time = SystemClock.currentThreadTimeMillis();
 
-        ((VisualMusicThreadMonitor)this.monitor).setActive(true);
+        VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
 
-        ((VisualMusicThreadMonitor)this.monitor).pick_color_scheme();
+        /* Activate the monitor and pick a color scheme for the particles */
+        monitor.setActive(true);
+        monitor.pick_color_scheme();
 
     }
 
+    /**
+     * Update both the sound and particles state.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     protected void update() {
         super.update();
         float freq, y_scale;
@@ -71,14 +89,18 @@ public class VisualMusicThread extends FingerThread {
 
             monitor.pick_color_scheme();
             new_touch = false;
+
+            /* Set the rotation spacing for particles */
+            monitor.setRotSpacing(0);
         }
 
         /* Determine particle max radius. This cannot be done in the init() method
          * because the canvas size is not yet known at that time. */
-        if (VisualMusicThread.particleRadiusBase == 0) {
-            VisualMusicThread.particleRadiusBase = (monitor.getParticleCanvas().getHeight() > 0) ?
-                    (monitor.getParticleCanvas().getHeight() / 100) : 27;
-            VisualMusicThread.particleRadius = VisualMusicThread.particleRadiusBase;        
+        if (this.particleRadiusBase == 0) {
+            this.particleRadiusBase = (monitor.getParticleCanvas().getHeight() > 0) ?
+                    ((monitor.getParticleCanvas().getWidth() * 
+                      monitor.getParticleCanvas().getHeight()) / 110000) : 20;
+            this.particleRadius = this.particleRadiusBase;
         }
 
         int newX = (int)monitor.getX();
@@ -93,14 +115,30 @@ public class VisualMusicThread extends FingerThread {
         if (Math.abs(newX - this.lastX) >= 0) {
             particles[this.i ++ % N_PARTICLE_GROUPS] =
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-                    this.monitor.getY(), VisualMusicThread.particleRadius,
+                    this.monitor.getY(), this.particleRadius,
                             particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
-                            monitor.getEndColor());
+                            monitor.getEndColor(), monitor.getRotation(),
+                            monitor.getRotSpacing());
             this.lastX = newX;
         }
 
-        /* Which way is the finger going? Upwards or downwards? */
-        fingerDirection = (newY > this.lastY) ? 0 : 1;
+        /* Update the rotation spacing */
+        if (Math.abs(newX - this.lastX) >= 10 || Math.abs(newX - this.lastX) >= 10) {
+            monitor.setRotSpacing(0);
+            this.spacingUp = true;
+        } else {
+            /* Decide whether rotSpacing should go the other way */
+            if (spacingUp)
+                spacingUp = (monitor.getRotSpacing() >= 100) ? false : true;
+            else
+                spacingUp = (monitor.getRotSpacing() <= 0) ? true : false;
+
+            /* Now increment or decrement rotSpacing */
+            if (spacingUp)
+                monitor.setRotSpacing(monitor.getRotSpacing() + 1);
+            else
+                monitor.setRotSpacing(monitor.getRotSpacing() - 1);
+        }
 
         try {
             int key = this.getKey(), scale = LOW_OCTAVE;
@@ -125,17 +163,33 @@ public class VisualMusicThread extends FingerThread {
         renderFrame(monitor);
     }
 
+    /**
+     * Set the particle's max speed, lifetime, and radius depending on the width and x-position.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param width The phones screen width.
+     * @param x The finger's x-position.
+     */
     protected void setParticleParameters (int width, float x) {
         float div = 1 - (x / width); /* Between 0 and 1, indicator of how far
                                       * on the screen the finger is (on x-axis) */
         float ftr = (float) (div + 0.75); /* Between 0.75 and 1.75 */
 
-        VisualMusicThread.particleMaxSpeed = (1 + (9 * div)); /* High frequency = high speed */
-        VisualMusicThread.particleLifetime = Math.round(50 + (50 * div)); /* High frequency = long lifetime */
-        VisualMusicThread.particleRadius   = Math.round(VisualMusicThread.particleRadiusBase * ftr);
+        this.particleMaxSpeed = (1 + (9 * div)); /* High frequency = high speed */
+        this.particleLifetime = Math.round(75 + (75 * div)); /* High frequency = long lifetime */
+        this.particleRadius   = Math.round(this.particleRadiusBase * ftr);
     }
 
-
+    /**
+     * Start the finishing sequence of the thread. When there are still particles on the canvas
+     * their movement will be finished before ending the finishing sequence.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
     protected void finish() {
 
         new_touch = true;
@@ -189,14 +243,24 @@ public class VisualMusicThread extends FingerThread {
         super.finish();
     }
 
+    /**
+     * Prevent the thread from terminating before custom stop methods have been called,
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public void turnOff() {
-        /* To prevent the thread from terminating before custom stop methods
-         * have been called, do your own stuff before the super turnoff. */
         super.turnOff();
     }
 
-    /* Render a single frame, only continues if enough time has elapsed. This time can be found
+    /**
+     *  Render a single frame, only continues if enough time has elapsed. This time can be found
      * in FRAME_REFRESH_TIME.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param monitor the visual music thread monitor.
      */
     public void renderFrame(VisualMusicThreadMonitor monitor) {
         if(SystemClock.currentThreadTimeMillis() - last_render_time > this.FRAME_REFRESH_TIME){
@@ -221,6 +285,14 @@ public class VisualMusicThread extends FingerThread {
         }
     }
 
+    /**
+     * Get the number of the pressed key.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return key number of the pressed key.
+     */
     private int getKey(){
         float part;
         int key;
