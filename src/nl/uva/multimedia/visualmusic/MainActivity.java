@@ -84,8 +84,8 @@ public class MainActivity extends MultitouchActivity {
         View layout = inflater.inflate(R.layout.popup,
                 (ViewGroup)findViewById(R.id.popupRoot));
 
-        final AttackSlider attackSlider =
-                (AttackSlider)layout.findViewById(R.id.attackSlider);
+        final SeekBar attackSlider =
+                (SeekBar)layout.findViewById(R.id.attackSlider);
         attackSlider.setProgress(250);
         this.synthSettings = new AlertDialog.Builder(this)
                 .setView(layout)
