@@ -17,12 +17,12 @@ public class PlayTone {
     private final int sampleRate = 44100;
     private final int bufferSize = sampleRate / 50;
 
-    private int attack = 100;
-    private final int decay = 50;
-    private final float sustain = 0.4f;
-    private final int release = 20;
+    private int attack = 250;
+    private int decay = 250;
+    private float sustain = 0.7f;
+    private int release = 250;
 
-    private final int overtones = 8;
+    private int overtones = 8;
 
     private AudioTrack mAudio;
     private int sampleCount = bufferSize;
@@ -30,8 +30,6 @@ public class PlayTone {
     private float freq;
     private long time;
     private boolean releasing;
-
-    private AttackSlider mAttackSlider;
 
     public PlayTone() {
         mAudio = new AudioTrack(
@@ -134,6 +132,22 @@ public class PlayTone {
 
     public void setAttack(int attack){
         this.attack = attack;
+    }
+
+    public void setDecay(int decay){
+        this.decay = decay;
+    }
+
+    public void setSustain(float sustain){
+        this.sustain = sustain;
+    }
+
+    public void setRelease(int release){
+        this.release = release;
+    }
+
+    public void setOvertones(int overtones){
+        this.overtones = overtones;
     }
 
     public void setTime(long time) {
