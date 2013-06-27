@@ -79,7 +79,9 @@ public class VisualMusicThread extends FingerThread {
                 (VisualMusicThreadMonitor)this.monitor;
 
 
-
+        /**
+         * Set all the envelop variables to the PlayTone, the number of overtones is also set.
+         */
         this.mPlayTone.setTime(SystemClock.currentThreadTimeMillis() -
                 this.startTime);
         this.mPlayTone.setAttack(monitor.getAttack());

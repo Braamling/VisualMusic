@@ -383,33 +383,24 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     /**
-     * Set the attack of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param attack Set the attack of a tone.
      */
     public void setAttack(int attack) {
         this.attack = attack;
     }
 
     /**
-     * get the attack of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @return get the attack of a tone.
      */
     public int getAttack() {
         return this.attack;
     }
 
     /**
-     * Set the decay of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param decay Set the decay of a tone.
      */
     public void setDecay(int decay) {
         this.decay = decay;
@@ -427,55 +418,40 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     /**
-     * Set the sustain of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param sustain Set the sustain of a tone.
      */
     public void setSustain(float sustain) {
         this.sustain = sustain;
     }
 
     /**
-     * get the sustain of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @return Get the sustain of a tone.
      */
     public float getSustain() {
         return this.sustain;
     }
 
     /**
-     * Set the release of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param release Set the release of a tone.
      */
     public void setRelease(int release) {
         this.release = release;
     }
 
     /**
-     * get the release of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @return return the time the release of a tone takes.
      */
     public int getRelease() {
         return this.release;
     }
 
     /**
-     * Set the number of overtones of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param overtones Set the number of overtones.
      */
     public void setOvertones(int overtones) {
         this.overtones = overtones;
@@ -484,9 +460,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     /**
      * get the number of overtones of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @return The amount of overtones.
      */
     public int getOvertones() {
         return this.overtones;
