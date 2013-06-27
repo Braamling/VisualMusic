@@ -39,7 +39,8 @@ public class MultitouchActivity extends Activity {
             int[] pointers, indices;
             TypedValue tv;
 
-            /* Compensate for the action bar. */
+            /* Compensate for the action bar.
+             * Source http://stackoverflow.com/a/13216807. */
             tv = new TypedValue();
             if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
                     true)) {

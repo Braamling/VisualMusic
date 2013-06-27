@@ -19,7 +19,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     private int begin_color;
     private int end_color;
-    private int rotation; /* Should range from 90 to 720 */
+    private int rotation = 720; /* Should range from 90 to 720 */
     private int rotSpacing; /* Increments with every thread update, indicates
                              * the spacing for the particle rotations */
 
@@ -192,8 +192,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
         this.begin_color    = createBeginColor(id);
         this.end_color      = createEndColor(id);
-
-        this.rotation = pickRotation(id);
     }
 
     /**
@@ -265,42 +263,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
                 return Color.argb(255, 40, 40, 40);
             default:
                 return Color.argb(255, 0, 255, 0);
-        }
-    }
-
-    /**
-     * Create a ration based on the given id value.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @param id An integer between 0 and 9. All other values will return 360.
-     * @return An integer representing and the ration.
-     */
-    private int pickRotation (int id) {
-        switch(id) {
-            case 0:
-                return 180;
-            case 1:
-                return 180;
-            case 2:
-                return 360;
-            case 3:
-                return 360;
-            case 4:
-                return 360;
-            case 5:
-                return 540;
-            case 6:
-                return 540;
-            case 7:
-                return 720;
-            case 8:
-                return 720;
-            case 9:
-                return 1080;
-            default:
-                return 360;
         }
     }
 

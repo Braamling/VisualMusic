@@ -99,7 +99,7 @@ public class Particle {
 		if (!isDead()) {
 			/* Start curling the particles */
 			if (this.rot_radius == 0) {
-				this.rot_radius   = (3 + (rotSpacing / 10)) * this.radius_start;
+				this.rot_radius   = (4 + (rotSpacing / 35)) * this.radius_start;
 				this.rot_x_offset = this.x_pos;
 				this.rot_y_offset = this.y_pos;
 			}
