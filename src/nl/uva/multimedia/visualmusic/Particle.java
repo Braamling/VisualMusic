@@ -24,13 +24,14 @@ public class Particle {
 	protected int     radius_start;
 	protected int     rot_radius;
 	protected int 	  rot_dir;
+    private int     rotation;
 	protected Paint   paint;
 	protected boolean dead;
     private int begin_color;
     private int end_color;
 	
 	public Particle(float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time,
-                    int begin_color, int end_color) {
+                    int begin_color, int end_color, int rotation) {
 		Random r = new Random();
 
         // TODO Fix this, max_radius sometimes is negative, also max_life_time.
@@ -73,11 +74,12 @@ public class Particle {
 			}
 
 			//degrees = (float) (270 + (337 * (ratio - 0.2))); // should be this
-			degrees = (float) (270 + (450 * (ratio - 0.5))); // somehow looks better
+			//degrees = (float) (270 + (450 * (ratio - 0.5))); // somehow looks better
+            degrees = (float) (450 * ratio);
 			/* If the fingerdirection is upwards (1), make the particles circle
 			 * the other way */
-			if (VisualMusicThread.fingerDirection == 1)
-				degrees += 180;
+			//if (VisualMusicThread.fingerDirection == 1)
+			//	degrees += 180;
 
 			this.x_pos = (float)(this.rot_x_offset + 
 					(this.rot_dir * this.rot_radius * Math.cos(Math.toRadians(degrees))));
