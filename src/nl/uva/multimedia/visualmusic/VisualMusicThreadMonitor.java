@@ -23,6 +23,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int rotSpacing; /* Increments with every thread update, indicates
                              * the spacing for the particle rotations */
 
+    private int attack = 250;
+
     /**
      * Initialize the visual music thread without any values.
      *
@@ -332,6 +334,28 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public void setRotSpacing(int r) {
         this.rotSpacing = r;
+    }
+
+    /**
+     * Set the attack of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    /**
+     * get the attack of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public int getAttack() {
+        return this.attack;
     }
 
 }

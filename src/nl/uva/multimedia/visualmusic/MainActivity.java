@@ -1,7 +1,9 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.graphics.Canvas;
 import android.database.Cursor;
@@ -15,9 +17,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 public class MainActivity extends MultitouchActivity {
 
@@ -32,6 +37,7 @@ public class MainActivity extends MultitouchActivity {
     private SurfaceHolder surfaceHolder;
     private WaveFile sample = null;
     private MyButton synth_option_button = null;
+    private AlertDialog synthSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,8 @@ public class MainActivity extends MultitouchActivity {
                 new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
                         VisualMusicThread.class, VisualMusicThreadMonitor.class,
                         N_FINGER_THREADS);
+
+        this.initSynthSettings();
     }
 
     @Override
@@ -63,11 +71,38 @@ public class MainActivity extends MultitouchActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.synth_options:
-                Log.v("BasIsEenAnus", "Ja, echt waar.");
+                this.synthSettings.show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void initSynthSettings() {
+        LayoutInflater inflater =
+                (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.popup,
+                (ViewGroup)findViewById(R.id.popupRoot));
+
+        final SeekBar attackSlider =
+                (SeekBar)layout.findViewById(R.id.attackSlider);
+        attackSlider.setProgress(250);
+        this.synthSettings = new AlertDialog.Builder(this)
+                .setView(layout)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        VisualMusicThreadMonitor monitor;
+                        try{
+                            for(int index = 0; index < N_FINGER_THREADS; index ++){
+                                monitor = mFingerHandler.getMonitor(index);
+                                monitor.setAttack(attackSlider.getProgress());
+                            }
+                        }catch (Exception e){
+                        }
+                    }
+                })
+                .create();
     }
 
     protected void onActivityResult(int request_code, int result_code, Intent data) {

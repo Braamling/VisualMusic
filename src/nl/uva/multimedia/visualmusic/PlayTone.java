@@ -17,7 +17,7 @@ public class PlayTone {
     private final int sampleRate = 44100;
     private final int bufferSize = sampleRate / 50;
 
-    private final int attack = 100;
+    private int attack = 100;
     private final int decay = 50;
     private final float sustain = 0.4f;
     private final int release = 20;
@@ -30,6 +30,8 @@ public class PlayTone {
     private float freq;
     private long time;
     private boolean releasing;
+
+    private AttackSlider mAttackSlider;
 
     public PlayTone() {
         mAudio = new AudioTrack(
@@ -82,6 +84,7 @@ public class PlayTone {
         }
         else if (this.time < this.attack) {
             amplitude = (1.0f / this.attack) * this.time;
+            Log.v(TAG, "attack: " + this.attack + " time: " + this.time);
         }
         else if (this.time < (this.attack + this.decay)) {
             amplitude = 1.0f - ((1.0f - this.sustain) / this.decay) *
@@ -127,6 +130,10 @@ public class PlayTone {
         catch (IllegalStateException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setAttack(int attack){
+        this.attack = attack;
     }
 
     public void setTime(long time) {
