@@ -1,6 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.graphics.Canvas;
 import android.database.Cursor;
@@ -8,10 +9,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 public class MainActivity extends MultitouchActivity {
@@ -31,7 +36,7 @@ public class MainActivity extends MultitouchActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pCanvas = new ParticleCanvas(this, this);
+        pCanvas = new ParticleCanvas(this);
         setContentView(pCanvas);
 
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
