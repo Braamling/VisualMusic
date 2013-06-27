@@ -1,8 +1,6 @@
 package nl.uva.multimedia.visualmusic;
 
-import android.app.ActivityManager;
 import android.os.SystemClock;
-import android.util.Log;
 
 /**
  * A thread for the sound and particles for a single finger.
@@ -41,7 +39,7 @@ public class VisualMusicThread extends FingerThread {
     private int particleRadiusBase; /* Value should be set after screen dimensions are known */
     private int particleRadius; /* Value of the radius based on the frequency */
 
-    Particles[] particles = new Particles[N_PARTICLE_GROUPS];
+    ParticleBurst[] particles = new ParticleBurst[N_PARTICLE_GROUPS];
 
     /**
      * Initialize all the parameters for the thread to run.
@@ -114,7 +112,7 @@ public class VisualMusicThread extends FingerThread {
          * or that vertical movement is not allowed. */
         if (Math.abs(newX - this.lastX) >= 0) {
             particles[this.i ++ % N_PARTICLE_GROUPS] =
-                    new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
+                    new ParticleBurst(PARTICLE_GROUP_SIZE, this.monitor.getX(),
                     this.monitor.getY(), this.particleRadius,
                             particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
                             monitor.getEndColor(), monitor.getRotation(),

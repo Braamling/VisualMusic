@@ -5,13 +5,13 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
- * Particles controls a burst of 1 or more particles.
+ * ParticleBurst controls a burst of 1 or more particles.
  *
  * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
  * @version 1.0
  */
-public class Particles {
-    private static final String TAG = "Particles";
+public class ParticleBurst {
+    private static final String TAG = "ParticleBurst";
 
 	protected Particle[] particles;
 	
@@ -26,12 +26,12 @@ public class Particles {
     private int rotation;
     private int rotSpacing;
 	
-	public Particles() {
+	public ParticleBurst() {
 		
 	}
 
     /**
-     * Initialization of a Particles object.
+     * Initialization of a ParticleBurst object.
      *
      * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
      * @version 1.0
@@ -47,9 +47,9 @@ public class Particles {
      * @param rotation indicates the amount of degrees the particles should rotate
      * @param rotSpacing should be used to determine the radius at with particles rotate
      */
-	public Particles(int particles_amount, float x_pos, float y_pos, int max_radius, float max_speed,
-                     int max_life_time, int begin_color, int end_color, int rotation,
-                     int rotSpacing) {
+	public ParticleBurst(int particles_amount, float x_pos, float y_pos, int max_radius, float max_speed,
+                         int max_life_time, int begin_color, int end_color, int rotation,
+                         int rotSpacing) {
 		this.particles 		= new Particle[particles_amount];
 		this.x_pos 			= x_pos;
 		this.y_pos 			= y_pos;
