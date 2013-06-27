@@ -240,6 +240,7 @@ public class MainActivity extends MultitouchActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         VisualMusicThreadMonitor monitor;
+
                         int count = radiobuttons.getChildCount();
                         int particleTheme = 0;
                         for (int j = 0; j < count; j++) {
@@ -256,8 +257,7 @@ public class MainActivity extends MultitouchActivity {
                         try{
                             for(int index = 0; index < N_FINGER_THREADS; index ++){
                                 monitor = mFingerHandler.getMonitor(index);
-                                monitor.setParticleTheme(radiobuttons.getCheckedRadioButtonId());
-                                Log.e(TAG, "button" + radiobuttons.getCheckedRadioButtonId());
+                                monitor.setParticleTheme(particleTheme);
                             }
                         }catch (Exception e){
                         }

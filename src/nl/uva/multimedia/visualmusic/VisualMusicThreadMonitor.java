@@ -1,6 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -194,7 +195,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      * @version 1.0
      */
     public void pickColorScheme() {
-        pickColorScheme(5);
+        pickColorScheme(0);
     }
 
     /**
@@ -366,7 +367,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      * @param group the theme value from the radio button. Integer between 0 and 5.
      */
     public void setParticleTheme(int group){
-        this.theme = theme;
+        this.theme = group;
     }
 
     /**
@@ -377,7 +378,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      *
      * @return the theme value from the radio button. Integer between 0 and 5.
      */
-    public int GetParticleTheme(){
+    public int getParticleTheme(){
         return this.theme;
     }
 
