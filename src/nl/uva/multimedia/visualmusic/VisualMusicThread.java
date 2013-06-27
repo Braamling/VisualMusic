@@ -19,6 +19,8 @@ public class VisualMusicThread extends FingerThread {
     private PlayTone mPlayTone = new PlayTone();
     private long last_render_time;
     private boolean new_touch = true;
+    private boolean spacingUp = true; /* If rotSpacing should increment, set to true.
+                                         If it should decrement, set to false. */
 
     private long startTime;
 
@@ -87,13 +89,17 @@ public class VisualMusicThread extends FingerThread {
 
             monitor.pick_color_scheme();
             new_touch = false;
+
+            /* Set the rotation spacing for particles */
+            monitor.setRotSpacing(0);
         }
 
         /* Determine particle max radius. This cannot be done in the init() method
          * because the canvas size is not yet known at that time. */
         if (this.particleRadiusBase == 0) {
             this.particleRadiusBase = (monitor.getParticleCanvas().getHeight() > 0) ?
-                    (monitor.getParticleCanvas().getHeight() / 100) : 27;
+                    ((monitor.getParticleCanvas().getWidth() * 
+                      monitor.getParticleCanvas().getHeight()) / 110000) : 20;
             this.particleRadius = this.particleRadiusBase;
         }
 
@@ -111,8 +117,27 @@ public class VisualMusicThread extends FingerThread {
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
                     this.monitor.getY(), this.particleRadius,
                             particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
-                            monitor.getEndColor(), monitor.getRotation());
+                            monitor.getEndColor(), monitor.getRotation(),
+                            monitor.getRotSpacing());
             this.lastX = newX;
+        }
+
+        /* Update the rotation spacing */
+        if (Math.abs(newX - this.lastX) >= 10 || Math.abs(newX - this.lastX) >= 10) {
+            monitor.setRotSpacing(0);
+            this.spacingUp = true;
+        } else {
+            /* Decide whether rotSpacing should go the other way */
+            if (spacingUp)
+                spacingUp = (monitor.getRotSpacing() >= 100) ? false : true;
+            else
+                spacingUp = (monitor.getRotSpacing() <= 0) ? true : false;
+
+            /* Now increment or decrement rotSpacing */
+            if (spacingUp)
+                monitor.setRotSpacing(monitor.getRotSpacing() + 1);
+            else
+                monitor.setRotSpacing(monitor.getRotSpacing() - 1);
         }
 
         try {

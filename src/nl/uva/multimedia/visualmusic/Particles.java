@@ -24,6 +24,7 @@ public class Particles {
     private int begin_color;
     private int end_color;
     private int rotation;
+    private int rotSpacing;
 	
 	public Particles() {
 		
@@ -44,9 +45,11 @@ public class Particles {
      * @param begin_color The begin color a single particle.
      * @param end_color The end color a single particle.
      * @param rotation indicates the amount of degrees the particles should rotate
+     * @param rotSpacing should be used to determine the radius at with particles rotate
      */
 	public Particles(int particles_amount, float x_pos, float y_pos, int max_radius, float max_speed,
-                     int max_life_time, int begin_color, int end_color, int rotation) {
+                     int max_life_time, int begin_color, int end_color, int rotation,
+                     int rotSpacing) {
 		this.particles 		= new Particle[particles_amount];
 		this.x_pos 			= x_pos;
 		this.y_pos 			= y_pos;
@@ -57,6 +60,7 @@ public class Particles {
         this.begin_color    = begin_color;
         this.end_color      = end_color;
         this.rotation       = rotation;
+        this.rotSpacing     = rotSpacing;
 		
 		this.init();
 	}
@@ -67,7 +71,7 @@ public class Particles {
 	public void init() {
 		for(int i = 0; i < this.particles.length; i++)
 			this.particles[i] = new Particle(x_pos, y_pos, max_radius, max_speed, max_life_time,
-                    begin_color, end_color, rotation);
+                    begin_color, end_color, rotation, rotSpacing);
 		
 	}
 

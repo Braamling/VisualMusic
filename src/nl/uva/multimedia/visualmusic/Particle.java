@@ -31,6 +31,7 @@ public class Particle {
     private int     rot_radius;
     private int 	rot_dir;
     private int     rotation;
+    private int     rotSpacing;
     private Paint   paint;
     private boolean dead;
     private int     begin_color;
@@ -50,10 +51,11 @@ public class Particle {
      * @param begin_color The begin color the particle
      * @param end_color The end color the particle
      * @param rotation indicates the amount of degrees a particle should rotate
+     * @param rotSpacing should be used to determine the radius at with particles rotate
      */
 
 	public Particle(float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time,
-                    int begin_color, int end_color, int rotation) {
+                    int begin_color, int end_color, int rotation, int rotSpacing) {
 		Random r = new Random();
 
         // TODO Fix this, max_radius sometimes is negative, also max_life_time.
@@ -78,6 +80,7 @@ public class Particle {
         this.begin_color  = begin_color;
         this.end_color    = end_color;
         this.rotation     = rotation;
+        this.rotSpacing   = rotSpacing;
 		
 		this.paint = new Paint();
         this.paint.setColor(begin_color);
@@ -96,7 +99,7 @@ public class Particle {
 		if (!isDead()) {
 			/* Start curling the particles */
 			if (this.rot_radius == 0) {
-				this.rot_radius   = 3 * this.radius_start;
+				this.rot_radius   = (3 + (rotSpacing / 10)) * this.radius_start;
 				this.rot_x_offset = this.x_pos;
 				this.rot_y_offset = this.y_pos;
 			}
