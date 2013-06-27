@@ -187,7 +187,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      * @version 1.0
      */
     public void pickColorScheme() {
-        pickColorScheme(5);
+        pickColorScheme(0);
     }
 
     /**
