@@ -19,7 +19,7 @@ import android.util.Log;
 import android.widget.SeekBar;
 import android.util.AttributeSet;
 
-class AttackSlider extends SeekBar implements SeekBar.OnSeekBarChangeListener {
+class AttackSlider extends SeekBar {
     private static final String TAG = "AttackSlider";
     
 	/* Necessary constructors */
@@ -40,16 +40,6 @@ class AttackSlider extends SeekBar implements SeekBar.OnSeekBarChangeListener {
 
     /* Set the max to 1500 for 1,5 seconds of attack.*/
 	private void setup() {
-		setOnSeekBarChangeListener(this);
         setMax(1500);
 	}
-	
-
-	/* Push new bar size to snap() on Slider change */
-	public void onProgressChanged(SeekBar slider, int progress,
-			boolean from_user) {
-	}
-
-	public void onStartTrackingTouch(SeekBar slider) { /* NOP */ }
-	public void onStopTrackingTouch(SeekBar slider) { /* NOP */ }
 }
