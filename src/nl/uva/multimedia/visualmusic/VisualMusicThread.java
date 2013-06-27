@@ -34,7 +34,6 @@ public class VisualMusicThread extends FingerThread {
 
     private static final int LOW_OCTAVE = 2;
 
-    private float particleMaxSpeed;  /* Maximum speed of a single particle */
     private int particleLifetime; /* Maximum life time of a single particle */
     private int particleRadiusBase; /* Value should be set after screen dimensions are known */
     private int particleRadius; /* Value of the radius based on the frequency */
@@ -107,27 +106,14 @@ public class VisualMusicThread extends FingerThread {
         /* Update the look of the upcoming particles based on the x position */
         setParticleParameters(monitor.getWidth(), monitor.getX());
 
-        /* The 0 in this if statement can be changed to a higher setting if
-         * it is decided that an unmoving finger should not generate particles,
-         * or that vertical movement is not allowed. */
-        if (Math.abs(newX - this.lastX) >= 0) {
-            particles[this.i ++ % N_PARTICLE_GROUPS] =
-                    new ParticleBurst(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-                    this.monitor.getY(), this.particleRadius,
-                            particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
-                            monitor.getEndColor(), monitor.getRotation(),
-                            monitor.getRotSpacing());
-            this.lastX = newX;
-        }
-
         /* Update the rotation spacing */
-        if (Math.abs(newX - this.lastX) >= 10 || Math.abs(newX - this.lastX) >= 10) {
+        if (Math.abs(newX - this.lastX) > 1 || Math.abs(newY - this.lastY) > 1) {
             monitor.setRotSpacing(0);
             this.spacingUp = true;
         } else {
             /* Decide whether rotSpacing should go the other way */
             if (spacingUp)
-                spacingUp = (monitor.getRotSpacing() >= 100) ? false : true;
+                spacingUp = (monitor.getRotSpacing() >= 400) ? false : true;
             else
                 spacingUp = (monitor.getRotSpacing() <= 0) ? true : false;
 
@@ -137,6 +123,20 @@ public class VisualMusicThread extends FingerThread {
             else
                 monitor.setRotSpacing(monitor.getRotSpacing() - 1);
         }
+
+        /* The 0 in this if statement can be changed to a higher setting if
+         * it is decided that an unmoving finger should not generate particles,
+         * or that vertical movement is not allowed. */
+        if (Math.abs(newX - this.lastX) >= 0) {
+            particles[this.i ++ % N_PARTICLE_GROUPS] =
+                    new ParticleBurst(PARTICLE_GROUP_SIZE, this.monitor.getX(),
+                    this.monitor.getY(), this.particleRadius, particleLifetime,
+                            monitor.getBeginColor(), monitor.getEndColor(),
+                            monitor.getRotation(), monitor.getRotSpacing());
+            this.lastX = newX;
+        }
+        this.lastY = newY;
+
 
         try {
             int key = this.getKey(), scale = LOW_OCTAVE;
@@ -162,7 +162,7 @@ public class VisualMusicThread extends FingerThread {
     }
 
     /**
-     * Set the particle's max speed, lifetime, and radius depending on the width and x-position.
+     * Set the particle's lifetime and radius depending on the width and x-position.
      *
      * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
      * @version 1.0
@@ -175,8 +175,7 @@ public class VisualMusicThread extends FingerThread {
                                       * on the screen the finger is (on x-axis) */
         float ftr = (float) (div + 0.75); /* Between 0.75 and 1.75 */
 
-        this.particleMaxSpeed = (1 + (9 * div)); /* High frequency = high speed */
-        this.particleLifetime = Math.round(75 + (75 * div)); /* High frequency = long lifetime */
+        this.particleLifetime = Math.round(575 + (75 * div)); /* High frequency = long lifetime */
         this.particleRadius   = Math.round(this.particleRadiusBase * ftr);
     }
 
