@@ -1,7 +1,9 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.graphics.Canvas;
 import android.database.Cursor;
@@ -15,9 +17,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 public class MainActivity extends MultitouchActivity {
 
@@ -32,6 +39,8 @@ public class MainActivity extends MultitouchActivity {
     private SurfaceHolder surfaceHolder;
     private WaveFile sample = null;
     private MyButton synth_option_button = null;
+    private AlertDialog synthSettings;
+    private AlertDialog particleSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,9 @@ public class MainActivity extends MultitouchActivity {
                 new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
                         VisualMusicThread.class, VisualMusicThreadMonitor.class,
                         N_FINGER_THREADS);
+
+        this.initSynthSettings();
+        this.initParticleSettings();
     }
 
     @Override
@@ -63,11 +75,83 @@ public class MainActivity extends MultitouchActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.synth_options:
-                Log.v("BasIsEenAnus", "Ja, echt waar.");
+                this.synthSettings.show();
+                return true;
+            case R.id.particle_options:
+                this.particleSettings.show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+
+    private void initSynthSettings() {
+        LayoutInflater inflater =
+                (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.popup,
+                (ViewGroup)findViewById(R.id.popupRoot));
+
+        final SeekBar attackSlider =
+                (SeekBar)layout.findViewById(R.id.attackSlider);
+        attackSlider.setProgress(250);
+        this.synthSettings = new AlertDialog.Builder(this)
+                .setView(layout)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        VisualMusicThreadMonitor monitor;
+                        try{
+                            for(int index = 0; index < N_FINGER_THREADS; index ++){
+                                monitor = mFingerHandler.getMonitor(index);
+                                monitor.setAttack(attackSlider.getProgress());
+                            }
+                        }catch (Exception e){
+                        }
+                    }
+                })
+                .create();
+    }
+
+    private void initParticleSettings() {
+        LayoutInflater inflater =
+                (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.particle_popup,
+                (ViewGroup)findViewById(R.id.particleRoot));
+
+        final RadioGroup radiobuttons =
+                (RadioGroup) layout.findViewById(R.id.particleRadio);
+        radiobuttons.check(0);
+        this.particleSettings = new AlertDialog.Builder(this)
+                .setView(layout)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        VisualMusicThreadMonitor monitor;
+                        int count = radiobuttons.getChildCount();
+                        int particleTheme = 0;
+                        for (int j = 0; j < count; j++) {
+                            View o = radiobuttons.getChildAt(j);
+                            if (o instanceof RadioButton) {
+                                RadioButton radioBtn =  (RadioButton)o;
+                                if(radioBtn.isChecked()){
+                                    particleTheme = j;
+                                    break;
+                                }
+                            }
+                        }
+
+                        try{
+                            for(int index = 0; index < N_FINGER_THREADS; index ++){
+                                monitor = mFingerHandler.getMonitor(index);
+                                monitor.setParticleTheme(radiobuttons.getCheckedRadioButtonId());
+                                Log.e(TAG, "button" + radiobuttons.getCheckedRadioButtonId());
+                            }
+                        }catch (Exception e){
+                        }
+                    }
+                })
+                .create();
     }
 
     protected void onActivityResult(int request_code, int result_code, Intent data) {

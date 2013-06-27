@@ -56,7 +56,7 @@ public class VisualMusicThread extends FingerThread {
 
         /* Activate the monitor and pick a color scheme for the particles */
         monitor.setActive(true);
-        monitor.pickColorScheme(monitor.getTheme());
+        monitor.pickColorScheme(monitor.GetParticleTheme());
 
     }
 
@@ -79,6 +79,8 @@ public class VisualMusicThread extends FingerThread {
 
         this.mPlayTone.setTime(SystemClock.currentThreadTimeMillis() -
                 this.startTime);
+        this.mPlayTone.setAttack(monitor.getAttack());
+
 
         /* Check whether this is a touchdown to change the color scheme */
         if (new_touch) {

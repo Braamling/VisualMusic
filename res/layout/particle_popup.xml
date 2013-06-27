@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:layout_gravity="left|center_vertical"
+            android:text="Select a particle theme."/>
+
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="2dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ButtonRandom"
+                android:id="@+id/radioButton6"
+                android:layout_gravity="left|center_vertical"
+                android:checked="true"/>
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ButtonElements"
+                android:id="@+id/radioButton3"
+                android:layout_gravity="left|center_vertical"
+                android:checked="false"/>
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ButtonWater"
+                android:id="@+id/radioButton2"
+                android:checked="false"
+                android:layout_gravity="left|center_vertical"/>
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ButtonGold"
+                android:id="@+id/radioButton"
+                android:layout_gravity="left|center_vertical"
+                android:checked="false"/>
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ButtonLove"
+                android:id="@+id/radioButton5"
+                android:layout_gravity="left|center_vertical"
+                android:checked="false"/>
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ButtonMagical"
+                android:id="@+id/radioButton4"
+                android:layout_gravity="left|center_vertical"
+                android:checked="false"/>
+    </RadioGroup>
+
+</LinearLayout>
