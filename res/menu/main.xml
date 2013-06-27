@@ -1,11 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--<item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />-->
+    <item
+    	android:id="@+id/synth_options"
+    	android:title="Synth Options" 
+    	android:showAsAction="never"
+    />
+
     <item 
-    	android:id="@+id/select_sample"
-    	android:title="Select Sample" 
-    	android:showAsAction="ifRoom"
+    	android:id="@+id/particle_options"
+    	android:title="Particle Options" 
+    	android:showAsAction="never"
     />
 </menu>
