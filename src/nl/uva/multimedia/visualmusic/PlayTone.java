@@ -82,7 +82,6 @@ public class PlayTone {
         }
         else if (this.time < this.attack) {
             amplitude = (1.0f / this.attack) * this.time;
-            Log.v(TAG, "attack: " + this.attack + " time: " + this.time);
         }
         else if (this.time < (this.attack + this.decay)) {
             amplitude = 1.0f - ((1.0f - this.sustain) / this.decay) *
