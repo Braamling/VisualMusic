@@ -1,7 +1,9 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.graphics.Canvas;
 import android.database.Cursor;
@@ -15,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -33,6 +37,8 @@ public class MainActivity extends MultitouchActivity {
     private WaveFile sample = null;
     private MyButton synth_option_button = null;
 
+    private AlertDialog synthSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,8 @@ public class MainActivity extends MultitouchActivity {
                 new FingerHandler<VisualMusicThread, VisualMusicThreadMonitor>(
                         VisualMusicThread.class, VisualMusicThreadMonitor.class,
                         N_FINGER_THREADS);
+
+        this.initSynthSettings();
     }
 
     @Override
@@ -63,11 +71,34 @@ public class MainActivity extends MultitouchActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.synth_options:
-                Log.v("BasIsEenAnus", "Ja, echt waar.");
+                this.synthSettings.show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void initSynthSettings() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("ik moet schijten").setTitle("Argh");
+//        this.synthSettings = builder.create();
+
+        LayoutInflater inflater =
+                (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.popup,
+                (ViewGroup)findViewById(R.id.popupRoot));
+
+        final AttackSlider attackSlider =
+                (AttackSlider)layout.findViewById(R.id.attackSlider);
+        this.synthSettings = new AlertDialog.Builder(this)
+                .setView(layout)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.v(TAG, "penis " + attackSlider.getProgress());
+                    }
+                })
+                .create();
     }
 
     protected void onActivityResult(int request_code, int result_code, Intent data) {

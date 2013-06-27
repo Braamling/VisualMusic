@@ -15,10 +15,12 @@ package nl.uva.multimedia.visualmusic;
  */
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.util.AttributeSet;
 
 class AttackSlider extends SeekBar implements SeekBar.OnSeekBarChangeListener {
+    private static final String TAG = "AttackSlider";
     
 	/* Necessary constructors */
 	public AttackSlider(Context context) {
@@ -46,7 +48,6 @@ class AttackSlider extends SeekBar implements SeekBar.OnSeekBarChangeListener {
 	/* Push new bar size to snap() on Slider change */
 	public void onProgressChanged(SeekBar slider, int progress,
 			boolean from_user) {
-
 	}
 
 	public void onStartTrackingTouch(SeekBar slider) { /* NOP */ }

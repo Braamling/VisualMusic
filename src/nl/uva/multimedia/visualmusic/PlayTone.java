@@ -31,6 +31,8 @@ public class PlayTone {
     private long time;
     private boolean releasing;
 
+    private AttackSlider mAttackSlider;
+
     public PlayTone() {
         mAudio = new AudioTrack(
                 AudioManager.STREAM_MUSIC,
