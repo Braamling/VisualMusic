@@ -97,7 +97,6 @@ public class MainActivity extends MultitouchActivity {
                             for(int index = 0; index < N_FINGER_THREADS; index ++){
                                 monitor = mFingerHandler.getMonitor(index);
                                 monitor.setAttack(attackSlider.getProgress());
-                                Log.v(TAG, "attack in monitor: " + monitor.getAttack());
                             }
                         }catch (Exception e){
                         }
