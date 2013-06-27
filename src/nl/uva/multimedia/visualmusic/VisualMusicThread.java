@@ -58,7 +58,7 @@ public class VisualMusicThread extends FingerThread {
 
         /* Activate the monitor and pick a color scheme for the particles */
         monitor.setActive(true);
-        monitor.pickColorScheme(monitor.GetParticleTheme());
+
 
     }
 
@@ -79,6 +79,10 @@ public class VisualMusicThread extends FingerThread {
         VisualMusicThreadMonitor monitor =
                 (VisualMusicThreadMonitor)this.monitor;
 
+
+        /**
+         * Set all the envelop variables to the PlayTone, the number of overtones is also set.
+         */
         this.mPlayTone.setTime(SystemClock.currentThreadTimeMillis() -
                 this.startTime);
         this.mPlayTone.setAttack(monitor.getAttack());
@@ -92,11 +96,12 @@ public class VisualMusicThread extends FingerThread {
         if (new_touch) {
             this.startTime = SystemClock.currentThreadTimeMillis();
 
-            monitor.pickColorScheme();
+            monitor.pickColorScheme(monitor.getParticleTheme());
             new_touch = false;
 
             /* Set the rotation spacing for particles */
             monitor.setRotSpacing(0);
+
         }
 
         /* Determine particle max radius. This cannot be done in the init() method

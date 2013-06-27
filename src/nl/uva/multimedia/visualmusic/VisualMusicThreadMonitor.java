@@ -1,6 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -194,7 +195,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      * @version 1.0
      */
     public void pickColorScheme() {
-        pickColorScheme(5);
+        pickColorScheme(0);
     }
 
     /**
@@ -366,7 +367,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      * @param group the theme value from the radio button. Integer between 0 and 5.
      */
     public void setParticleTheme(int group){
-        this.theme = theme;
+        this.theme = group;
     }
 
     /**
@@ -377,38 +378,29 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      *
      * @return the theme value from the radio button. Integer between 0 and 5.
      */
-    public int GetParticleTheme(){
+    public int getParticleTheme(){
         return this.theme;
     }
 
     /**
-     * Set the attack of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param attack Set the attack of a tone.
      */
     public void setAttack(int attack) {
         this.attack = attack;
     }
 
     /**
-     * get the attack of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @return get the attack of a tone.
      */
     public int getAttack() {
         return this.attack;
     }
 
     /**
-     * Set the decay of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param decay Set the decay of a tone.
      */
     public void setDecay(int decay) {
         this.decay = decay;
@@ -426,55 +418,40 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     /**
-     * Set the sustain of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param sustain Set the sustain of a tone.
      */
     public void setSustain(float sustain) {
         this.sustain = sustain;
     }
 
     /**
-     * get the sustain of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @return Get the sustain of a tone.
      */
     public float getSustain() {
         return this.sustain;
     }
 
     /**
-     * Set the release of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param release Set the release of a tone.
      */
     public void setRelease(int release) {
         this.release = release;
     }
 
     /**
-     * get the release of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @return return the time the release of a tone takes.
      */
     public int getRelease() {
         return this.release;
     }
 
     /**
-     * Set the number of overtones of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @param overtones Set the number of overtones.
      */
     public void setOvertones(int overtones) {
         this.overtones = overtones;
@@ -483,9 +460,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     /**
      * get the number of overtones of a tone.
      *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * @return The amount of overtones.
      */
     public int getOvertones() {
         return this.overtones;

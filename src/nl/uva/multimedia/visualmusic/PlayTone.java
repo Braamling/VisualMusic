@@ -9,7 +9,10 @@ import android.media.audiofx.PresetReverb;
 import android.util.Log;
 
 /**
- * Created by klaplong on 6/19/13.
+ * A Class to generate tones and play them.
+ *
+ * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+ * @version 1.0
  */
 public class PlayTone {
     private static final String TAG = "PlayTone";
@@ -31,6 +34,9 @@ public class PlayTone {
     private long time;
     private boolean releasing;
 
+    /**
+     * Initialize the AudioTrack and write an empty buffer.
+     */
     public PlayTone() {
         mAudio = new AudioTrack(
                 AudioManager.STREAM_MUSIC,
@@ -41,19 +47,11 @@ public class PlayTone {
                 AudioTrack.MODE_STATIC
         );
         this.stop();
-//        effect = new PresetReverb(0, mAudio.getAudioSessionId());
-//        effect.setPreset(PresetReverb.PRESET_LARGEHALL);
-//        effect.setEnabled(true);
-//        mAudio.attachAuxEffect(effect.getId());
-//        mAudio.setAuxEffectSendLevel(1.0f);
     }
 
-    public void play() {
-//        mAudio.reloadStaticData();
-//        mAudio.setLoopPoints(0, this.sampleCount, -1);
-//        mAudio.play();
-    }
-
+    /**
+     * Fill up the buffer with zero's, this stops the music.
+     */
     public void stop() {
         if (mAudio.getState() == AudioTrack.STATE_UNINITIALIZED) {
             return;
@@ -62,6 +60,7 @@ public class PlayTone {
         /* Write an empty buffer. */
         mAudio.write(new byte[this.bufferSize], 0, this.bufferSize);
     }
+
 
     public void sample() {
         this.setFreq(this.freq);
@@ -82,7 +81,6 @@ public class PlayTone {
         }
         else if (this.time < this.attack) {
             amplitude = (1.0f / this.attack) * this.time;
-            Log.v(TAG, "attack: " + this.attack + " time: " + this.time);
         }
         else if (this.time < (this.attack + this.decay)) {
             amplitude = 1.0f - ((1.0f - this.sustain) / this.decay) *
@@ -130,34 +128,65 @@ public class PlayTone {
         }
     }
 
+    /**
+     * Set the attack of the tone.
+     * @param attack the attack.
+     */
     public void setAttack(int attack){
         this.attack = attack;
     }
 
+    /**
+     * Set the decay of the tone.
+     * @param decay the decay.
+     */
     public void setDecay(int decay){
         this.decay = decay;
     }
 
+    /**
+     * Set the sustain of the tone.
+     * @param sustain the sustain.
+     */
     public void setSustain(float sustain){
         this.sustain = sustain;
     }
 
+    /**
+     * set the release of the tone.
+     * @param release the release.
+     */
     public void setRelease(int release){
         this.release = release;
     }
 
+    /**
+     * Set the number of overtones.
+     * @param overtones the number of overtones.
+     */
     public void setOvertones(int overtones){
         this.overtones = overtones;
     }
 
+    /**
+     * Set how long the finger currently has been touching the screen.
+     * @param time The time in ms.
+     */
     public void setTime(long time) {
         this.time = time;
     }
 
+    /**
+     * Set the release boolean to true indicating that the finger has been released.
+     */
     public void startRelease() {
         this.releasing = true;
     }
 
+    /**
+     * Get a boolean indicating if the tone is being released
+     * @return a true or false boolean with the status of the tone.
+     */
     public boolean isReleasing() {
         return this.releasing;
     }
