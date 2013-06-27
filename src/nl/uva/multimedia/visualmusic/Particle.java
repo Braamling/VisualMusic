@@ -20,8 +20,6 @@ public class Particle {
 
     private float   x_pos;
     private float   y_pos;
-    private float   x_speed;
-    private float   y_speed;
     private float   rot_x_offset;
     private float   rot_y_offset;
     private int     age;
@@ -46,7 +44,6 @@ public class Particle {
      * @param x_pos The particle's x-position to start.
      * @param y_pos The particle's y-position to start.
      * @param max_radius The Particle's maximum radius.
-     * @param max_speed The maximum speed of a single particle
      * @param max_life_time The maximum life time of a single particle
      * @param begin_color The begin color the particle
      * @param end_color The end color the particle
@@ -54,7 +51,7 @@ public class Particle {
      * @param rotSpacing should be used to determine the radius at with particles rotate
      */
 
-	public Particle(float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time,
+	public Particle(float x_pos, float y_pos, int max_radius, int max_life_time,
                     int begin_color, int end_color, int rotation, int rotSpacing) {
 		Random r = new Random();
 
@@ -70,8 +67,6 @@ public class Particle {
 		this.radius_start = r.nextInt(max_radius - 1) + 1;
 		this.radius       = this.radius_start;
 		this.life_time    = r.nextInt(max_life_time-1) + 1;
-		this.x_speed      = max_speed * (float)r.nextDouble();
-		this.y_speed      = max_speed * (float)r.nextDouble();
 		this.age          = 0;
 		this.rot_radius   = 0;
 		this.rot_dir      = r.nextDouble() < 0.5 ? -1 : 1;

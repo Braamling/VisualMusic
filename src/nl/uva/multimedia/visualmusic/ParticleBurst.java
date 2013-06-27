@@ -18,7 +18,6 @@ public class ParticleBurst {
 	protected float x_pos;
 	protected float y_pos;
 	protected int max_radius;
-	protected float max_speed;
 	protected int max_life_time;
 	protected int age;
     private int begin_color;
@@ -40,21 +39,19 @@ public class ParticleBurst {
      * @param x_pos The particle's x-position to start.
      * @param y_pos The particle's y-position to start.
      * @param max_radius The Particle's maximum radius.
-     * @param max_speed The maximum speed of a single particle
      * @param max_life_time The maximum life time of a single particle
      * @param begin_color The begin color a single particle.
      * @param end_color The end color a single particle.
      * @param rotation indicates the amount of degrees the particles should rotate
      * @param rotSpacing should be used to determine the radius at with particles rotate
      */
-	public ParticleBurst(int particles_amount, float x_pos, float y_pos, int max_radius, float max_speed,
+	public ParticleBurst(int particles_amount, float x_pos, float y_pos, int max_radius,
                          int max_life_time, int begin_color, int end_color, int rotation,
                          int rotSpacing) {
 		this.particles 		= new Particle[particles_amount];
 		this.x_pos 			= x_pos;
 		this.y_pos 			= y_pos;
 		this.max_radius 	= max_radius;
-		this.max_speed 		= max_speed;
 		this.max_life_time 	= max_life_time;
 		this.age 			= 0;
         this.begin_color    = begin_color;
@@ -70,7 +67,7 @@ public class ParticleBurst {
      */
 	public void init() {
 		for(int i = 0; i < this.particles.length; i++)
-			this.particles[i] = new Particle(x_pos, y_pos, max_radius, max_speed, max_life_time,
+			this.particles[i] = new Particle(x_pos, y_pos, max_radius, max_life_time,
                     begin_color, end_color, rotation, rotSpacing);
 		
 	}

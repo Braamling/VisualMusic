@@ -34,7 +34,6 @@ public class VisualMusicThread extends FingerThread {
 
     private static final int LOW_OCTAVE = 2;
 
-    private float particleMaxSpeed;  /* Maximum speed of a single particle */
     private int particleLifetime; /* Maximum life time of a single particle */
     private int particleRadiusBase; /* Value should be set after screen dimensions are known */
     private int particleRadius; /* Value of the radius based on the frequency */
@@ -131,10 +130,9 @@ public class VisualMusicThread extends FingerThread {
         if (Math.abs(newX - this.lastX) >= 0) {
             particles[this.i ++ % N_PARTICLE_GROUPS] =
                     new ParticleBurst(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-                    this.monitor.getY(), this.particleRadius,
-                            particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
-                            monitor.getEndColor(), monitor.getRotation(),
-                            monitor.getRotSpacing());
+                    this.monitor.getY(), this.particleRadius, particleLifetime,
+                            monitor.getBeginColor(), monitor.getEndColor(),
+                            monitor.getRotation(), monitor.getRotSpacing());
             this.lastX = newX;
         }
         this.lastY = newY;
@@ -164,7 +162,7 @@ public class VisualMusicThread extends FingerThread {
     }
 
     /**
-     * Set the particle's max speed, lifetime, and radius depending on the width and x-position.
+     * Set the particle's lifetime and radius depending on the width and x-position.
      *
      * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
      * @version 1.0
@@ -177,8 +175,7 @@ public class VisualMusicThread extends FingerThread {
                                       * on the screen the finger is (on x-axis) */
         float ftr = (float) (div + 0.75); /* Between 0.75 and 1.75 */
 
-        this.particleMaxSpeed = (1 + (9 * div)); /* High frequency = high speed */
-        this.particleLifetime = Math.round(75 + (75 * div)); /* High frequency = long lifetime */
+        this.particleLifetime = Math.round(575 + (75 * div)); /* High frequency = long lifetime */
         this.particleRadius   = Math.round(this.particleRadiusBase * ftr);
     }
 
