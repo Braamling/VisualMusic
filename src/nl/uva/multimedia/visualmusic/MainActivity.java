@@ -31,6 +31,7 @@ public class MainActivity extends MultitouchActivity {
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private WaveFile sample = null;
+    private MyButton synth_option_button = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +50,11 @@ public class MainActivity extends MultitouchActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater;
+        MenuItem synth_options;
 
         inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        synth_options = menu.findItem(R.id.synth_options);
 
         return true;
     }
@@ -59,6 +62,9 @@ public class MainActivity extends MultitouchActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.synth_options:
+                Log.v("BasIsEenAnus", "Ja, echt waar.");
+                return true;
             default:
                 return super.onContextItemSelected(item);
         }
