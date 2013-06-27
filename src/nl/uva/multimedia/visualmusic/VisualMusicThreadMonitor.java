@@ -25,6 +25,10 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int theme;
 
     private int attack = 250;
+    private int decay = 250;
+    private float sustain = 0.7f;
+    private int release = 250;
+    private int overtones = 8;
 
     /**
      * Initialize the visual music thread without any values.
@@ -397,6 +401,94 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      */
     public int getAttack() {
         return this.attack;
+    }
+
+    /**
+     * Set the decay of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public void setDecay(int decay) {
+        this.decay = decay;
+    }
+
+    /**
+     * get the decay of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public int getDecay() {
+        return this.decay;
+    }
+
+    /**
+     * Set the sustain of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public void setSustain(float sustain) {
+        this.sustain = sustain;
+    }
+
+    /**
+     * get the sustain of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public float getSustain() {
+        return this.sustain;
+    }
+
+    /**
+     * Set the release of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public void setRelease(int release) {
+        this.release = release;
+    }
+
+    /**
+     * get the release of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public int getRelease() {
+        return this.release;
+    }
+
+    /**
+     * Set the number of overtones of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public void setOvertones(int overtones) {
+        this.overtones = overtones;
+    }
+
+    /**
+     * get the number of overtones of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public int getOvertones() {
+        return this.overtones;
     }
 
 }
