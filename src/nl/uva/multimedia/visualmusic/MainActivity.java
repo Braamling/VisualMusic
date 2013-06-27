@@ -25,6 +25,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class MainActivity extends MultitouchActivity {
 
@@ -89,28 +90,117 @@ public class MainActivity extends MultitouchActivity {
     private void initSynthSettings() {
         LayoutInflater inflater =
                 (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.popup,
+        final View layout = inflater.inflate(R.layout.popup,
                 (ViewGroup)findViewById(R.id.popupRoot));
 
         final SeekBar attackSlider =
                 (SeekBar)layout.findViewById(R.id.attackSlider);
         attackSlider.setProgress(250);
+        final TextView attackText = (TextView)layout.findViewById(R.id.textView);
+        attackText.setText("Attack: " + 250 + "ms");
+
+        attackSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                //set textView's text
+                attackText.setText("Attack: " + progress + "ms");
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+
+        });
 
         final SeekBar decaySlider =
                 (SeekBar)layout.findViewById(R.id.decaySlider);
         decaySlider.setProgress(250);
 
+        final TextView decayText = (TextView)layout.findViewById(R.id.textView2);
+        decayText.setText("Decay: " + 250 + "ms");
+
+        decaySlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                //set textView's text
+                decayText.setText("Decay: " + progress + "ms");
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+
+        });
+
         final SeekBar sustainSlider =
                 (SeekBar)layout.findViewById(R.id.sustainSlider);
         sustainSlider.setProgress(7);
+
+        final TextView sustainText = (TextView)layout.findViewById(R.id.textView3);
+        sustainText.setText("Sustain: " + 0.7);
+
+        sustainSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                //set textView's text
+                sustainText.setText("Sustain: " + progress / 10.0);
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+
+        });
 
         final SeekBar releaseSlider =
                 (SeekBar)layout.findViewById(R.id.releaseSlider);
         releaseSlider.setProgress(250);
 
+        final TextView releaseText = (TextView)layout.findViewById(R.id.textView4);
+        releaseText.setText("Release: " + 250 + "ms");
+
+        releaseSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                //set textView's text
+                releaseText.setText("Release: " + progress + "ms");
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+
+        });
+
         final SeekBar overtoneSlider =
                 (SeekBar)layout.findViewById(R.id.overtoneSlider);
         overtoneSlider.setProgress(8);
+
+        final TextView overtoneText = (TextView)layout.findViewById(R.id.textView5);
+        overtoneText.setText("Overtones: " + 8);
+
+        overtoneSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                //set textView's text
+                overtoneText.setText("Overtones: " + progress);
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+
+        });
 
         this.synthSettings = new AlertDialog.Builder(this)
                 .setView(layout)
