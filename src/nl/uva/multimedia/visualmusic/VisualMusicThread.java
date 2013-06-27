@@ -107,6 +107,24 @@ public class VisualMusicThread extends FingerThread {
         /* Update the look of the upcoming particles based on the x position */
         setParticleParameters(monitor.getWidth(), monitor.getX());
 
+        /* Update the rotation spacing */
+        if (Math.abs(newX - this.lastX) > 1 || Math.abs(newY - this.lastY) > 1) {
+            monitor.setRotSpacing(0);
+            this.spacingUp = true;
+        } else {
+            /* Decide whether rotSpacing should go the other way */
+            if (spacingUp)
+                spacingUp = (monitor.getRotSpacing() >= 400) ? false : true;
+            else
+                spacingUp = (monitor.getRotSpacing() <= 0) ? true : false;
+
+            /* Now increment or decrement rotSpacing */
+            if (spacingUp)
+                monitor.setRotSpacing(monitor.getRotSpacing() + 1);
+            else
+                monitor.setRotSpacing(monitor.getRotSpacing() - 1);
+        }
+
         /* The 0 in this if statement can be changed to a higher setting if
          * it is decided that an unmoving finger should not generate particles,
          * or that vertical movement is not allowed. */
@@ -119,24 +137,8 @@ public class VisualMusicThread extends FingerThread {
                             monitor.getRotSpacing());
             this.lastX = newX;
         }
+        this.lastY = newY;
 
-        /* Update the rotation spacing */
-        if (Math.abs(newX - this.lastX) >= 10 || Math.abs(newX - this.lastX) >= 10) {
-            monitor.setRotSpacing(0);
-            this.spacingUp = true;
-        } else {
-            /* Decide whether rotSpacing should go the other way */
-            if (spacingUp)
-                spacingUp = (monitor.getRotSpacing() >= 100) ? false : true;
-            else
-                spacingUp = (monitor.getRotSpacing() <= 0) ? true : false;
-
-            /* Now increment or decrement rotSpacing */
-            if (spacingUp)
-                monitor.setRotSpacing(monitor.getRotSpacing() + 1);
-            else
-                monitor.setRotSpacing(monitor.getRotSpacing() - 1);
-        }
 
         try {
             int key = this.getKey(), scale = LOW_OCTAVE;
