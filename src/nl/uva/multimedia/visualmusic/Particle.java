@@ -49,8 +49,9 @@ public class Particle {
      * @param max_life_time The maximum life time of a single particle
      * @param begin_color The begin color the particle
      * @param end_color The end color the particle
+     * @param rotation indicates the amount of degrees a particle should rotate
      */
-    
+
 	public Particle(float x_pos, float y_pos, int max_radius, float max_speed, int max_life_time,
                     int begin_color, int end_color, int rotation) {
 		Random r = new Random();
@@ -76,10 +77,10 @@ public class Particle {
 		this.rot_y_offset = 0;
         this.begin_color  = begin_color;
         this.end_color    = end_color;
+        this.rotation     = rotation;
 		
 		this.paint = new Paint();
         this.paint.setColor(begin_color);
-
 	}
 
     /**
@@ -100,19 +101,12 @@ public class Particle {
 				this.rot_y_offset = this.y_pos;
 			}
 
-			//degrees = (float) (270 + (337 * (ratio - 0.2))); // should be this
-			//degrees = (float) (270 + (450 * (ratio - 0.5))); // somehow looks better
-            degrees = (float) (450 * ratio);
-			/* If the fingerdirection is upwards (1), make the particles circle
-			 * the other way */
-			//if (VisualMusicThread.fingerDirection == 1)
-			//	degrees += 180;
+            degrees = (float) (this.rotation * ratio);
 
 			this.x_pos = (float)(this.rot_x_offset + 
 					(this.rot_dir * this.rot_radius * Math.cos(Math.toRadians(degrees))));
 			this.y_pos = (float)(this.rot_y_offset + 
 					(this.rot_dir * this.rot_radius * Math.sin(Math.toRadians(degrees))));
-
 
             /* Change the radius and color */
             this.radius = this.radius_start - (int)(this.radius_start * ratio);
