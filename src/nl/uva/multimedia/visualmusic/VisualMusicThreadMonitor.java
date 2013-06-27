@@ -22,6 +22,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int rotation = 360; /* Should range from 90 to 720 */
     private int rotSpacing; /* Increments with every thread update, indicates
                              * the spacing for the particle rotations */
+    private int theme;
 
     /**
      * Initialize the visual music thread without any values.
@@ -332,6 +333,14 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public void setRotSpacing(int r) {
         this.rotSpacing = r;
+    }
+
+    public void setTheme(int group){
+        this.theme = theme;
+    }
+
+    public int getTheme(){
+        return this.theme;
     }
 
 }
