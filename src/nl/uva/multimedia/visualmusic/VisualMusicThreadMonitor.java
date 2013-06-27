@@ -6,7 +6,10 @@ import android.util.Log;
 import java.util.Random;
 
 /**
- * Created by klaplong on 6/21/13.
+ * A monitor to store and manage all the values of the VisualMusicThread.
+ *
+ * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+ * @version 1.0
  */
 public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private static final String TAG = "VisualMusicThreadMonitor";
@@ -18,18 +21,36 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int begin_color;
     private int end_color;
 
+    /**
+     * Initialize the visual music thread without any values.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public VisualMusicThreadMonitor() {
         super();
 
         this.fingerId = -1;
     }
 
+    /**
+     * Initialize the visual music thread with just a fingerId.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public VisualMusicThreadMonitor(int fingerId) {
         super();
 
         this.fingerId = fingerId;
     }
 
+    /**
+     * Initialize the visual music thread with both a finger id and x and y position.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public VisualMusicThreadMonitor(float x, float y, int fingerId) {
         super(x, y);
 

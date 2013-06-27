@@ -44,6 +44,12 @@ public class VisualMusicThread extends FingerThread {
 
     Particles[] particles = new Particles[N_PARTICLE_GROUPS];
 
+    /**
+     * Initialize all the parameters for the thread to run.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     protected void init() {
         super.init();
 
@@ -58,6 +64,12 @@ public class VisualMusicThread extends FingerThread {
 
     }
 
+    /**
+     * Update both the sound and particles state.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     protected void update() {
         super.update();
         float freq, y_scale;
@@ -132,6 +144,15 @@ public class VisualMusicThread extends FingerThread {
         renderFrame(monitor);
     }
 
+    /**
+     * Set the particle's max speed, lifetime, and radius depending on the width and x-position.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param width The phones screen width.
+     * @param x The finger's x-position.
+     */
     protected void setParticleParameters (int width, float x) {
         float div = 1 - (x / width); /* Between 0 and 1, indicator of how far
                                       * on the screen the finger is (on x-axis) */
@@ -142,7 +163,14 @@ public class VisualMusicThread extends FingerThread {
         this.particleRadius   = Math.round(this.particleRadiusBase * ftr);
     }
 
-
+    /**
+     * Start the finishing sequence of the thread. When there are still particles on the canvas
+     * their movement will be finished before ending the finishing sequence.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
     protected void finish() {
 
         new_touch = true;
@@ -196,14 +224,24 @@ public class VisualMusicThread extends FingerThread {
         super.finish();
     }
 
+    /**
+     * Prevent the thread from terminating before custom stop methods have been called,
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     */
     public void turnOff() {
-        /* To prevent the thread from terminating before custom stop methods
-         * have been called, do your own stuff before the super turnoff. */
         super.turnOff();
     }
 
-    /* Render a single frame, only continues if enough time has elapsed. This time can be found
+    /**
+     *  Render a single frame, only continues if enough time has elapsed. This time can be found
      * in FRAME_REFRESH_TIME.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param monitor the visual music thread monitor.
      */
     public void renderFrame(VisualMusicThreadMonitor monitor) {
         if(SystemClock.currentThreadTimeMillis() - last_render_time > this.FRAME_REFRESH_TIME){
@@ -228,6 +266,14 @@ public class VisualMusicThread extends FingerThread {
         }
     }
 
+    /**
+     * Get the number of the pressed key.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return key number of the pressed key.
+     */
     private int getKey(){
         float part;
         int key;
