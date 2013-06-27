@@ -19,7 +19,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     private int begin_color;
     private int end_color;
-    private int rotation = 720; /* Should range from 90 to 720 */
+    private int rotation = 360; /* Should range from 90 to 720 */
     private int rotSpacing; /* Increments with every thread update, indicates
                              * the spacing for the particle rotations */
 
