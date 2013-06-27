@@ -186,12 +186,36 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
      * @version 1.0
      */
-    public void pick_color_scheme(){
-        Random r = new Random();
-        int id = (r.nextInt(9) +0);
+    public void pickColorScheme() {
+        pickColorScheme(5);
+    }
 
-        this.begin_color    = createBeginColor(id);
-        this.end_color      = createEndColor(id);
+    /**
+     * Pick a color scheme (begin and end color) for the individual particles in a particle burst.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param group: determines what subset of colors to pick colors from
+     */
+    public void pickColorScheme(int group) {
+        int id;
+        Random r = new Random();
+        if (group == 0)
+            id = (r.nextInt(10) + 0); /* All colors */
+        else if (group == 1)
+            id = (r.nextInt(2) + 0); /* Smoke + potion */
+        else if (group == 2)
+            id = (r.nextInt(2) + 2); /* Fire + water */
+        else if (group == 3)
+            id = (r.nextInt(4) + 1); /* Potion + fire + water + silver */
+        else if (group == 4)
+            id = (r.nextInt(3) + 4); /* Silver + gold + yellow-white */
+        else
+            id = (r.nextInt(3) + 7); /* Pink + purple + red */
+
+        this.begin_color = createBeginColor(id);
+        this.end_color   = createEndColor(id);
     }
 
     /**
@@ -206,27 +230,27 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int createEndColor(int id){
         switch(id) {
             case 0:
-                return Color.argb(255, 255, 52, 0); /* Dark orange */
+                return Color.argb(255, 20, 15, 64); /* Dark blue */ /* SMOKE */
             case 1:
-                return Color.argb(255, 0, 94, 255); /* Medium blue */
+                return Color.argb(255, 0, 204, 102); /* Aqua green */ /* POTION */
             case 2:
-                return Color.argb(255, 0, 204, 102); /* Aqua green */
+                return Color.argb(255, 255, 52, 0); /* Dark orange */ /* FIRE */
             case 3:
-                return Color.argb(255, 232, 232, 232); /* Almost white */
+                return Color.argb(255, 0, 94, 255); /* Medium blue */ /* WATER */
             case 4:
-                return Color.argb(255, 255, 255, 0); /* Dark grey */
+                return Color.argb(255, 232, 232, 232); /* Almost white */ /* SILVER */
             case 5:
-                return Color.argb(255, 255, 0, 255); /* Purple-pink */
+                return Color.argb(255, 150, 89, 0); /* Brown */ /* GOLD */
             case 6:
-                return Color.argb(255, 255, 0, 72); /* Purple-red */
+                return Color.argb(255, 255, 255, 0); /* Perfect yellow */ /* YELLOW WHITE */
             case 7:
-                return Color.argb(255, 20, 15, 64); /* Dark blue */
+                return Color.argb(255, 255, 0, 255); /* Purple-pink */ /* PINK */
             case 8:
-                return Color.argb(255, 150, 89, 0);
+                return Color.argb(255, 255, 0, 72); /* Purple-red */ /* PURPLE */
             case 9:
-                return Color.argb(255, 255, 0, 0);
+                return Color.argb(255, 255, 0, 0); /* Perfect red */ /* RED */
             default:
-                return Color.argb(255, 0, 0, 0);
+                return Color.argb(255, 255, 52, 0); /* Dark orange */
         }
     }
 
@@ -242,27 +266,27 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int createBeginColor(int id){
         switch(id){
             case 0:
-                return Color.argb(255, 255, 255, 0); /* Yellow */
+                return Color.argb(255, 85, 179, 185); /* Type of light blue */ /* SMOKE */
             case 1:
-                return Color.argb(255, 0, 201, 255); /* Nearing aqua */
+                return Color.argb(255, 193, 222, 31); /* Light yellow / green */ /* POTION */
             case 2:
-                return Color.argb(255, 193, 222, 31); /* Light yellow */
+                return Color.argb(255, 255, 255, 0); /* Yellow */ /* FIRE */
             case 3:
-                return Color.argb(255, 142, 145, 148); /* Gray (with slight blue) */
+                return Color.argb(255, 0, 201, 255); /* Nearing aqua */ /* WATER */
             case 4:
-                return Color.argb(255, 255, 255, 255); /* Dark red / brown */
+                return Color.argb(255, 142, 145, 148); /* Gray (with slight blue) */ /* SILVER */
             case 5:
-                return Color.argb(255, 255, 0, 0); /* Red */
+                return Color.argb(255, 232, 217, 0); /* Kind of yellow */ /* GOLD */
             case 6:
-                return Color.argb(255, 131, 117, 255); /* Violet */
+                return Color.argb(255, 255, 255, 255); /* White */ /* YELLOW WHITE */
             case 7:
-                return Color.argb(255, 85, 179, 185); /* Type of light blue */
+                return Color.argb(255, 255, 0, 0); /* Red */ /* PINK */
             case 8:
-                return Color.argb(255, 232, 217, 0); /* Kind of yellow */
+                return Color.argb(255, 131, 117, 255); /* Violet */ /* PURPLE */
             case 9:
-                return Color.argb(255, 40, 40, 40);
+                return Color.argb(255, 40, 40, 40); /* Dark gray */ /* RED */
             default:
-                return Color.argb(255, 0, 255, 0);
+                return Color.argb(255, 255, 255, 0); /* Yellow */
         }
     }
 

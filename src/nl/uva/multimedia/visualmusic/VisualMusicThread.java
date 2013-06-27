@@ -56,7 +56,7 @@ public class VisualMusicThread extends FingerThread {
 
         /* Activate the monitor and pick a color scheme for the particles */
         monitor.setActive(true);
-        monitor.pick_color_scheme();
+        monitor.pickColorScheme();
 
     }
 
@@ -84,7 +84,7 @@ public class VisualMusicThread extends FingerThread {
         if (new_touch) {
             this.startTime = SystemClock.currentThreadTimeMillis();
 
-            monitor.pick_color_scheme();
+            monitor.pickColorScheme();
             new_touch = false;
 
             /* Set the rotation spacing for particles */
@@ -175,7 +175,7 @@ public class VisualMusicThread extends FingerThread {
                                       * on the screen the finger is (on x-axis) */
         float ftr = (float) (div + 0.75); /* Between 0.75 and 1.75 */
 
-        this.particleLifetime = Math.round(575 + (75 * div)); /* High frequency = long lifetime */
+        this.particleLifetime = Math.round(75 + (75 * div)); /* High frequency = long lifetime */
         this.particleRadius   = Math.round(this.particleRadiusBase * ftr);
     }
 
