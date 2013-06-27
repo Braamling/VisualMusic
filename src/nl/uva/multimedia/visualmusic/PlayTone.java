@@ -64,10 +64,10 @@ public class PlayTone {
     }
 
     public void sample() {
-        this.setFreq(this.freq, 0);
+        this.setFreq(this.freq);
     }
 
-    public void setFreq(float freq, float scale) {
+    public void setFreq(float freq) {
         float amplitude = 0.0f;
 
         this.freq = freq;

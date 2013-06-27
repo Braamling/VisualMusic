@@ -1,6 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.os.SystemClock;
+import android.util.Log;
 
 /**
  * A thread for the sound and particles for a single finger.
@@ -30,9 +31,10 @@ public class VisualMusicThread extends FingerThread {
      */
     public static final int N_PARTICLE_GROUPS   = 600; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
-    public static final int N_KEYS = 24;
 
+    public static final int N_KEYS = 14;
     private static final int LOW_OCTAVE = 2;
+    public static final float BLACK_HEIGHT = 0.6f;
 
     private int particleLifetime; /* Maximum life time of a single particle */
     private int particleRadiusBase; /* Value should be set after screen dimensions are known */
@@ -145,20 +147,7 @@ public class VisualMusicThread extends FingerThread {
 
 
         try {
-            int key = this.getKey(), scale = LOW_OCTAVE;
-            while (key >= 12) {
-                key -= 12;
-                scale ++;
-            }
-            if (monitor.getY() < (monitor.getHeight() / 2)) {
-                scale += (N_KEYS / 12);
-            }
-            ToneFrequency newFrequency = ToneFrequency.fromKey(key, scale);
-            freq = newFrequency.get();
-
-            y_scale = monitor.getY() / (float)monitor.getHeight();
-
-            mPlayTone.setFreq(freq, y_scale);
+            mPlayTone.setFreq(ToneFrequency.fromKey(this.getKey()));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -296,14 +285,46 @@ public class VisualMusicThread extends FingerThread {
      *
      * @return key number of the pressed key.
      */
-    private int getKey(){
+    private Key getKey() {
+        int octave, ySplit, y, blackHeight, key;
         float part;
-        int key;
+        int[] blackKeys = {3, 7, 15, 19, 23};
+        boolean[] isBlackKey = new boolean[28];
+
+        octave = LOW_OCTAVE;
+
+        ySplit = this.monitor.getHeight() / 2;
+        y = this.lastY;
+        if (y > ySplit)
+            y -= ySplit;
+        else
+            octave += N_KEYS / 7;
+
+        blackHeight = (int)(BLACK_HEIGHT * ySplit);
+
+        for (int i = 0; i < blackKeys.length; i ++) {
+            isBlackKey[blackKeys[i]] = true;
+        }
+
+        part = monitor.getWidth() / (N_KEYS * 4.0f);
+        key = (int)(this.lastX / part) % (7 * 4);
+        if ((y < blackHeight) && (isBlackKey[key] ||
+                ((key > 0) && isBlackKey[key - 1]))) {
+            if (!isBlackKey[key])
+                key --;
+
+            int i;
+            for (i = 0; (i < blackKeys.length) && (blackKeys[i] != key);
+                 i ++);
+
+            octave += (this.lastX / part) / (7 * 4);
+
+            return new Key(true, i, octave);
+        }
 
         part = monitor.getWidth() / N_KEYS;
-        key = (int)(lastX / part);
-
-        return key;
+        key = (int)(this.lastX / part) % 7;
+        octave += (this.lastX / part) / 7;
+        return new Key(false, key, octave);
     }
-
 }

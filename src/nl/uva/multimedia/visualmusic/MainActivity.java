@@ -192,7 +192,7 @@ public class MainActivity extends MultitouchActivity {
             monitor.setX(x);
             monitor.setY(y);
             monitor.setWidth(this.pCanvas.getWidth());
-            monitor.setHeight(this.pCanvas.getHeight());
+            monitor.setHeight(this.pCanvas.getHeight() - this.getBarHeight());
 
             if (monitor.isFinishing())
                 monitor.setReboot(true);

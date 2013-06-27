@@ -25,6 +25,23 @@ import android.view.MotionEvent;
 public class MultitouchActivity extends Activity {
     private static final String TAG = "MultitouchActivity";
 
+    public int getBarHeight() {
+        int actionBarHeight;
+        TypedValue tv;
+
+        tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
+                true)) {
+            actionBarHeight =
+                    TypedValue.complexToDimensionPixelSize(tv.data,
+                            getResources().getDisplayMetrics());
+        }
+        else
+            actionBarHeight = 0;
+
+        return actionBarHeight;
+    }
+
     /**
      * A touch event has occurred. Inspect the event to determine what has
      * happened and which/what finger/fingers caused it.
@@ -37,19 +54,10 @@ public class MultitouchActivity extends Activity {
             MultiTouch multiTouch;
             int action, pointer, actionBarHeight;
             int[] pointers, indices;
-            TypedValue tv;
 
             /* Compensate for the action bar.
              * Source http://stackoverflow.com/a/13216807. */
-            tv = new TypedValue();
-            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
-                    true)) {
-                actionBarHeight =
-                        TypedValue.complexToDimensionPixelSize(tv.data,
-                                getResources().getDisplayMetrics());
-            }
-            else
-                actionBarHeight = 0;
+            actionBarHeight = this.getBarHeight();
 
             /* A MultiTouch object initializes with an event, detecting multi-
              * touches and simplifying the input for further processing. */

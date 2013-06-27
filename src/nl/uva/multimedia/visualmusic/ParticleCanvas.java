@@ -161,25 +161,68 @@ public class ParticleCanvas extends SurfaceView
      * @param canvas The canvas to draw the keys on.
      */
     public void drawKeys(Canvas canvas) {
-        int keys;
-        float keyWidth;
+        int height, ySplit, blackHeight, keyWidth, blackWidth;
+        float blackPart;
+        int[] blackKeys = {3, 7, 15, 19, 23};
+        boolean[] isBlackKey = new boolean[28];
 
-        keys = VisualMusicThread.N_KEYS;
-        keyWidth = this.getWidth() / keys;
+        height = canvas.getHeight();
 
-        for (int i = 0; i <= keys; i ++) {
-            canvas.drawText(ToneFrequency.getToneName(i),
-                    i * keyWidth + 0.5f * keyWidth, 10.0f, this.textPaint);
+        ySplit = height / 2;
+        blackHeight = (int)(VisualMusicThread.BLACK_HEIGHT * ySplit);
 
-            canvas.drawText(ToneFrequency.getToneName(i),
-                    i * keyWidth + 0.5f * keyWidth, this.getHeight()/2 + 10.0f, this.textPaint);
+        keyWidth = canvas.getWidth() / (VisualMusicThread.N_KEYS);
+        blackPart = keyWidth / 4.0f;
+        blackWidth = keyWidth / 2;
 
-            if (i > 0)
-                canvas.drawLine(i * keyWidth, 0, i * keyWidth, this.getHeight(),
-                        this.whitePaint);
+        for (int i = 0; i < blackKeys.length; i ++) {
+            isBlackKey[blackKeys[i]] = true;
         }
-        canvas.drawLine(0, this.getHeight()/2, this.getWidth(), this.getHeight()/ 2,
-                this.whitePaint);
+
+        for (int i = 0; i < (VisualMusicThread.N_KEYS * 4); i ++) {
+            int iWhite;
+
+            iWhite = i / 4;
+
+            if (isBlackKey[i % 28]) {
+                canvas.drawLine(i * blackPart, 0, i * blackPart, blackHeight,
+                        this.whitePaint);
+                canvas.drawLine(i * blackPart + blackWidth, 0,
+                        i * blackPart + blackWidth, blackHeight,
+                        this.whitePaint);
+                canvas.drawLine(i * blackPart, blackHeight,
+                        i * blackPart + blackWidth, blackHeight,
+                        this.whitePaint);
+
+                canvas.drawLine(i * blackPart, ySplit, i * blackPart,
+                        ySplit + blackHeight, this.whitePaint);
+                canvas.drawLine(i * blackPart + blackWidth, ySplit,
+                        i * blackPart + blackWidth, ySplit + blackHeight,
+                        this.whitePaint);
+                canvas.drawLine(i * blackPart, ySplit + blackHeight,
+                        i * blackPart + blackWidth, ySplit + blackHeight,
+                        this.whitePaint);
+            }
+
+            if ((i % 4) == 0) {
+                int keyHeight, keyStart;
+
+                keyHeight = ySplit;
+                keyStart = 0;
+                if ((i > 0) && (isBlackKey[(i - 1) % 28])) {
+                    keyHeight -= blackHeight;
+                    keyStart += blackHeight;
+                }
+
+                canvas.drawLine(iWhite * keyWidth, keyStart, iWhite * keyWidth,
+                        keyStart + keyHeight, this.whitePaint);
+                canvas.drawLine(iWhite * keyWidth, ySplit + keyStart,
+                        iWhite * keyWidth, ySplit + keyStart + keyHeight,
+                        this.whitePaint);
+            }
+        }
+
+        canvas.drawLine(0, ySplit, canvas.getWidth(), ySplit, whitePaint);
     }
 
     /**
