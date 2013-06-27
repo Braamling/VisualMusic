@@ -31,7 +31,7 @@ public class MainActivity extends MultitouchActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pCanvas = new ParticleCanvas(this, this);
+        pCanvas = new ParticleCanvas(this);
         setContentView(pCanvas);
 
         this.mRootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
