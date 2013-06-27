@@ -36,7 +36,6 @@ public class MainActivity extends MultitouchActivity {
     private SurfaceHolder surfaceHolder;
     private WaveFile sample = null;
     private MyButton synth_option_button = null;
-
     private AlertDialog synthSettings;
 
     @Override
@@ -88,14 +87,24 @@ public class MainActivity extends MultitouchActivity {
         View layout = inflater.inflate(R.layout.popup,
                 (ViewGroup)findViewById(R.id.popupRoot));
 
+
         final AttackSlider attackSlider =
                 (AttackSlider)layout.findViewById(R.id.attackSlider);
+        attackSlider.setProgress(250);
         this.synthSettings = new AlertDialog.Builder(this)
                 .setView(layout)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.v(TAG, "penis " + attackSlider.getProgress());
+                        VisualMusicThreadMonitor monitor;
+                        try{
+                            for(int index = 0; index < N_FINGER_THREADS; index ++){
+                                monitor = mFingerHandler.getMonitor(index);
+                                monitor.setAttack(attackSlider.getProgress());
+                                Log.v(TAG, "attack in monitor: " + monitor.getAttack());
+                            }
+                        }catch (Exception e){
+                        }
                     }
                 })
                 .create();

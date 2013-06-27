@@ -79,6 +79,8 @@ public class VisualMusicThread extends FingerThread {
 
         this.mPlayTone.setTime(SystemClock.currentThreadTimeMillis() -
                 this.startTime);
+        this.mPlayTone.setAttack(monitor.getAttack());
+
 
         /* Check whether this is a touchdown to change the color scheme */
         if (new_touch) {
