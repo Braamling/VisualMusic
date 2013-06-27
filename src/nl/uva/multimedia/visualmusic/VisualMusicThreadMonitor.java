@@ -21,6 +21,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int begin_color;
     private int end_color;
     private int rotation; /* Should range from 90 to 720 */
+    private int rotSpacing; /* Increments with every thread update, indicates
+                             * the spacing for the particle rotations */
 
     /**
      * Initialize the visual music thread without any values.
@@ -165,25 +167,25 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int pickRotation (int id) {
         switch(id) {
             case 0:
-                return 90;
+                return 180;
             case 1:
-                return 90;
+                return 180;
             case 2:
-                return 180;
-            case 3:
-                return 180;
-            case 4:
-                return 270;
-            case 5:
-                return 270;
-            case 6:
                 return 360;
-            case 7:
-                return 450;
-            case 8:
+            case 3:
+                return 360;
+            case 4:
+                return 360;
+            case 5:
                 return 540;
+            case 6:
+                return 540;
+            case 7:
+                return 720;
+            case 8:
+                return 720;
             case 9:
-                return 630;
+                return 1080;
             default:
                 return 360;
         }
@@ -199,6 +201,14 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     public int getRotation() {
         return this.rotation;
+    }
+
+    public int getRotSpacing() {
+        return this.rotSpacing;
+    }
+
+    public void setRotSpacing(int r) {
+        this.rotSpacing = r;
     }
 
 }
