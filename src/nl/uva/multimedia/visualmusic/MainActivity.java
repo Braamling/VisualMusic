@@ -95,6 +95,23 @@ public class MainActivity extends MultitouchActivity {
         final SeekBar attackSlider =
                 (SeekBar)layout.findViewById(R.id.attackSlider);
         attackSlider.setProgress(250);
+
+        final SeekBar decaySlider =
+                (SeekBar)layout.findViewById(R.id.decaySlider);
+        decaySlider.setProgress(250);
+
+        final SeekBar sustainSlider =
+                (SeekBar)layout.findViewById(R.id.sustainSlider);
+        sustainSlider.setProgress(7);
+
+        final SeekBar releaseSlider =
+                (SeekBar)layout.findViewById(R.id.releaseSlider);
+        releaseSlider.setProgress(250);
+
+        final SeekBar overtoneSlider =
+                (SeekBar)layout.findViewById(R.id.overtoneSlider);
+        overtoneSlider.setProgress(8);
+
         this.synthSettings = new AlertDialog.Builder(this)
                 .setView(layout)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -105,6 +122,11 @@ public class MainActivity extends MultitouchActivity {
                             for(int index = 0; index < N_FINGER_THREADS; index ++){
                                 monitor = mFingerHandler.getMonitor(index);
                                 monitor.setAttack(attackSlider.getProgress());
+                                monitor.setDecay(decaySlider.getProgress());
+                                monitor.setSustain((float)(sustainSlider.getProgress() / 10.0));
+                                monitor.setRelease(releaseSlider.getProgress());
+                                monitor.setOvertones(overtoneSlider.getProgress());
+
                             }
                         }catch (Exception e){
                         }

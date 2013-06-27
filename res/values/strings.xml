@@ -3,5 +3,11 @@
 
     <string name="app_name">Visual Music</string>
     <string name="action_settings">Settings</string>
+    <string name="ButtonElements">The four elements</string>
+    <string name="ButtonLove">Love</string>
+    <string name="ButtonGold">Silver and Gold</string>
+    <string name="ButtonMagical">Magical</string>
+    <string name="ButtonWater">Fire and Water</string>
+    <string name="ButtonRandom">Random</string>
 
 </resources>
