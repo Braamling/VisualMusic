@@ -5,7 +5,10 @@ import android.os.SystemClock;
 import android.util.Log;
 
 /**
- * Created by klaplong on 6/20/13.
+ * A thread for the sound and particles for a single finger.
+ *
+ * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+ * @version 1.0
  */
 public class VisualMusicThread extends FingerThread {
     private static final String TAG = "VisualMusicThread";
@@ -23,31 +26,35 @@ public class VisualMusicThread extends FingerThread {
     public static int fingerDirection = -1; /* 0 is downwards, 1 is upwards */
 
     public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
+
     /* Depending on the amount of touch move events handled in a x amount of time there should be
      * more particles per group and less groups. When the refresh rate is really high the particles
-     * group size can even be 1.
+     * group size can even be 1 for the best results.
      */
     public static final int N_PARTICLE_GROUPS   = 600; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
     public static final int N_KEYS = 24;
+
     private static final int LOW_OCTAVE = 2;
 
-    private static float particleMaxSpeed       = 2;  /* Maximum speed of a single particle */
-    private static int particleLifetime         = 300; /* Maximum life time of a single particle */
-    private static int particleRadiusBase       = 0; /* Value should be set after screen dimensions are known */
-
-    private static int particleRadius           = 0; /* Value of the radius based on the frequency */
+    private float particleMaxSpeed;  /* Maximum speed of a single particle */
+    private int particleLifetime; /* Maximum life time of a single particle */
+    private int particleRadiusBase; /* Value should be set after screen dimensions are known */
+    private int particleRadius; /* Value of the radius based on the frequency */
 
     Particles[] particles = new Particles[N_PARTICLE_GROUPS];
 
     protected void init() {
         super.init();
-        // Init.
+
+        /* Get the start time for the particle render delay */
         this.last_render_time = SystemClock.currentThreadTimeMillis();
 
-        ((VisualMusicThreadMonitor)this.monitor).setActive(true);
+        VisualMusicThreadMonitor monitor = (VisualMusicThreadMonitor)this.monitor;
 
-        ((VisualMusicThreadMonitor)this.monitor).pick_color_scheme();
+        /* Activate the monitor and pick a color scheme for the particles */
+        monitor.setActive(true);
+        monitor.pick_color_scheme();
 
     }
 
@@ -75,10 +82,10 @@ public class VisualMusicThread extends FingerThread {
 
         /* Determine particle max radius. This cannot be done in the init() method
          * because the canvas size is not yet known at that time. */
-        if (VisualMusicThread.particleRadiusBase == 0) {
-            VisualMusicThread.particleRadiusBase = (monitor.getParticleCanvas().getHeight() > 0) ?
+        if (this.particleRadiusBase == 0) {
+            this.particleRadiusBase = (monitor.getParticleCanvas().getHeight() > 0) ?
                     (monitor.getParticleCanvas().getHeight() / 100) : 27;
-            VisualMusicThread.particleRadius = VisualMusicThread.particleRadiusBase;        
+            this.particleRadius = this.particleRadiusBase;
         }
 
         int newX = (int)monitor.getX();
@@ -93,7 +100,7 @@ public class VisualMusicThread extends FingerThread {
         if (Math.abs(newX - this.lastX) >= 0) {
             particles[this.i ++ % N_PARTICLE_GROUPS] =
                     new Particles(PARTICLE_GROUP_SIZE, this.monitor.getX(),
-                    this.monitor.getY(), VisualMusicThread.particleRadius,
+                    this.monitor.getY(), this.particleRadius,
                             particleMaxSpeed, particleLifetime, monitor.getBeginColor(),
                             monitor.getEndColor());
             this.lastX = newX;
@@ -130,9 +137,9 @@ public class VisualMusicThread extends FingerThread {
                                       * on the screen the finger is (on x-axis) */
         float ftr = (float) (div + 0.75); /* Between 0.75 and 1.75 */
 
-        VisualMusicThread.particleMaxSpeed = (1 + (9 * div)); /* High frequency = high speed */
-        VisualMusicThread.particleLifetime = Math.round(50 + (50 * div)); /* High frequency = long lifetime */
-        VisualMusicThread.particleRadius   = Math.round(VisualMusicThread.particleRadiusBase * ftr);
+        this.particleMaxSpeed = (1 + (9 * div)); /* High frequency = high speed */
+        this.particleLifetime = Math.round(75 + (75 * div)); /* High frequency = long lifetime */
+        this.particleRadius   = Math.round(this.particleRadiusBase * ftr);
     }
 
 

@@ -4,6 +4,12 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+/**
+ * Particles controls a burst of 1 or more particles.
+ *
+ * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+ * @version 1.0
+ */
 public class Particles {
     private static final String TAG = "Particles";
 
@@ -21,7 +27,22 @@ public class Particles {
 	public Particles() {
 		
 	}
-	
+
+    /**
+     * Initialization of a Particles object.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param particles_amount The amount of particles in the burst of particles.
+     * @param x_pos The particle's x-position to start.
+     * @param y_pos The particle's y-position to start.
+     * @param max_radius The Particle's maximum radius.
+     * @param max_speed The maximum speed of a single particle
+     * @param max_life_time The maximum life time of a single particle
+     * @param begin_color The begin color a single particle.
+     * @param end_color The end color a single particle.
+     */
 	public Particles(int particles_amount, float x_pos, float y_pos, int max_radius, float max_speed,
                      int max_life_time, int begin_color, int end_color) {
 		this.particles 		= new Particle[particles_amount];
@@ -36,28 +57,42 @@ public class Particles {
 		
 		this.init();
 	}
-	
+
+    /**
+     * Initialize the particles of the particle burst.
+     */
 	public void init() {
 		for(int i = 0; i < this.particles.length; i++)
 			this.particles[i] = new Particle(x_pos, y_pos, max_radius, max_speed, max_life_time,
                     begin_color, end_color);
 		
 	}
-	
+
+    /**
+     * Update the particles in the particle burst.
+     */
 	public void update() {
 		for(int i = 0; i < this.particles.length; i++)
 			this.particles[i].update();
 		
 		this.age++;
 	}
-	
+
+    /**
+     * Return whether a particle burst has exceeded his lifetime.
+     *
+     * @return True when the particle burst is dead. False when the particle burst is still alive.
+     */
 	public boolean isDead() { 
 		if(age >= max_life_time)
 			return true;
 		else
 			return false;
 	}
-	
+
+    /**
+     * Render (draw) all the particles to the particle canvas.
+     */
 	public void render(ParticleCanvas particleCanvas) {
 		for(int i = 0; i < this.particles.length; i++)
 			this.particles[i].draw(particleCanvas);
