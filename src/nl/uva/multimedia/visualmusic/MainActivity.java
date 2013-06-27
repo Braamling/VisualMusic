@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
@@ -38,6 +40,7 @@ public class MainActivity extends MultitouchActivity {
     private WaveFile sample = null;
     private MyButton synth_option_button = null;
     private AlertDialog synthSettings;
+    private AlertDialog particleSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class MainActivity extends MultitouchActivity {
                         N_FINGER_THREADS);
 
         this.initSynthSettings();
+        this.initParticleSettings();
     }
 
     @Override
@@ -73,10 +77,14 @@ public class MainActivity extends MultitouchActivity {
             case R.id.synth_options:
                 this.synthSettings.show();
                 return true;
+            case R.id.particle_options:
+                this.particleSettings.show();
+                return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
+
 
     private void initSynthSettings() {
         LayoutInflater inflater =
@@ -97,6 +105,47 @@ public class MainActivity extends MultitouchActivity {
                             for(int index = 0; index < N_FINGER_THREADS; index ++){
                                 monitor = mFingerHandler.getMonitor(index);
                                 monitor.setAttack(attackSlider.getProgress());
+                            }
+                        }catch (Exception e){
+                        }
+                    }
+                })
+                .create();
+    }
+
+    private void initParticleSettings() {
+        LayoutInflater inflater =
+                (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.particle_popup,
+                (ViewGroup)findViewById(R.id.particleRoot));
+
+        final RadioGroup radiobuttons =
+                (RadioGroup) layout.findViewById(R.id.particleRadio);
+        radiobuttons.check(0);
+        this.particleSettings = new AlertDialog.Builder(this)
+                .setView(layout)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        VisualMusicThreadMonitor monitor;
+                        int count = radiobuttons.getChildCount();
+                        int particleTheme = 0;
+                        for (int j = 0; j < count; j++) {
+                            View o = radiobuttons.getChildAt(j);
+                            if (o instanceof RadioButton) {
+                                RadioButton radioBtn =  (RadioButton)o;
+                                if(radioBtn.isChecked()){
+                                    particleTheme = j;
+                                    break;
+                                }
+                            }
+                        }
+
+                        try{
+                            for(int index = 0; index < N_FINGER_THREADS; index ++){
+                                monitor = mFingerHandler.getMonitor(index);
+                                monitor.setParticleTheme(radiobuttons.getCheckedRadioButtonId());
+                                Log.e(TAG, "button" + radiobuttons.getCheckedRadioButtonId());
                             }
                         }catch (Exception e){
                         }

@@ -56,7 +56,7 @@ public class VisualMusicThread extends FingerThread {
 
         /* Activate the monitor and pick a color scheme for the particles */
         monitor.setActive(true);
-        monitor.pickColorScheme();
+        monitor.pickColorScheme(monitor.GetParticleTheme());
 
     }
 

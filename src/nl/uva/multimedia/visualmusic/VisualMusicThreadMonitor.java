@@ -22,6 +22,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int rotation = 360; /* Should range from 90 to 720 */
     private int rotSpacing; /* Increments with every thread update, indicates
                              * the spacing for the particle rotations */
+    private int theme;
 
     private int attack = 250;
 
@@ -328,12 +329,52 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
         return this.rotation;
     }
 
+    /**
+     * Set the size of the rotation.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return The size of the rotation. Range from 0 - 300.
+     */
     public int getRotSpacing() {
         return this.rotSpacing;
     }
 
+    /**
+     * Set the size of the rotation.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param r The size of the rotation. Range from 0 - 300.
+     */
     public void setRotSpacing(int r) {
         this.rotSpacing = r;
+    }
+
+    /**
+     * Get the theme of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param group the theme value from the radio button. Integer between 0 and 5.
+     */
+    public void setParticleTheme(int group){
+        this.theme = theme;
+    }
+
+    /**
+     * Get the theme of a tone.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @return the theme value from the radio button. Integer between 0 and 5.
+     */
+    public int GetParticleTheme(){
+        return this.theme;
     }
 
     /**
