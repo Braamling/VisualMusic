@@ -2,12 +2,12 @@
     <item
     	android:id="@+id/synth_options"
     	android:title="Synth Options" 
-    	android:showAsAction="never"
+    	android:showAsAction="ifRoom"
     />
 
     <item 
     	android:id="@+id/particle_options"
     	android:title="Particle Options" 
-    	android:showAsAction="never"
+    	android:showAsAction="ifRoom"
     />
 </menu>
