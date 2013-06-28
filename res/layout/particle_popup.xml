@@ -1,76 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/particleRoot">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/particleRoot">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Select a particle theme"
-            android:id="@+id/textView"
-            android:layout_gravity="center"/>
-
-    <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="2dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:id="@+id/particleRadio">
-
-        <RadioButton
-                android:layout_width="fill_parent"
+        <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ButtonRandom"
-                android:id="@+id/radioButton6"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Particle settings"
+                android:id="@+id/textView"
+                android:layout_gravity="center"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lifetime"
+                android:id="@+id/lifetimeText"
                 android:layout_gravity="left|center_vertical"
-                android:checked="true"/>
+                android:textSize="18dp"/>
 
-        <RadioButton
+        <SeekBar
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ButtonMagical"
-                android:id="@+id/radioButton4"
+                android:id="@+id/lifeTimeSlider"
+                android:indeterminate="false"
+                android:focusableInTouchMode="true"
+                android:focusable="false"
+                android:max="1975"/>
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Theme"
+                android:id="@+id/textView3"
                 android:layout_gravity="left|center_vertical"
-                android:checked="false"/>
+                android:textSize="18dp"/>
 
-        <RadioButton
-                android:layout_width="fill_parent"
+        <RadioGroup
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ButtonWater"
-                android:id="@+id/radioButton2"
-                android:checked="false"
-                android:layout_gravity="left|center_vertical"/>
-
-        <RadioButton
-                android:layout_width="370dp"
-                android:layout_height="wrap_content"
-                android:text="@string/ButtonElements"
-                android:id="@+id/button1"
-                android:checked="false"
-                android:focusable="true"/>
-
-        <RadioButton
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/ButtonGold"
-                android:id="@+id/radioButton"
                 android:layout_gravity="left|center_vertical"
-                android:checked="false"/>
+                android:layout_marginLeft="2dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:id="@+id/particleRadio">
 
-        <RadioButton
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/ButtonLove"
-                android:id="@+id/radioButton5"
-                android:layout_gravity="left|center_vertical"
-                android:checked="false"/>
+            <RadioButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ButtonRandom"
+                    android:id="@+id/radioButton6"
+                    android:layout_gravity="left|center_vertical"
+                    android:checked="true"/>
 
-    </RadioGroup>
+            <RadioButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ButtonMagical"
+                    android:id="@+id/radioButton4"
+                    android:layout_gravity="left|center_vertical"
+                    android:checked="false"/>
 
+            <RadioButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ButtonWater"
+                    android:id="@+id/radioButton2"
+                    android:checked="false"
+                    />
+
+            <RadioButton
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ButtonElements"
+                    android:id="@+id/button1"
+                    android:checked="false"
+                    android:focusable="true"/>
+
+            <RadioButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ButtonGold"
+                    android:id="@+id/radioButton"
+                    android:layout_gravity="left|center_vertical"
+                    android:checked="false"/>
+
+            <RadioButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ButtonLove"
+                    android:id="@+id/radioButton5"
+                    android:layout_gravity="left|center_vertical"
+                    android:checked="false"/>
+
+
+        </RadioGroup>
+
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>
