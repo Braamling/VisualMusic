@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 /**
  * Activity of the program.
+ * <p></p>
  * The program is ran from here.
  *
  * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
@@ -39,7 +40,7 @@ public class MainActivity extends MultitouchActivity {
     private static final String TAG = "MainActivity";
 
     /**
-     *Number of fingers that are to be supported by the program.
+     * Number of fingers that are to be supported by the program.
      */
     public static final int N_FINGER_THREADS = 5;
 
@@ -72,12 +73,12 @@ public class MainActivity extends MultitouchActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater;
-        MenuItem synth_options;
-
-        inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        synth_options = menu.findItem(R.id.synth_options);
+//        MenuInflater inflater;
+//        MenuItem synth_options;
+//
+//        inflater = getMenuInflater();
+//        inflater.inflate(R.menu.main, menu);
+//        synth_options = menu.findItem(R.id.synth_options);
 
         return true;
     }
@@ -97,7 +98,7 @@ public class MainActivity extends MultitouchActivity {
     }
 
     /**
-     * Initialize the SynthSettings menu option.
+     * Initialize the synth settings menu.
      */
     private void initSynthSettings() {
         LayoutInflater inflater =
@@ -105,9 +106,7 @@ public class MainActivity extends MultitouchActivity {
         final View layout = inflater.inflate(R.layout.popup,
                 (ViewGroup)findViewById(R.id.popupRoot));
 
-        /**
-         * Set the text and slider for the attack of a tone.
-         */
+        /* Set the text and slider for the attack of a tone. */
         final SeekBar attackSlider =
                 (SeekBar)layout.findViewById(R.id.attackSlider);
         attackSlider.setProgress(200);
@@ -119,7 +118,8 @@ public class MainActivity extends MultitouchActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                //set textView's text
+
+                /* Set textView's text. */
                 attackText.setText("Attack: " + progress + "ms");
             }
 
@@ -144,7 +144,8 @@ public class MainActivity extends MultitouchActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                //set textView's text
+
+                /* Set textView's text. */
                 decayText.setText("Decay: " + progress + "ms");
             }
 
@@ -169,7 +170,8 @@ public class MainActivity extends MultitouchActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                //set textView's text
+
+                /* Set textView's text. */
                 sustainText.setText("Sustain: " + progress / 10.0);
             }
 
@@ -194,7 +196,8 @@ public class MainActivity extends MultitouchActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                //set textView's text
+
+                /* Set textView's text. */
                 releaseText.setText("Release: " + progress + "ms");
             }
 
@@ -219,7 +222,7 @@ public class MainActivity extends MultitouchActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                //set textView's text
+                /* Set textView's text. */
                 overtoneText.setText("Overtones: " + progress);
             }
 
@@ -257,6 +260,9 @@ public class MainActivity extends MultitouchActivity {
                 .create();
     }
 
+    /**
+     * Initialize the particle settings menu.
+     */
     private void initParticleSettings() {
         LayoutInflater inflater =
                 (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -286,23 +292,19 @@ public class MainActivity extends MultitouchActivity {
                             }
                         }
 
-                        try{
-                            for(int index = 0; index < N_FINGER_THREADS; index ++){
+                        try {
+                            for (int index = 0; index < N_FINGER_THREADS;
+                                    index ++) {
                                 monitor = mFingerHandler.getMonitor(index);
                                 monitor.setParticleTheme(particleTheme);
                             }
-                        }catch (Exception e){
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 })
                 .create();
-    }
-
-    protected void onActivityResult(int request_code, int result_code, Intent data) {
-        super.onActivityResult(request_code, result_code, data);
-
-        switch(request_code) {
-        }
     }
 
     @Override
@@ -345,9 +347,6 @@ public class MainActivity extends MultitouchActivity {
     @Override
     public void onFingerUp(int fingerId) {
         try {
-            VisualMusicThreadMonitor monitor =
-                    this.mFingerHandler.getMonitor(fingerId);
-
             this.mFingerHandler.endFinger(fingerId);
         }
         catch (ImpossibleFingerException e) {

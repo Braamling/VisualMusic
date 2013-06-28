@@ -1,15 +1,8 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.app.Activity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-
-/**
- * Created by klaplong on 6/20/13.
- *
- *
- */
 
 /**
  * An activity with multi touch handling.
@@ -24,23 +17,6 @@ import android.view.MotionEvent;
  */
 public class MultitouchActivity extends Activity {
     private static final String TAG = "MultitouchActivity";
-
-    public int getBarHeight() {
-        int actionBarHeight;
-        TypedValue tv;
-
-        tv = new TypedValue();
-        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
-                true)) {
-            actionBarHeight =
-                    TypedValue.complexToDimensionPixelSize(tv.data,
-                            getResources().getDisplayMetrics());
-        }
-        else
-            actionBarHeight = 0;
-
-        return actionBarHeight;
-    }
 
     /**
      * A touch event has occurred. Inspect the event to determine what has
@@ -141,5 +117,27 @@ public class MultitouchActivity extends Activity {
      */
     public void onFingerUp(int fingerId, float x, float y) {
         this.onFingerUp(fingerId);
+    }
+
+    /**
+     * Get the height of the actionbar.
+     * Source: http://stackoverflow.com/a/13216807
+     * @return The bar's height.
+     */
+    public int getBarHeight() {
+        int actionBarHeight;
+        TypedValue tv;
+
+        tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
+                true)) {
+            actionBarHeight =
+                    TypedValue.complexToDimensionPixelSize(tv.data,
+                            getResources().getDisplayMetrics());
+        }
+        else
+            actionBarHeight = 0;
+
+        return actionBarHeight;
     }
 }

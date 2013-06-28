@@ -4,7 +4,6 @@ import android.graphics.Paint;
 
 /**
  * Contains all the values of a circle to be drawn to a canvas later on.
- *
  * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
  * @version 1.0
  */
@@ -14,10 +13,6 @@ class Circle {
 
     /**
      * Initialize a circle with it's position, radius and paint.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param cx The circle's x-position.
      * @param cy The circle's y-position.
      * @param radius The circle's radius.
@@ -32,10 +27,6 @@ class Circle {
 
     /**
      * Return the circle's x-position.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return The circle's x-position.
      */
     public float getCx() {
@@ -44,10 +35,6 @@ class Circle {
 
     /**
      * Return the circle's y-position.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return The circle's y-position.
      */
     public float getCy() {
@@ -56,10 +43,6 @@ class Circle {
 
     /**
      * Return the circle's radius.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return The circle's radius.
      */
     public float getRadius() {
@@ -68,10 +51,6 @@ class Circle {
 
     /**
      * Return the circle's paint containing it's color..
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return The circle's paint containing it's color..
      */
     public Paint getPaint() {

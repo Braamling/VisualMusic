@@ -3,10 +3,7 @@ package nl.uva.multimedia.visualmusic;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.media.audiofx.AudioEffect;
-import android.media.audiofx.EnvironmentalReverb;
 import android.media.audiofx.PresetReverb;
-import android.util.Log;
 
 /**
  * A Class to generate tones and play them.
@@ -29,7 +26,6 @@ public class PlayTone {
 
     private AudioTrack mAudio;
     private int sampleCount = bufferSize;
-    private PresetReverb effect = null;
     private float freq;
     private long time;
     private boolean releasing;
@@ -61,11 +57,17 @@ public class PlayTone {
         mAudio.write(new byte[this.bufferSize], 0, this.bufferSize);
     }
 
-
+    /**
+     * Replay the last frequency played.
+     */
     public void sample() {
         this.setFreq(this.freq);
     }
 
+    /**
+     * Refill the buffer with tones from a new frequency.
+     * @param freq The tone's frequency.
+     */
     public void setFreq(float freq) {
         float amplitude = 0.0f;
 
@@ -130,7 +132,7 @@ public class PlayTone {
 
     /**
      * Set the attack of the tone.
-     * @param attack the attack.
+     * @param attack The attack.
      */
     public void setAttack(int attack){
         this.attack = attack;
@@ -138,7 +140,7 @@ public class PlayTone {
 
     /**
      * Set the decay of the tone.
-     * @param decay the decay.
+     * @param decay The decay.
      */
     public void setDecay(int decay){
         this.decay = decay;
@@ -146,7 +148,7 @@ public class PlayTone {
 
     /**
      * Set the sustain of the tone.
-     * @param sustain the sustain.
+     * @param sustain The sustain.
      */
     public void setSustain(float sustain){
         this.sustain = sustain;
@@ -154,7 +156,7 @@ public class PlayTone {
 
     /**
      * set the release of the tone.
-     * @param release the release.
+     * @param release The release.
      */
     public void setRelease(int release){
         this.release = release;
@@ -162,7 +164,7 @@ public class PlayTone {
 
     /**
      * Set the number of overtones.
-     * @param overtones the number of overtones.
+     * @param overtones The number of overtones.
      */
     public void setOvertones(int overtones){
         this.overtones = overtones;
@@ -177,14 +179,15 @@ public class PlayTone {
     }
 
     /**
-     * Set the release boolean to true indicating that the finger has been released.
+     * Set the release boolean to true indicating that the finger has been
+     * released.
      */
     public void startRelease() {
         this.releasing = true;
     }
 
     /**
-     * Get a boolean indicating if the tone is being released
+     * Get a boolean indicating if the tone is being released.
      * @return a true or false boolean with the status of the tone.
      */
     public boolean isReleasing() {

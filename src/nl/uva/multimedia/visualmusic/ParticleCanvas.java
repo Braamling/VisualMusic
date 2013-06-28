@@ -1,32 +1,22 @@
 package nl.uva.multimedia.visualmusic;
 
-
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-
 /**
- * Particle canvas controls all rendering of the particles and keys to the canvas.
- *
+ * Particle canvas controls all rendering of the particles and keys to the
+ * canvas.
  * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
  * @version 1.0
  */
 public class ParticleCanvas extends SurfaceView
-        implements SurfaceHolder.Callback{
-
-    private static final String TAG = "ParticleCanvas";
-
-    private MainActivity activity;
+        implements SurfaceHolder.Callback {
     private int max_fingers = MainActivity.N_FINGER_THREADS;
     public SurfaceHolder holder;
 
-    private int nFingers, cFingers;
     private int circleBufferSize = VisualMusicThread.N_PARTICLE_GROUPS *
             VisualMusicThread.PARTICLE_GROUP_SIZE * max_fingers;
     private Circle[] circleBuffer = new Circle[circleBufferSize + 1];
@@ -42,11 +32,7 @@ public class ParticleCanvas extends SurfaceView
 
     /**
      * Initialize the particle canvas with the main activity.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @param activity the context for communicating back to the main activity.
+     * @param activity The context for communicating back to the main activity.
      */
     public ParticleCanvas(MainActivity activity) {
         super(activity);
@@ -56,17 +42,12 @@ public class ParticleCanvas extends SurfaceView
         this.textPaint.setTextSize(10.0f);
         this.textPaint.setTextAlign(Paint.Align.CENTER);
 
-        this.activity = activity;
         getHolder().addCallback(this);
         setFocusable(true);
     }
 
     /**
      * Get the monitors of each thread.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param handler The FingerHandler containing the fingers and monitors.
      */
     public void setMonitors(FingerHandler handler) {
@@ -84,20 +65,14 @@ public class ParticleCanvas extends SurfaceView
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                               int height) {
-    }
+                               int height) { /* NOP */ }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
-    }
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) { /* NOP */ }
 
     /**
-     * Initiate all the needed surface values with the newly create surface holder
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * Initiate all the needed surface values with the newly create surface
+     * holder.
      * @param holder The surface holder containing the the canvas.
      */
     @Override
@@ -109,6 +84,9 @@ public class ParticleCanvas extends SurfaceView
         this.mThread.start();
     }
 
+    /**
+     * Run the rendering process.
+     */
     public void render() {
         if (this.holder == null)
             return;
@@ -131,9 +109,6 @@ public class ParticleCanvas extends SurfaceView
 
     /**
      * Gather and render all the particles in all particle bursts.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
      */
     public void gatherParticles() {
         for (int i = 0; i < this.max_fingers; i ++) {
@@ -154,10 +129,6 @@ public class ParticleCanvas extends SurfaceView
 
     /**
      * Draw the keys on the canvas
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param canvas The canvas to draw the keys on.
      */
     public void drawKeys(Canvas canvas) {
@@ -227,13 +198,10 @@ public class ParticleCanvas extends SurfaceView
 
     /**
      * Draw the particles on the canvas
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param canvas The canvas to draw the particles on.
      */
     public void drawParticles(Canvas canvas) {
+
         /* Draw particles. */
         for (; this.circleBufferPointer > 0; this.circleBufferPointer --) {
             Circle c = this.circleBuffer[this.circleBufferPointer - 1];
@@ -252,10 +220,6 @@ public class ParticleCanvas extends SurfaceView
 
     /**
      * Put a circle with it's values in the circle buffer.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param cx The circle's x-position.
      * @param cy The circle's y-position.
      * @param radius The circle's radius.
@@ -268,9 +232,6 @@ public class ParticleCanvas extends SurfaceView
 
     /**
      * Kill the particle canvas thread.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
      */
     public void kill() {
         this.mThread.setRunning(false);
@@ -283,9 +244,10 @@ public class ParticleCanvas extends SurfaceView
         }
     }
 
-    public void start() {
-        // this.mThread.start();
-    }
+    /**
+     * @deprecated Not used anymore.
+     */
+    public void start() { /* NOP */ }
 }
 
 

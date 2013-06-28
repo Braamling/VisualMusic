@@ -1,9 +1,7 @@
 package nl.uva.multimedia.visualmusic;
 
-import android.view.SurfaceHolder;
-
 /**
- * Created by klaplong on 6/20/13.
+ * 
  */
 public class FingerThreadMonitor {
     protected float x, y;
