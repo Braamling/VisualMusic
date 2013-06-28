@@ -24,6 +24,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int rotSpacing; /* Increments with every thread update, indicates
                              * the spacing for the particle rotations */
     private int theme;
+    private int baseLifetime = 75; /* Should range from 25 to 500 */
 
     private int attack = 250;
     private int decay = 250;
@@ -359,7 +360,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     /**
-     * Get the theme of a tone.
+     * Set the theme of the particles.
      *
      * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
      * @version 1.0
@@ -371,7 +372,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     /**
-     * Get the theme of a tone.
+     * Get the theme of the particles
      *
      * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
      * @version 1.0
@@ -380,6 +381,31 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
      */
     public int getParticleTheme(){
         return this.theme;
+    }
+
+    /**
+     * Set the base lifetime (as determined by the user)
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     * @param base lifetime of the particles to come. Int between 25 - 500
+     */
+    public void setBaseLifetime(int b) {
+        if (b < 25 || b > 500)
+            return;
+        this.baseLifetime = b;
+    }
+
+    /**
+     * Get the base lifetime.
+     *
+     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
+     * @version 1.0
+     *
+     */
+    public int getBaseLifetime() {
+        return this.baseLifetime;
     }
 
     /**

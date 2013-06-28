@@ -320,8 +320,18 @@ public class MainActivity extends MultitouchActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
+                VisualMusicThreadMonitor monitor;
                 /* Set textView's text. */
                 lifetimeText.setText("lifetime: " + (progress + 25) + " frames");
+                try {
+                    for (int index = 0; index < N_FINGER_THREADS;
+                            index ++) {
+                        monitor = mFingerHandler.getMonitor(index);
+                        monitor.setBaseLifetime(progress + 25);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {}

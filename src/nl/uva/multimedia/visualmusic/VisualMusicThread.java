@@ -26,7 +26,7 @@ public class VisualMusicThread extends FingerThread {
     /* Depending on the amount of touch move events handled in a x amount of time there should be
      * more particles per group and less groups. When the refresh rate is really high the particles
      * group size can even be 1 for the best results. */
-    public static final int N_PARTICLE_GROUPS   = 600; /* Total number of particle-groups */
+    public static final int N_PARTICLE_GROUPS   = 1000; /* Total number of particle-groups */
     public static final int PARTICLE_GROUP_SIZE = 1; /* Number of unique particles in a single group */
     private static final int LOW_OCTAVE = 2;
 
@@ -162,11 +162,15 @@ public class VisualMusicThread extends FingerThread {
      * @param x The finger's x-position.
      */
     protected void setParticleParameters (int width, float x) {
+        VisualMusicThreadMonitor monitor =
+                (VisualMusicThreadMonitor)this.monitor;
+
         float div = 1 - (x / width); /* Between 0 and 1, indicator of how far
                                       * on the screen the finger is (on x-axis) */
         float ftr = (float) (div + 0.75); /* Between 0.75 and 1.75 */
 
-        this.particleLifetime = Math.round(75 + (75 * div)); /* High frequency = long lifetime */
+        this.particleLifetime = Math.round(monitor.getBaseLifetime() +
+                (monitor.getBaseLifetime() * div));
         this.particleRadius   = Math.round(this.particleRadiusBase * ftr);
     }
 
