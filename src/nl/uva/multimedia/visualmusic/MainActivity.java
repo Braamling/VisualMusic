@@ -287,6 +287,33 @@ public class MainActivity extends MultitouchActivity {
                     }
                 })
                 .create();
+
+
+        /**
+         * Set the text and slider for the overtone of a tone.
+         */
+        final SeekBar lifetimeSlider =
+                (SeekBar)layout.findViewById(R.id.lifeTimeSlider);
+        lifetimeSlider.setProgress(75);
+
+        final TextView lifetimeText = (TextView)layout.findViewById(R.id.lifetimeText);
+        lifetimeText.setText("lifetime: " + 75 + " frames");
+
+        lifetimeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                /* Set textView's text. */
+                lifetimeText.setText("lifetime: " + (progress + 25) + " frames");
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+
+        });
+
     }
 
     @Override
