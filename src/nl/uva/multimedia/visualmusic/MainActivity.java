@@ -1,26 +1,14 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.graphics.Canvas;
-import android.database.Cursor;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
-import android.provider.MediaStore;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -47,10 +35,6 @@ public class MainActivity extends MultitouchActivity {
     private RelativeLayout mRootLayout = null;
     private FingerHandler<VisualMusicThread, VisualMusicThreadMonitor> mFingerHandler = null;
     private ParticleCanvas pCanvas;
-    private Canvas canvas;
-    private SurfaceHolder surfaceHolder;
-    private WaveFile sample = null;
-    private MyButton synth_option_button = null;
     private AlertDialog synthSettings;
     private AlertDialog particleSettings;
 

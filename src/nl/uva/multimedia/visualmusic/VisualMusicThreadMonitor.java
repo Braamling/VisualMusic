@@ -1,13 +1,10 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.graphics.Color;
-import android.util.Log;
-
 import java.util.Random;
 
 /**
  * A monitor to store and manage all the values of the VisualMusicThread.
- *
  * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
  * @version 1.0
  */
@@ -33,9 +30,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Initialize the visual music thread without any values.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
      */
     public VisualMusicThreadMonitor() {
         super();
@@ -45,34 +39,27 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Initialize the visual music thread with just a fingerId.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
+     * @param fingerId The id of the finger.
      */
     public VisualMusicThreadMonitor(int fingerId) {
         super();
-
         this.fingerId = fingerId;
     }
 
     /**
-     * Initialize the visual music thread with both a finger id and x and y position.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
+     * Initialize the visual music thread with both a finger id and x and y
+     * position.
+     * @param x The finger's x-position.
+     * @param y The finger's y-position.
+     * @param fingerId The finger's id.
      */
     public VisualMusicThreadMonitor(float x, float y, int fingerId) {
         super(x, y);
-
         this.fingerId = fingerId;
     }
 
     /**
      * Set the particle canvas object.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param particleCanvas The particle canvas to draw the particles on.
      */
     public void setParticleCanvas(ParticleCanvas particleCanvas) {
@@ -82,10 +69,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Get the particle canvas object.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return The particle canvas to draw the particles on.
      */
     public ParticleCanvas getParticleCanvas() {
@@ -94,11 +77,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Set a boolean to determent whether the thread is finishing or not.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @param finishing True when the thread is finishing and false when the thread is not finishing.
+     * @param finishing True when the thread is finishing and false when the
+     *                  thread is not finishing.
      */
     public void setFinishing(boolean finishing) {
         this.finishing = finishing;
@@ -106,11 +86,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Determent if a thread is finishing.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @return True when the thread is finishing and false when the thread is not finishing.
+     * @return True when the thread is finishing and false when the thread is
+     * not finishing.
      */
     public boolean isFinishing() {
         return this.finishing;
@@ -118,11 +95,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Set if a thread needs rebooting
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @param reboot True when the threads has to reboot and false when should no reboot.
+     * @param reboot True when the threads has to reboot and false when should
+     *               no reboot.
      */
     public void setReboot(boolean reboot) {
         this.reboot = reboot;
@@ -130,11 +104,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Determent if a thread needs rebooting
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @return True when the threads has to reboot and false when should no reboot.
+     * @return True when the threads has to reboot and false when should no
+     * reboot.
      */
     public boolean needsReboot() {
         return this.reboot;
@@ -142,11 +113,7 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Set the particle burst array to use in visual music thread.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @param particles The particle burst array to use in visual music thread
+     * @param particles The particle burst array to use in visual music thread.
      */
     public void setParticles(ParticleBurst[] particles) {
         this.particles = particles;
@@ -154,10 +121,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Get the particle burst array to use in visual music thread.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return The particle burst array to use in visual music thread.
      */
     public ParticleBurst[] getParticles() {
@@ -166,10 +129,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Activate the visual music thread.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param active True when active, false when inactive.
      */
     public void setActive(boolean active) {
@@ -178,10 +137,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Determent whether a visual music thread is active.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return True when active, false when inactive.
      */
     public boolean isActive() {
@@ -189,21 +144,16 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     }
 
     /**
-     * Pick a color scheme (begin and end color) for the individual particles in a particle burst.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
+     * Pick a color scheme (begin and end color) for the individual particles in
+     * a particle burst.
      */
     public void pickColorScheme() {
         pickColorScheme(0);
     }
 
     /**
-     * Pick a color scheme (begin and end color) for the individual particles in a particle burst.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * Pick a color scheme (begin and end color) for the individual particles in
+     * a particle burst.
      * @param group: determines what subset of colors to pick colors from
      */
     public void pickColorScheme(int group) {
@@ -228,10 +178,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Create an end color based on the given id value.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param id An id between 0 and 9. All other values will black.
      * @return An integer representing and argb color.
      */
@@ -264,10 +210,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Create a begin color based on the given id value.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param id An id between 0 and 9. All other values will green.
      * @return An integer representing and argb color.
      */
@@ -300,10 +242,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Get the generated end color.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return An integer representing an argb end color.
      */
     public int getEndColor(){
@@ -312,10 +250,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Get the generated begin color.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return An integer representing the rotation.
      */
     public int getBeginColor(){
@@ -324,10 +258,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Get the generated rotation.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return An integer representing the rotation.
      */
     public int getRotation() {
@@ -336,10 +266,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Set the size of the rotation.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return The size of the rotation. Range from 0 - 300.
      */
     public int getRotSpacing() {
@@ -348,10 +274,6 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Set the size of the rotation.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param r The size of the rotation. Range from 0 - 300.
      */
     public void setRotSpacing(int r) {
@@ -360,11 +282,8 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Get the theme of a tone.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @param group the theme value from the radio button. Integer between 0 and 5.
+     * @param group the theme value from the radio button. Integer between 0
+     *              and 5.
      */
     public void setParticleTheme(int group){
         this.theme = group;
@@ -372,98 +291,89 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
 
     /**
      * Get the theme of a tone.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
-     * @return the theme value from the radio button. Integer between 0 and 5.
+     * @return The theme value from the radio button. Integer between 0 and 5.
      */
     public int getParticleTheme(){
         return this.theme;
     }
 
     /**
-     *
-     * @param attack Set the attack of a tone.
+     * Set the synth envelope's attack.
+     * @param attack The attack.
      */
     public void setAttack(int attack) {
         this.attack = attack;
     }
 
     /**
-     *
-     * @return get the attack of a tone.
+     * Get the synth envelope's attack.
+     * @return The attack..
      */
     public int getAttack() {
         return this.attack;
     }
 
     /**
-     *
-     * @param decay Set the decay of a tone.
+     * Set the synth envelope's decay.
+     * @param decay The decay.
      */
     public void setDecay(int decay) {
         this.decay = decay;
     }
 
     /**
-     * get the decay of a tone.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * Get the synth envelope's decay.
+     * @return The decay.
      */
     public int getDecay() {
         return this.decay;
     }
 
     /**
-     *
-     * @param sustain Set the sustain of a tone.
+     * Set the synth envelope's sustain.
+     * @param sustain The sustain.
      */
     public void setSustain(float sustain) {
         this.sustain = sustain;
     }
 
     /**
-     *
-     * @return Get the sustain of a tone.
+     * Get the synth envelope's sustain.
+     * @return The sustain.
      */
     public float getSustain() {
         return this.sustain;
     }
 
     /**
-     *
-     * @param release Set the release of a tone.
+     * Set the synth envelope's release.
+     * @param release The release.
      */
     public void setRelease(int release) {
         this.release = release;
     }
 
     /**
-     *
-     * @return return the time the release of a tone takes.
+     * Get the synth envelope's release.
+     * @return The release..
      */
     public int getRelease() {
         return this.release;
     }
 
     /**
-     *
-     * @param overtones Set the number of overtones.
+     * Set the amount of overtones in the synth.
+     * @param overtones The amount of overtones.
      */
     public void setOvertones(int overtones) {
         this.overtones = overtones;
     }
 
     /**
-     * get the number of overtones of a tone.
-     *
+     * Get the amount of overtones in the synth.
      * @return The amount of overtones.
      */
     public int getOvertones() {
         return this.overtones;
     }
-
 }

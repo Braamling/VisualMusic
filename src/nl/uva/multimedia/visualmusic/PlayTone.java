@@ -3,7 +3,6 @@ package nl.uva.multimedia.visualmusic;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.media.audiofx.PresetReverb;
 
 /**
  * A Class to generate tones and play them.

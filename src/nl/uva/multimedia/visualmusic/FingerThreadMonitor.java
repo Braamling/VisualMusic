@@ -1,7 +1,9 @@
 package nl.uva.multimedia.visualmusic;
 
 /**
- * 
+ * A thread monitor for multitouch.
+ * <p></p>
+ * Extending this class provides access to a fingerthread's variables.
  */
 public class FingerThreadMonitor {
     protected float x, y;
@@ -19,8 +21,8 @@ public class FingerThreadMonitor {
 
     /**
      * Constructor with an x and y.
-     * @param x x position of finger to set the x in the class.
-     * @param y y position of finger to set the y in the class.
+     * @param x The x position of finger to set the x in the class.
+     * @param y The y position of finger to set the y in the class.
      */
     public FingerThreadMonitor(float x, float y) {
         this.x = x;
