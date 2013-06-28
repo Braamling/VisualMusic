@@ -1,15 +1,8 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.app.Activity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-
-/**
- * Created by klaplong on 6/20/13.
- *
- *
- */
 
 /**
  * An activity with multi touch handling.
@@ -37,19 +30,10 @@ public class MultitouchActivity extends Activity {
             MultiTouch multiTouch;
             int action, pointer, actionBarHeight;
             int[] pointers, indices;
-            TypedValue tv;
 
             /* Compensate for the action bar.
              * Source http://stackoverflow.com/a/13216807. */
-            tv = new TypedValue();
-            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
-                    true)) {
-                actionBarHeight =
-                        TypedValue.complexToDimensionPixelSize(tv.data,
-                                getResources().getDisplayMetrics());
-            }
-            else
-                actionBarHeight = 0;
+            actionBarHeight = this.getBarHeight();
 
             /* A MultiTouch object initializes with an event, detecting multi-
              * touches and simplifying the input for further processing. */
@@ -133,5 +117,27 @@ public class MultitouchActivity extends Activity {
      */
     public void onFingerUp(int fingerId, float x, float y) {
         this.onFingerUp(fingerId);
+    }
+
+    /**
+     * Get the height of the actionbar.
+     * Source: http://stackoverflow.com/a/13216807
+     * @return The bar's height.
+     */
+    public int getBarHeight() {
+        int actionBarHeight;
+        TypedValue tv;
+
+        tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
+                true)) {
+            actionBarHeight =
+                    TypedValue.complexToDimensionPixelSize(tv.data,
+                            getResources().getDisplayMetrics());
+        }
+        else
+            actionBarHeight = 0;
+
+        return actionBarHeight;
     }
 }

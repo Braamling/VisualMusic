@@ -14,14 +14,16 @@
             android:id="@+id/textView"
             android:layout_gravity="left|center_vertical"
             android:layout_alignParentEnd="false"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true"
+            android:textSize="14dp"/>
 
     <SeekBar
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/attackSlider"
             android:layout_gravity="left|center_vertical"
-            android:max="1500"/>
+            android:max="200"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -29,14 +31,15 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Decay"
             android:id="@+id/textView2"
-            android:layout_gravity="left|center_vertical"/>
+            android:layout_gravity="left|center_vertical"
+            android:textSize="14dp"/>
 
     <SeekBar
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/decaySlider"
             android:layout_gravity="left|center_vertical"
-            android:max="1500"/>
+            android:max="200"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -44,14 +47,16 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Sustain"
             android:id="@+id/textView3"
-            android:layout_gravity="left|center_vertical"/>
+            android:layout_gravity="left|center_vertical"
+            android:textSize="14dp"/>
 
     <SeekBar
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sustainSlider"
             android:layout_gravity="left|center_vertical"
-            android:max="10"/>
+            android:max="10"
+            android:minWidth="0.1dp"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -59,21 +64,24 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Release"
             android:id="@+id/textView4"
-            android:layout_gravity="left|center_vertical"/>
+            android:layout_gravity="left|center_vertical"
+            android:textSize="14dp"/>
 
     <SeekBar
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/releaseSlider"
             android:layout_gravity="left|center_vertical"
-            android:max="1500"/>
+            android:max="1000"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Overtones"
-            android:id="@+id/textView5"/>
+            android:id="@+id/textView5"
+            android:textIsSelectable="false"
+            android:textSize="14dp"/>
 
     <SeekBar
             android:layout_width="fill_parent"

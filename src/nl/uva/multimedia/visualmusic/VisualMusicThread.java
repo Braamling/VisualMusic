@@ -1,7 +1,6 @@
 package nl.uva.multimedia.visualmusic;
 
 import android.os.SystemClock;
-import android.util.Log;
 
 /**
  * A thread for the sound and particles for a single finger.
@@ -12,28 +11,34 @@ import android.util.Log;
 public class VisualMusicThread extends FingerThread {
     private static final String TAG = "VisualMusicThread";
 
-    private int lastX = -1;
-    private int lastY = -1;
-    private int i = 0;
+    private int lastX = -1, lastY = -1, i = 0;
     private PlayTone mPlayTone = new PlayTone();
-    private long last_render_time;
-    private boolean new_touch = true;
-    private boolean spacingUp = true; /* If rotSpacing should increment, set to true.
-                                         If it should decrement, set to false. */
+    private long last_render_time, startTime;
 
-    private long startTime;
+    private boolean newTouch = true;
+
+    /* If rotSpacing should increment, set to true. If it should decrement, set
+     * to false. */
+    private boolean spacingUp = true;
 
     public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
 
     /* Depending on the amount of touch move events handled in a x amount of time there should be
      * more particles per group and less groups. When the refresh rate is really high the particles
-     * group size can even be 1 for the best results.
-     */
+     * group size can even be 1 for the best results. */
     public static final int N_PARTICLE_GROUPS   = 600; /* Total number of particle-groups */
-    public static final int PARTICLE_GROUP_SIZE = 1;  /* Number of unique particles in a single group */
-    public static final int N_KEYS = 24;
-
+    public static final int PARTICLE_GROUP_SIZE = 1; /* Number of unique particles in a single group */
     private static final int LOW_OCTAVE = 2;
+
+    /**
+     * The number of keys on a single row.
+     */
+    public static final int N_KEYS = 14;
+
+    /**
+     * The height of the black keys in relation to the white keys.
+     */
+    public static final float BLACK_HEIGHT = 0.6f;
 
     private int particleLifetime; /* Maximum life time of a single particle */
     private int particleRadiusBase; /* Value should be set after screen dimensions are known */
@@ -43,9 +48,6 @@ public class VisualMusicThread extends FingerThread {
 
     /**
      * Initialize all the parameters for the thread to run.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
      */
     protected void init() {
         super.init();
@@ -57,15 +59,10 @@ public class VisualMusicThread extends FingerThread {
 
         /* Activate the monitor and pick a color scheme for the particles */
         monitor.setActive(true);
-
-
     }
 
     /**
      * Update both the sound and particles state.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
      */
     protected void update() {
         super.update();
@@ -78,8 +75,8 @@ public class VisualMusicThread extends FingerThread {
         VisualMusicThreadMonitor monitor =
                 (VisualMusicThreadMonitor)this.monitor;
 
-
-
+        /* Set all the envelop variables to the PlayTone, the number of
+         * overtones is also set. */
         this.mPlayTone.setTime(SystemClock.currentThreadTimeMillis() -
                 this.startTime);
         this.mPlayTone.setAttack(monitor.getAttack());
@@ -88,21 +85,20 @@ public class VisualMusicThread extends FingerThread {
         this.mPlayTone.setRelease(monitor.getRelease());
         this.mPlayTone.setOvertones(monitor.getOvertones());
 
-
-        /* Check whether this is a touchdown to change the color scheme */
-        if (new_touch) {
+        /* Check whether this is a touchdown to change the color scheme. */
+        if (this.newTouch) {
             this.startTime = SystemClock.currentThreadTimeMillis();
 
             monitor.pickColorScheme(monitor.getParticleTheme());
-            new_touch = false;
+            this.newTouch = false;
 
-            /* Set the rotation spacing for particles */
+            /* Set the rotation spacing for particles. */
             monitor.setRotSpacing(0);
 
         }
 
-        /* Determine particle max radius. This cannot be done in the init() method
-         * because the canvas size is not yet known at that time. */
+        /* Determine particle max radius. This cannot be done in the init()
+         * method because the canvas size is not yet known at that time. */
         if (this.particleRadiusBase == 0) {
             this.particleRadiusBase = (monitor.getParticleCanvas().getHeight() > 0) ?
                     ((monitor.getParticleCanvas().getWidth() * 
@@ -116,19 +112,22 @@ public class VisualMusicThread extends FingerThread {
         /* Update the look of the upcoming particles based on the x position */
         setParticleParameters(monitor.getWidth(), monitor.getX());
 
-        /* Update the rotation spacing */
+        /* Update the rotation spacing. */
         if (Math.abs(newX - this.lastX) > 1 || Math.abs(newY - this.lastY) > 1) {
             monitor.setRotSpacing(0);
             this.spacingUp = true;
-        } else {
-            /* Decide whether rotSpacing should go the other way */
-            if (spacingUp)
-                spacingUp = (monitor.getRotSpacing() >= 400) ? false : true;
-            else
-                spacingUp = (monitor.getRotSpacing() <= 0) ? true : false;
+        }
+        else {
 
-            /* Now increment or decrement rotSpacing */
-            if (spacingUp)
+            /* Decide whether rotSpacing should go the other way. */
+            if (this.spacingUp)
+                this.spacingUp =
+                        (monitor.getRotSpacing() >= 400) ? false : true;
+            else
+                this.spacingUp = (monitor.getRotSpacing() <= 0) ? true : false;
+
+            /* Now increment or decrement rotSpacing. */
+            if (this.spacingUp)
                 monitor.setRotSpacing(monitor.getRotSpacing() + 1);
             else
                 monitor.setRotSpacing(monitor.getRotSpacing() - 1);
@@ -138,7 +137,7 @@ public class VisualMusicThread extends FingerThread {
          * it is decided that an unmoving finger should not generate particles,
          * or that vertical movement is not allowed. */
         if (Math.abs(newX - this.lastX) >= 0) {
-            particles[this.i ++ % N_PARTICLE_GROUPS] =
+            this.particles[this.i ++ % N_PARTICLE_GROUPS] =
                     new ParticleBurst(PARTICLE_GROUP_SIZE, this.monitor.getX(),
                     this.monitor.getY(), this.particleRadius, particleLifetime,
                             monitor.getBeginColor(), monitor.getEndColor(),
@@ -147,22 +146,8 @@ public class VisualMusicThread extends FingerThread {
         }
         this.lastY = newY;
 
-
         try {
-            int key = this.getKey(), scale = LOW_OCTAVE;
-            while (key >= 12) {
-                key -= 12;
-                scale ++;
-            }
-            if (monitor.getY() < (monitor.getHeight() / 2)) {
-                scale += (N_KEYS / 12);
-            }
-            ToneFrequency newFrequency = ToneFrequency.fromKey(key, scale);
-            freq = newFrequency.get();
-
-            y_scale = monitor.getY() / (float)monitor.getHeight();
-
-            mPlayTone.setFreq(freq, y_scale);
+            mPlayTone.setFreq(this.getKey().getFrequency());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -173,10 +158,6 @@ public class VisualMusicThread extends FingerThread {
 
     /**
      * Set the particle's lifetime and radius depending on the width and x-position.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @param width The phones screen width.
      * @param x The finger's x-position.
      */
@@ -192,14 +173,9 @@ public class VisualMusicThread extends FingerThread {
     /**
      * Start the finishing sequence of the thread. When there are still particles on the canvas
      * their movement will be finished before ending the finishing sequence.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      */
     protected void finish() {
-
-        new_touch = true;
+        newTouch = true;
 
         VisualMusicThreadMonitor monitor =
                 (VisualMusicThreadMonitor)this.monitor;
@@ -217,7 +193,6 @@ public class VisualMusicThread extends FingerThread {
                 this.going = true;
                 return;
             }
-
 
             stillAlive = false;
             for (int i = 0; i < this.particles.length; i ++) {
@@ -252,25 +227,19 @@ public class VisualMusicThread extends FingerThread {
 
     /**
      * Prevent the thread from terminating before custom stop methods have been called,
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
      */
     public void turnOff() {
         super.turnOff();
     }
 
     /**
-     *  Render a single frame, only continues if enough time has elapsed. This time can be found
-     * in FRAME_REFRESH_TIME.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
+     * Render a single frame, only continues if enough time has elapsed. This
+     * time can be found in FRAME_REFRESH_TIME.
      * @param monitor the visual music thread monitor.
      */
     public void renderFrame(VisualMusicThreadMonitor monitor) {
-        if(SystemClock.currentThreadTimeMillis() - last_render_time > this.FRAME_REFRESH_TIME){
+        if ((SystemClock.currentThreadTimeMillis() - last_render_time)
+                > this.FRAME_REFRESH_TIME) {
             last_render_time = SystemClock.currentThreadTimeMillis();
             try {
                 for (int i = 0; i < particles.length; i ++) {
@@ -294,20 +263,48 @@ public class VisualMusicThread extends FingerThread {
 
     /**
      * Get the number of the pressed key.
-     *
-     * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
-     * @version 1.0
-     *
      * @return key number of the pressed key.
      */
-    private int getKey(){
+    private Key getKey() {
+        int octave, ySplit, y, blackHeight, key;
         float part;
-        int key;
+        int[] blackKeys = {3, 7, 15, 19, 23};
+        boolean[] isBlackKey = new boolean[28];
+
+        octave = LOW_OCTAVE;
+
+        ySplit = this.monitor.getHeight() / 2;
+        y = this.lastY;
+        if (y > ySplit)
+            y -= ySplit;
+        else
+            octave += N_KEYS / 7;
+
+        blackHeight = (int)(BLACK_HEIGHT * ySplit);
+
+        for (int i = 0; i < blackKeys.length; i ++) {
+            isBlackKey[blackKeys[i]] = true;
+        }
+
+        part = monitor.getWidth() / (N_KEYS * 4.0f);
+        key = (int)(this.lastX / part) % (7 * 4);
+        if ((y < blackHeight) && (isBlackKey[key] ||
+                ((key > 0) && isBlackKey[key - 1]))) {
+            if (!isBlackKey[key])
+                key --;
+
+            int i;
+            for (i = 0; (i < blackKeys.length) && (blackKeys[i] != key);
+                 i ++);
+
+            octave += (this.lastX / part) / (7 * 4);
+
+            return new Key(true, i, octave);
+        }
 
         part = monitor.getWidth() / N_KEYS;
-        key = (int)(lastX / part);
-
-        return key;
+        key = (int)(this.lastX / part) % 7;
+        octave += (this.lastX / part) / 7;
+        return new Key(false, key, octave);
     }
-
 }
