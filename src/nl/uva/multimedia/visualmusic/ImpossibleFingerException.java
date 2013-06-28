@@ -1,7 +1,8 @@
 package nl.uva.multimedia.visualmusic;
 
 /**
- * Created by klaplong on 6/20/13.
+ * An exception that is thrown when a finger id is used that couldn't possibly
+ * exist.
  */
 public class ImpossibleFingerException extends Exception {
 }

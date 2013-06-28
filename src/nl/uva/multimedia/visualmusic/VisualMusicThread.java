@@ -4,18 +4,16 @@ import android.os.SystemClock;
 
 /**
  * A thread for the sound and particles for a single finger.
- *
  * @author Abe Wiersma, Bas van den Heuvel, Bram van den Akker, Mats ten Bohmer
  * @version 1.0
  */
 public class VisualMusicThread extends FingerThread {
-    private static final String TAG = "VisualMusicThread";
-
     private int lastX = -1, lastY = -1, i = 0;
     private PlayTone mPlayTone = new PlayTone();
     private long last_render_time, startTime;
-
     private boolean newTouch = true;
+
+    private static final int LOW_OCTAVE = 2;
 
     /* If rotSpacing should increment, set to true. If it should decrement, set
      * to false. */
@@ -26,9 +24,15 @@ public class VisualMusicThread extends FingerThread {
     /* Depending on the amount of touch move events handled in a x amount of time there should be
      * more particles per group and less groups. When the refresh rate is really high the particles
      * group size can even be 1 for the best results. */
-    public static final int N_PARTICLE_GROUPS   = 1000; /* Total number of particle-groups */
-    public static final int PARTICLE_GROUP_SIZE = 1; /* Number of unique particles in a single group */
-    private static final int LOW_OCTAVE = 2;
+    /**
+     * Total number of particle-groups.
+     */
+    public static final int N_PARTICLE_GROUPS   = 1000;
+
+    /**
+     * Number of unique particles in a single group.
+     */
+    public static final int PARTICLE_GROUP_SIZE = 1;
 
     /**
      * The number of keys on a single row.

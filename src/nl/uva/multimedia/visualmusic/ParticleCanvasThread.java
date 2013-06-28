@@ -3,29 +3,40 @@ package nl.uva.multimedia.visualmusic;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.SystemClock;
-import android.util.Log;
 
 /**
- * Created by klaplong on 2013-06-26.
+ * The thread for the particle canvas.
  */
 public class ParticleCanvasThread extends Thread {
     private ParticleCanvas mParticleCanvas;
     private boolean running;
-
-    public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
-
     private long lastRenderTime;
 
+    /**
+     * Rendering refresh time.
+     */
+    public static final int FRAME_REFRESH_TIME  = 10; /* Time in milliseconds to wait for rendering */
 
+    /**
+     * Constructor, assigns canvas.
+     * @param particleCanvas The canvas.
+     */
     public void setParticleCanvas(ParticleCanvas particleCanvas) {
         this.mParticleCanvas = particleCanvas;
     }
 
+    /**
+     * Set whether the thread is running.
+     * @param running The state.
+     */
     public void setRunning(boolean running) {
         this.running = running;
 
     }
 
+    /**
+     * The run loop. Renders the particles.
+     */
     public void run() {
         this.running = true;
         while (this.running) {
@@ -47,6 +58,10 @@ public class ParticleCanvasThread extends Thread {
         }
     }
 
+    /**
+     * Get the frame refresh time.
+     * @return The time.
+     */
     public long getFrameRefreshTime(){
         return this.FRAME_REFRESH_TIME;
     }
