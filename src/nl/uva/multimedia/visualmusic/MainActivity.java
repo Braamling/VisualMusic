@@ -73,12 +73,10 @@ public class MainActivity extends MultitouchActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater;
-//        MenuItem synth_options;
-//
-//        inflater = getMenuInflater();
-//        inflater.inflate(R.menu.main, menu);
-//        synth_options = menu.findItem(R.id.synth_options);
+        MenuInflater inflater;
+
+        inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
 
         return true;
     }
