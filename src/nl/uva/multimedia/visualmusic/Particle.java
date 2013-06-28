@@ -11,8 +11,6 @@ import android.graphics.Paint;
  * @version 1.0
  */
 public class Particle {
-    private static final String TAG = "Particle";
-
     private float   x_pos;
     private float   y_pos;
     private float   rot_x_offset;
