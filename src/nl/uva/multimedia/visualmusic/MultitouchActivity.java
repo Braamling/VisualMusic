@@ -16,8 +16,6 @@ import android.view.MotionEvent;
  * @version 1.0
  */
 public class MultitouchActivity extends Activity {
-    private static final String TAG = "MultitouchActivity";
-
     /**
      * A touch event has occurred. Inspect the event to determine what has
      * happened and which/what finger/fingers caused it.

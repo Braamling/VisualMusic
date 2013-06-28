@@ -9,8 +9,6 @@ import java.util.Random;
  * @version 1.0
  */
 public class VisualMusicThreadMonitor extends FingerThreadMonitor {
-    private static final String TAG = "VisualMusicThreadMonitor";
-
     private ParticleCanvas particleCanvas;
     private boolean active = false, finishing = false, reboot = false;
     private ParticleBurst[] particles = null;
