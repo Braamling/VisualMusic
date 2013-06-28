@@ -24,6 +24,7 @@ public class ParticleCanvas extends SurfaceView
 
     private Paint whitePaint = new Paint();
     private Paint textPaint = new Paint();
+    private Paint blackPaint = new Paint();
 
     private VisualMusicThreadMonitor[] monitors =
             new VisualMusicThreadMonitor[max_fingers];
@@ -38,6 +39,7 @@ public class ParticleCanvas extends SurfaceView
         super(activity);
 
         this.whitePaint.setColor(Color.WHITE);
+        this.blackPaint.setColor(Color.BLACK);
         this.textPaint.setColor(Color.WHITE);
         this.textPaint.setTextSize(10.0f);
         this.textPaint.setTextAlign(Paint.Align.CENTER);
@@ -82,29 +84,6 @@ public class ParticleCanvas extends SurfaceView
         this.mThread = new ParticleCanvasThread();
         this.mThread.setParticleCanvas(this);
         this.mThread.start();
-    }
-
-    /**
-     * Run the rendering process.
-     */
-    public void render() {
-        if (this.holder == null)
-            return;
-
-        while (true) {
-            Canvas canvas;
-
-            this.gatherParticles();
-
-            canvas = this.holder.lockCanvas();
-            if (canvas == null)
-                return;
-
-            canvas.drawColor(Color.BLACK);
-
-            this.drawKeys(canvas);
-            this.drawParticles(canvas);
-        }
     }
 
     /**
@@ -165,6 +144,8 @@ public class ParticleCanvas extends SurfaceView
                         i * blackPart + blackWidth, blackHeight,
                         this.whitePaint);
 
+                canvas.drawRect(i * blackPart, 0, i * blackPart + blackWidth, blackHeight, blackPaint);
+
                 canvas.drawLine(i * blackPart, ySplit, i * blackPart,
                         ySplit + blackHeight, this.whitePaint);
                 canvas.drawLine(i * blackPart + blackWidth, ySplit,
@@ -173,6 +154,9 @@ public class ParticleCanvas extends SurfaceView
                 canvas.drawLine(i * blackPart, ySplit + blackHeight,
                         i * blackPart + blackWidth, ySplit + blackHeight,
                         this.whitePaint);
+
+                canvas.drawRect(i * blackPart, ySplit, i * blackPart + blackWidth,
+                        ySplit + blackHeight, blackPaint);
             }
 
             if ((i % 4) == 0) {

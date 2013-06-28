@@ -50,7 +50,7 @@ public class ParticleCanvasThread extends Thread {
                 if (canvas == null)
                     return;
 
-                canvas.drawColor(Color.BLACK);
+                canvas.drawColor(Color.rgb(70, 70, 70));
 
                 this.mParticleCanvas.drawKeys(canvas);
                 this.mParticleCanvas.drawParticles(canvas);

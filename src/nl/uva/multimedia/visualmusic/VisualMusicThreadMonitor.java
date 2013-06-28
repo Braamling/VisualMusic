@@ -21,10 +21,10 @@ public class VisualMusicThreadMonitor extends FingerThreadMonitor {
     private int theme;
     private int baseLifetime = 75; /* Should range from 25 to 500 */
 
-    private int attack = 250;
-    private int decay = 250;
+    private int attack = 200;
+    private int decay = 200;
     private float sustain = 0.7f;
-    private int release = 250;
+    private int release = 40;
     private int overtones = 8;
 
     /**

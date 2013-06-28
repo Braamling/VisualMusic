@@ -168,10 +168,10 @@ public class MainActivity extends MultitouchActivity {
          */
         final SeekBar releaseSlider =
                 (SeekBar)layout.findViewById(R.id.releaseSlider);
-        releaseSlider.setProgress(250);
+        releaseSlider.setProgress(40);
 
         final TextView releaseText = (TextView)layout.findViewById(R.id.textView4);
-        releaseText.setText("Release: " + 250 + "ms");
+        releaseText.setText("Release: " + 50 + "ms");
 
         releaseSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
